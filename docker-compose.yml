@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  cdn-server:
+    image: quay.io/nyulibraries/primo-customization-cdn-server:nyu.primo.exlibrisgroup.com
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./primo-customization:/app/cdn/primo-customization
+  devenv:
+    image: quay.io/nyulibraries/primo-customization-devenv:nyu.primo.exlibrisgroup.com
+    ports:
+      - "8003:8003"
+    depends_on:
+      - cdn-server
+    environment:
+      VIEW: ${VIEW}
