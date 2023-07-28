@@ -10,4 +10,4 @@ Start the local devenv for a particular view:
 VIEW=01NYU_INST-NYU_DEV docker compose up devenv
 ```
 
-Then view your edits in `primo-customization/01NYU_INST:NYU/` at http://localhost:8003/discovery/search?vid=01NYU_INST:NYU
+Then view your edits in `primo-customization/01NYU_INST-NYU_DEV/` at http://localhost:8003/discovery/search?vid=01NYU_INST:NYU_DEV
