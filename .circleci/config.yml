@@ -49,12 +49,12 @@ workflows:
     jobs:
       - deploy_dev:
           context: web-cdn-aws-nyulitsdev
-      #    filters:
-      #      branches:
-      #        ignore:
-      #          - main
-      #- deploy_prod:
-      #    context: web-cdn-aws-nyulits
-      #    filters:
-      #      branches:
-      #        only: main
+          filters:
+            branches:
+              ignore:
+                - main
+      - deploy_prod:
+          context: web-cdn-aws-nyulits
+          filters:
+            branches:
+              only: main
