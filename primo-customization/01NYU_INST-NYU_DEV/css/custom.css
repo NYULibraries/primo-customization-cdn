@@ -440,6 +440,21 @@ md-grid-tile .tile-content>.md-button.link-alt-color._md-focused:not([disabled])
   padding: .5em;
 }
 
+/* Advanced and simple search buttons */
+.switch-to-simple,
+.switch-to-advanced {
+  background-color: #57068c !important;
+  color: #fff !important;
+  font-weight: bold;
+  padding: 0 20px;
+}
+
+.switch-to-simple:hover,
+.switch-to-advanced:hover {
+  background-color: #791CB4 !important;
+}
+
+
 .md-button.button-full-height {
   height: 100%;
 }
@@ -503,7 +518,10 @@ md-tab-content .tab-content-header md-input-container md-select-value .md-text {
 prm-spinner.overlay-cover.light-on-dark:after,
 prm-search-bar {
   color: white;
-  background-color: #57068c;
+  /* background-color: #57068c; */
+  background-image: url('../assets/img/banner-bg.png');
+  background-color: #f5f7fa;
+
 }
 
 .prm-primary-bg.prm-hue1,
