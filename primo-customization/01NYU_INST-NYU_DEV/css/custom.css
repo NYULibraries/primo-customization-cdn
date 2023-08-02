@@ -307,21 +307,21 @@ md-grid-tile .tile-content>.md-button.link-alt-color._md-focused:not([disabled])
 }
 
 /* button-confirm (magnifying glass)  */
-button.zero-margin.button-confirm.large-icon.md-button.md-primoExplore-theme.md-ink-ripple {
+button.button-confirm {
   background-color: black !important;
   color: white !important;
 }
 
-button.zero-margin.button-confirm.large-icon.md-button.md-primoExplore-theme.md-ink-ripple svg {
+button.button-confirm svg {
   fill: white !important;
 }
 
-button.zero-margin.button-confirm.large-icon.md-button.md-primoExplore-theme.md-ink-ripple:hover {
+button.button-confirm:hover {
   background-color: white !important;
   color: black !important;
 }
 
-button.zero-margin.button-confirm.large-icon.md-button.md-primoExplore-theme.md-ink-ripple:hover svg {
+button.button-confirm:hover svg {
   fill: black !important;
 }
 
