@@ -62,7 +62,7 @@ prm-logo {
 }
 
 .md-button.md-secondary {
-  color: #42056a;
+  color: #57068c;
 }
 
 .md-button.md-secondary:hover:not([disabled]),
@@ -620,7 +620,7 @@ prm-topbar .prm-hue2.top-nav-bar {
 
 .prm-secondary-bg,
 md-progress-linear[md-mode=indeterminate].header-progress-bar .md-bar {
-  background-color: #42056a;
+  background-color: #57068c;
 }
 
 .prm-secondary-bg.prm-hue1,
@@ -640,7 +640,7 @@ md-checkbox.md-checked ._md-icon {
 }
 
 .prm-secondary-border {
-  border-color: #42056a;
+  border-color: #57068c;
 }
 
 .prm-secondary-border.prm-hue1,
