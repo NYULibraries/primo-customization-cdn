@@ -553,20 +553,20 @@ prm-search-bar {
 prm-spinner.prm-hue1.overlay-cover.light-on-dark:after,
 prm-topbar .top-nav-bar,
 prm-search-bar.prm-hue1 {
-  background-color: #4e057d;
+  background-color: #57068c;
 }
 
 .prm-primary-bg.prm-hue2,
 prm-spinner.prm-hue2.overlay-cover.light-on-dark:after,
 prm-search-bar.prm-hue2,
 md-backdrop.md-opaque {
-  background-color: #480574;
+  background-color: #57068c;
 }
 
 .prm-primary-bg.prm-hue3,
 prm-spinner.prm-hue3.overlay-cover.light-on-dark:after,
 prm-search-bar.prm-hue3 {
-  background-color: #42056a;
+  background-color: #57068c;
 }
 
 .prm-primary-bg.prm-hue3-important,
@@ -574,13 +574,13 @@ prm-spinner.prm-hue3-important.overlay-cover.light-on-dark:after,
 prm-user-area md-fab-toolbar.md-is-open md-fab-trigger .md-fab-toolbar-background,
 prm-user-area md-fab-toolbar.md-is-open md-fab-trigger ._md-fab-toolbar-background,
 prm-search-bar.prm-hue3-important {
-  background-color: #42056a !important;
+  background-color: #57068c !important;
 }
 
 .prm-primary-bg.prm-hue4,
 prm-spinner.prm-hue4.overlay-cover.light-on-dark:after,
 prm-search-bar.prm-hue4 {
-  background-color: #39045b;
+  background-color: #57068c;
 }
 
 .prm-primary-border {
