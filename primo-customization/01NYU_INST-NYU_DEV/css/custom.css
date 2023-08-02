@@ -301,6 +301,31 @@ md-grid-tile .tile-content>.md-button.link-alt-color._md-focused:not([disabled])
   margin-right: 0;
 }
 
+/* buttonVoiceSearch */
+#voiceSearchButton:hover {
+  background-color: #E8F1F8;
+}
+
+/* button-confirm (magnifying glass)  */
+button.zero-margin.button-confirm.large-icon.md-button.md-primoExplore-theme.md-ink-ripple {
+  background-color: black !important;
+  color: white !important;
+}
+
+button.zero-margin.button-confirm.large-icon.md-button.md-primoExplore-theme.md-ink-ripple svg {
+  fill: white !important;
+}
+
+button.zero-margin.button-confirm.large-icon.md-button.md-primoExplore-theme.md-ink-ripple:hover {
+  background-color: white !important;
+  color: black !important;
+}
+
+button.zero-margin.button-confirm.large-icon.md-button.md-primoExplore-theme.md-ink-ripple:hover svg {
+  fill: black !important;
+}
+
+
 .md-button.outline-button {
   border: 1px solid;
 }
