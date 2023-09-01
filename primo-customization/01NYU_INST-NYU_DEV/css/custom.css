@@ -58,6 +58,7 @@ prm-topbar .top-nav-bar {
 /* buttonVoiceSearch */
 #voiceSearchButton:hover {
   background-color: #E8F1F8;
+  color: #05568a;
 }
 
 /* button-confirm (magnifying glass)  */
