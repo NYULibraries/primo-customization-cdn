@@ -25,6 +25,13 @@ prm-logo {
   transition: none;
 }
 
+/* bold headers on landing page */
+.md-subhead {
+  font-weight: 600;
+  margin: 1em .25em auto auto;
+}
+
+
 /* ***************************************************** */
 /* EVERYTHING BELOW app-colors / look and feel overrides */
 /* ***************************************************** */
