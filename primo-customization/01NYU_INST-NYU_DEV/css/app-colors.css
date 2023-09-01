@@ -36,10 +36,10 @@
         color: #57068c;
         background-color: white; }
   .md-button.button-notice {
-    color: #b84d00; }
+    color: #e08303; }
     .md-button.button-notice:hover:not([disabled]), .md-button.button-notice:focus:not([disabled]), .md-button.button-notice.hovered:not([disabled]), .md-button.button-notice.md-focused:not([disabled]), .md-button.button-notice._md-focused:not([disabled]) {
       color: white;
-      background-color: #b84d00; }
+      background-color: #e08303; }
   .md-button.button-prompt {
     color: #FFFCC4; }
     .md-button.button-prompt:hover:not([disabled]), .md-button.button-prompt:focus:not([disabled]), .md-button.button-prompt.hovered:not([disabled]), .md-button.button-prompt.md-focused:not([disabled]), .md-button.button-prompt._md-focused:not([disabled]) {
@@ -791,7 +791,7 @@ md-toolbar.default-toolbar:not(.md-menu-toolbar) {
 .worldcat,
 .getit,
 .esploro_status\.unknown, prm-search-result-frbr-line a > prm-icon:first-child, prm-search-result-frbr-line .md-button.arrow-link-button .button-content > prm-icon:first-child, .md-button.arrow-link-button prm-search-result-frbr-line .button-content > prm-icon:first-child {
-  color: #b84d00; }
+  color: #e08303; }
 
 .prm-positive, .status-available, [class*="available"],
 [class*="FT"],
