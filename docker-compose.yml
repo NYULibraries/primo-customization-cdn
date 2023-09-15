@@ -41,6 +41,7 @@ services:
       - "443:443"
     depends_on:
       - devenv-tls
+      - cdn-server
     extra_hosts:
       - "nyu.primo.exlibrisgroup.com:216.147.212.109"
     volumes:
