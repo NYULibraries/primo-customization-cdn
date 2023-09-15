@@ -12,6 +12,26 @@ VIEW=01NYU_INST-NYU_DEV docker compose up primo-explore-devenv
 
 Then view your edits in `primo-customization/01NYU_INST-NYU_DEV/` at http://localhost:8003/discovery/search?vid=01NYU_INST:NYU_DEV
 
+### Local Login
+
+To view pages under authentication locally, you will need to proxy real domains to your localhost by adding the following to `/etc/hosts`:
+
+```
+127.0.0.1 nyu.primo.exlibrisgroup.com
+127.0.0.1 cdn-dev.library.nyu.edu
+127.0.0.1 cdn.library.nyu.edu
+```
+
+Then, start tls service:
+
+```
+VIEW=01NYU_INST-NYU_DEV docker compose up tls
+```
+
+You will then need to validate the two self-signed certs in your browser for the above domains, after which you can use `nyu.primo.exlibrisgroup.com` in your browser. Be sure to confirm that you are indeed proxying to your local server.
+
+NOTE: Don't forget to undo your `/etc/hosts` edits when finished!
+
 ## E2E tests
 
 We utilize [Playwright](https://playwright.dev/docs/intro) for our E2E tests.
