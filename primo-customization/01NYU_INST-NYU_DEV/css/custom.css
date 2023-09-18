@@ -1,3 +1,37 @@
+/* ***************************** */
+/* Styles for user dropdown menu */
+/* ***************************** */
+
+/* Hide 'My Loans' */
+/* Hide 'My Requests' */
+.menu-item-indented.my-loans-ctm,
+.menu-item-indented.my-requests-ctm {
+  display: none !important;
+}
+
+
+/* Update text CSS hack */
+span[translate="nui.menu.librarycard"] {
+  font-size: 0 !important;
+  /* Hide existing text */
+}
+
+span[translate="nui.menu.librarycard"]::after {
+  content: 'Library Card';
+  font-size: 16px;
+  /* Restore original font size */
+}
+
+/* Setting the order for `Saved Items` and `Search History` in user dropdown menu */
+.my-refworks-separator-ctm {
+  order: 3;
+}
+
+.my-refworks-ctm {
+  order: 4;
+}
+
+
 /* ******************************************************* */
 /* Styles for search-bar-sub-menu feedback & library hours */
 /* ******************************************************* */
