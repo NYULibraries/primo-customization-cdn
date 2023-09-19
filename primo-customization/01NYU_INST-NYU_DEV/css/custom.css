@@ -10,18 +10,6 @@
 }
 
 
-/* Update text CSS hack */
-span[translate="nui.menu.librarycard"] {
-  font-size: 0 !important;
-  /* Hide existing text */
-}
-
-span[translate="nui.menu.librarycard"]::after {
-  content: 'Library Card';
-  font-size: 16px;
-  /* Restore original font size */
-}
-
 /* Setting the order for `Saved Items` and `Search History` in user dropdown menu */
 .my-refworks-separator-ctm {
   order: 3;
