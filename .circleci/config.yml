@@ -53,7 +53,6 @@ workflows:
             branches:
               ignore:
                 - main
-                - move-libkey-code-to-cdn
       - deploy_prod:
           context: web-cdn-aws-nyulits
           filters:
