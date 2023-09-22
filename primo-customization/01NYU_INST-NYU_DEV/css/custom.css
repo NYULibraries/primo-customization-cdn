@@ -20,12 +20,14 @@ prm-autocomplete input {
 }
 
 prm-browse-search-bar {
+  padding-bottom: 60px;
   background-image: url("../assets/img/banner-bg.png") !important;
   background-color: rgba(255, 255, 255, 1) !important;
   /* This will act as a fallback */
 }
 
 prm-atoz-search-bar {
+  padding-bottom: 60px;
   background-image: url("../assets/img/banner-bg.png") !important;
   background-color: rgba(255, 255, 255, 1) !important;
   /* This will act as a fallback */
