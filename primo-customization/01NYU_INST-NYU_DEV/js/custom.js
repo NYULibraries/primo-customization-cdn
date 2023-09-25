@@ -6,36 +6,14 @@ function findingAidsLinkClickHandler(event) {
 // https://github.com/NYULibraries/primo-customization/blob/7081043696143453dbe7caadd238ed0b40ec77ce/custom/00_common/js/01-config.js
 const searchParams = new URLSearchParams( window.location.search );
 const vid = searchParams.get( 'vid' );
-const cdnUrl = getCdnUrl( vid );
+const cdnUrl = getCdnUrl();
 
 function parseViewDirectoryName( vid ) {
     return vid.replaceAll( ':', '-' );
 }
 
-function getCdnUrl( vid ) {
-    const cdnUrls = {
-        '01NYU_INST:NYU'     : 'https://cdn.library.nyu.edu/primo-customization',
-        '01NYU_INST:NYU_DEV' : 'https://cdn-dev.library.nyu.edu/primo-customization',
-        '01NYU_INST:TESTWS01': 'https://cdn-dev.library.nyu.edu/primo-customization',
-    }
-
-    const hostname = window.location.hostname;
-    const view = parseViewDirectoryName( vid );
-
-    let baseUrl;
-    if ( hostname === 'localhost' ) {
-        baseUrl = 'http://localhost:3000/primo-customization';
-    } else if ( hostname === 'sandbox02-na.primo.exlibrisgroup.com' ) {
-        baseUrl = 'https://d290kawcj1dea9.cloudfront.net/primo-customization';
-    } else if ( hostname === 'primo-explore-devenv' ) {
-        // Running in the headless browser in the Docker Compose `e2e` service.
-        baseUrl = 'http://cdn-server:3000/primo-customization';
-    } else {
-        baseUrl = cdnUrls[ vid ] ||
-                  cdnUrls[ '01NYU_INST:NYU' ];
-    }
-
-    return `${ baseUrl }/${ view }`;
+function getCdnUrl() {
+    return document.querySelector( '#cdn-url' ).textContent;
 }
 
 // thanks to https://stackoverflow.com/a/53601942
