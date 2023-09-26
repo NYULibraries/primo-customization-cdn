@@ -1,13 +1,21 @@
 {
-  "name": "e2e",
+  "name": "primo-customization-cdn-playwright",
   "version": "1.0.0",
+  "description": "Playwright E2E tests for primo customization CDN",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.38.1",
-    "@types/node": "^20.7.0"
+    "dotenv": "^16.3.1",
+    "js-beautify": "^1.14.9"
   },
   "scripts": {
-    "test:e2e": "yarn playwright test"
+    "test:e2e": "./scripts/run-tests.sh",
+    "test:e2e:dev": "VIEW=01NYU_INST-NYU_DEV yarn test:e2e",
+    "test:e2e:dev:update-golden-files": "UPDATE_GOLDEN_FILES=true VIEW=01NYU_INST-NYU_DEV yarn test:e2e",
+    "test:e2e:prod": "VIEW=01NYU_INST-NYU yarn test:e2e",
+    "test:e2e:prod:update-golden-files": "UPDATE_GOLDEN_FILES=true VIEW=01NYU_INST-NYU yarn test:e2e",
+    "test:e2e:all": "yarn test:e2e:dev && yarn test:e2e:prod",
+    "test:e2e:all:update-golden-files": "yarn test:e2e:dev:update-golden-files && yarn test:e2e:prod:update-golden-files"
   }
 }
