@@ -2,8 +2,6 @@ function findingAidsLinkClickHandler( event ) {
     event.stopPropagation();
 }
 
-const cdnUrl = document.querySelector( '#cdn-url' ).textContent;
-
 // thanks to https://stackoverflow.com/a/53601942
 function documentReady( func ) {
     // if early to the DOM
