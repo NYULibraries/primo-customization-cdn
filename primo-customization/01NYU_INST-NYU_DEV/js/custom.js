@@ -2,19 +2,7 @@ function findingAidsLinkClickHandler( event ) {
     event.stopPropagation();
 }
 
-// CDN base URL utilities pulled from view package code, since these functions aren't available outside it
-// https://github.com/NYULibraries/primo-customization/blob/7081043696143453dbe7caadd238ed0b40ec77ce/custom/00_common/js/01-config.js
-const searchParams = new URLSearchParams( window.location.search );
-const vid = searchParams.get( 'vid' );
-const cdnUrl = getCdnUrl();
-
-function parseViewDirectoryName( vid ) {
-    return vid.replaceAll( ':', '-' );
-}
-
-function getCdnUrl() {
-    return document.querySelector( '#cdn-url' ).textContent;
-}
+const cdnUrl = document.querySelector( '#cdn-url' ).textContent;
 
 // thanks to https://stackoverflow.com/a/53601942
 function documentReady( func ) {
