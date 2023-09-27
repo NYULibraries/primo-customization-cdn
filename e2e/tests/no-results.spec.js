@@ -11,7 +11,7 @@ const vid = view.replaceAll('-', ':');
 const testCases = [
     {
         key: 'no-search-results',
-        name: 'qieuwrueqwpRuewpqoewPpqop',
+        name: 'No-search-results page',
         queryString: 'query=any,contains,qieuwrueqwpRuewpqoewPpqop%3D%3D%3D%3DPppPp@%23$$%25&tab=Unified_Slot&search_scope=DN_and_CI&vid=01NYU_INST:NYU_DEV&offset=0',
         elementToTest: 'prm-no-search-result',
         waitForSelector: 'prm-no-search-result-after',
