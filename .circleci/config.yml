@@ -55,7 +55,7 @@ jobs:
       - setup_remote_docker
       - *asset_sanity_check
       - *aws-export
-        #- *aws-sync
+      - *aws-sync
   deploy_prod:
     <<: *docker-defaults
     steps:
@@ -63,7 +63,7 @@ jobs:
       - setup_remote_docker
       - *asset_sanity_check
       - *aws-export
-        #- *aws-sync
+      - *aws-sync
 
 workflows:
   version: 2.1
