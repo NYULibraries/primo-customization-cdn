@@ -17,15 +17,15 @@ prm-full-view .services-index-under button:not(.accessible-close) {
 }
 
 /* Reorder FullDisplay sections. */
-#searchWithinJournal { order: 1; }
-#getit_link1_0 { order: 2; }
-#getit_link1_1 { order: 3; }
+#searchWithinJournal { order: 1; } /* "Search inside" */
+#getit_link1_0 { order: 2; } /* "View Online" or "How to get it" */
+#getit_link1_1 { order: 3; } /* "Get It" */
 #getit_link2 { order: 4; }
-#details { order: 5; }
-#citationTrails { order: 6; }
-#links { order: 7; }
-#virtualBrowse { order: 8; }
-#action_list { order: 9; }
+#details { order: 5; } /* "Details" */
+#action_list { order: 6; } /* "Send to" */
+#citationTrails { order: 7; } /* "Citations" */
+#links { order: 8; } /* "Links" */
+#virtualBrowse { order: 9; } /* "Virtual Browse" */
 #tags { order: 10; }
 
 /* ***************************************** */
