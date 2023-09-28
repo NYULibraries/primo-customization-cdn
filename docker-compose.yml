@@ -20,23 +20,28 @@ services:
       - primo-customization-cdn-net
     # volumes:
     #   - ./primo-customization:/app/cdn/primo-customization
-  devenv:
+  #  NOTE: This service name `primo-explore-devenv` is hard-coded into the view packages' `getCdn()` code.
+  #        https://github.com/NYULibraries/primo-customization/blob/ffadff7421a150d84271bcee3bcb9f37e6ccf678/docker-compose.yml?#L115-#L116
+  #        If changing this name, make sure to update that reference.
+  primo-explore-devenv:
     image: quay.io/nyulibraries/primo-customization-devenv:nyu.primo.exlibrisgroup.com
     ports:
       - "8003:8003"
     depends_on:
       - cdn-server
     environment:
-      VIEW: ${VIEW}
+      <<: *x-environment
     networks:
-      - primo-customization-cdn-net
+      primo-customization-cdn-net: 
+        aliases:
+          - devenv
   e2e:
     <<: *x-build-e2e
     depends_on:
-      - devenv
+      - primo-explore-devenv
     environment:
       <<: *x-environment
-      PLAYWRIGHT_BASE_URL: http://devenv:8003/discovery/search
+      PLAYWRIGHT_BASE_URL: http://primo-explore-devenv:8003/discovery/search
     # https://playwright.dev/docs/ci#docker
     # CI configurations > Docker
     # "Using --ipc=host is also recommended when using Chromium. Without it Chromium can run out of memory and crash."
@@ -46,10 +51,10 @@ services:
   e2e-update-golden-files:
     <<: *x-build-e2e
     depends_on:
-      - devenv
+      - primo-explore-devenv
     environment:
       <<: *x-environment
-      PLAYWRIGHT_BASE_URL: http://devenv:8003/discovery/search
+      PLAYWRIGHT_BASE_URL: http://primo-explore-devenv:8003/discovery/search
       UPDATE_GOLDEN_FILES: true
     ipc: host
     networks:
