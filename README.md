@@ -45,6 +45,8 @@ yarn install
 yarn test:e2e:dev
 # Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU
 yarn test:e2e:prod
+# Tests http://localhost:8003/discovery/search?vid=01NYU_INST:TESTWS01
+yarn test:e2e:testws01
 # Tests http://localhost:8003/discovery/search?vid=[VID]
 VIEW=[VIEW] yarn test:e2e
 ```
@@ -56,6 +58,8 @@ Update golden files:
 yarn test:e2e:dev:update-golden-files
 # Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU
 yarn test:e2e:prod:update-golden-files
+# Tests http://localhost:8003/discovery/search?vid=01NYU_INST:TESTWS01
+yarn test:e2e:testws01:update-golden-files
 # Tests http://localhost:8003/discovery/search?vid=[VID]
 UPDATE_GOLDEN_FILES=true VIEW=[VIEW] yarn test:e2e
 ```
@@ -78,6 +82,12 @@ Update golden files:
 ```shell
 # Tests http://primo-explore-devenv:8003/discovery/search?vid=01NYU_INST-NYU_DEV
 VIEW=01NYU_INST-NYU_DEV docker compose up e2e-update-golden-files
+```
+
+To enable console logging in a container for debugging purposes:
+
+```shell
+docker-compose run --rm -e ENABLE_CONSOLE_LOGGING=true -e VIEW=[VIEW] e2e
 ```
 
 ---
