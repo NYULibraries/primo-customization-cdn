@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/playwright:v1.38.1-focal AS builder
 
+ENV IN_CONTAINER true
+
 WORKDIR /e2e
 
 COPY e2e/package.json e2e/yarn.lock ./
@@ -9,7 +11,7 @@ RUN yarn install --frozen-lockfile \
     && yarn cache clean \
     # Install only the Chromium browser, as it is the only browser needed for the project:
     # Reduce build time and size: no need to install other browser binaries, reduces the size of the image.
-    && npx playwright install chromium 
+    && npx playwright install chromium
 
 ENV PATH /e2e/node_modules/.bin:$PATH
 
@@ -23,9 +25,9 @@ RUN apt-get update -y && apt-get install -y curl
 WORKDIR /e2e
 
 # Install Chromium dependencies using the Playwright CLI
-# Separation of concerns: The build stage is primarily focused on building and preparing the application, 
-# including installing dependencies required for the application to run. 
-# Installing Chromium dependencies in the production stage ensures that only the necessary dependencies 
+# Separation of concerns: The build stage is primarily focused on building and preparing the application,
+# including installing dependencies required for the application to run.
+# Installing Chromium dependencies in the production stage ensures that only the necessary dependencies
 # for running the application are included in the final image, reducing the overall image size
 RUN npx playwright install-deps chromium
 
