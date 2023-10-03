@@ -48,6 +48,12 @@ jobs:
       VIEW: 01NYU_INST-NYU
     <<: *run-e2e
 
+  run-e2e-nyu-test:
+    <<: *docker-defaults
+    environment:
+      VIEW: 01NYU_INST-TESTWS01
+    <<: *run-e2e
+
   deploy_dev:
     <<: *docker-defaults
     steps:
@@ -71,10 +77,12 @@ workflows:
     jobs:
       - run-e2e-nyu-dev
       - run-e2e-nyu-prod
+      - run-e2e-nyu-test
       - deploy_dev:
           requires:
             - run-e2e-nyu-dev
             - run-e2e-nyu-prod
+            - run-e2e-nyu-test
           context: web-cdn-aws-nyulitsdev
           filters:
             branches:
@@ -83,6 +91,7 @@ workflows:
           requires:
             - run-e2e-nyu-dev
             - run-e2e-nyu-prod
+            - run-e2e-nyu-test
           context: web-cdn-aws-nyulits
           filters:
             branches:
