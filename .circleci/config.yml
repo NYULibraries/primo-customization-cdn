@@ -36,6 +36,30 @@ jobs:
           command: |
             docker-compose run e2e
 
+  run-e2e-ad-dev:
+    <<: *docker-defaults
+    environment:
+      VIEW: 01NYU_AD-AD_DEV
+    <<: *run-e2e
+
+  run-e2e-ad-prod:
+    <<: *docker-defaults
+    environment:
+      VIEW: 01NYU_AD-AD
+    <<: *run-e2e
+
+  run-e2e-nyhs-dev:
+    <<: *docker-defaults
+    environment:
+      VIEW: 01NYU_NYHS-NYHS_DEV
+    <<: *run-e2e
+
+  run-e2e-nyhs-prod:
+    <<: *docker-defaults
+    environment:
+      VIEW: 01NYU_NYHS-NYHS
+    <<: *run-e2e
+
   run-e2e-nyu-dev:
     <<: *docker-defaults
     environment:
@@ -52,6 +76,18 @@ jobs:
     <<: *docker-defaults
     environment:
       VIEW: 01NYU_INST-TESTWS01
+    <<: *run-e2e
+
+  run-e2e-sh-dev:
+    <<: *docker-defaults
+    environment:
+      VIEW: 01NYU_US-SH_DEV
+    <<: *run-e2e
+
+  run-e2e-sh-prod:
+    <<: *docker-defaults
+    environment:
+      VIEW: 01NYU_US-SH
     <<: *run-e2e
 
   deploy_dev:
