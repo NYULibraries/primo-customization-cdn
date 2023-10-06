@@ -106,7 +106,7 @@ workflows:
       - run-e2e-ad-dev:
           filters:
             branches:
-              only: develop
+              ignore: main
       - run-e2e-ad-prod:
             filters:
               branches:
@@ -115,7 +115,7 @@ workflows:
       - run-e2e-nyhs-dev:
           filters:
             branches:
-              only: develop
+              ignore: main
       - run-e2e-nyhs-prod:
           filters:
             branches:
@@ -124,7 +124,7 @@ workflows:
       - run-e2e-nyu-dev:
           filters:
             branches:
-              only: develop
+              ignore: main
       - run-e2e-nyu-prod:
           filters:
             branches:
@@ -132,11 +132,11 @@ workflows:
       - run-e2e-nyu-test:
           filters:
             branches:
-              only: develop
+              ignore: main
       - run-e2e-sh-dev:
           filters:
             branches:
-              only: develop
+              ignore: main
       - run-e2e-sh-prod:
           filters:
             branches:
@@ -151,7 +151,7 @@ workflows:
           context: web-cdn-aws-nyulitsdev
           filters:
             branches:
-              only: develop
+              ignore: main
       - deploy_prod:
           requires:
             - run-e2e-ad-prod
