@@ -13,7 +13,7 @@ x-environment: &x-environment
 
 services:
   cdn-server:
-    image: quay.io/nyulibraries/primo-customization-cdn-server:nyu.primo.exlibrisgroup.com
+    image: quay.io/nyulibraries/primo-customization-cdn-server:main
     ports:
       - "3000:3000"
     networks:
@@ -24,7 +24,7 @@ services:
   #        https://github.com/NYULibraries/primo-customization/blob/ffadff7421a150d84271bcee3bcb9f37e6ccf678/docker-compose.yml?#L115-#L116
   #        If changing this name, make sure to update that reference.
   primo-explore-devenv:
-    image: quay.io/nyulibraries/primo-customization-devenv:nyu.primo.exlibrisgroup.com
+    image: quay.io/nyulibraries/primo-customization-devenv:main
     ports:
       - "8003:8003"
     depends_on:
