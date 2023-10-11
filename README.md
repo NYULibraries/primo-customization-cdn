@@ -42,11 +42,11 @@ yarn install
 
 ```shell
 # Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU_DEV
-yarn test:e2e:dev
+yarn test:e2e:nyu:dev
 # Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU
-yarn test:e2e:prod
+yarn test:e2e:nyu:prod
 # Tests http://localhost:8003/discovery/search?vid=01NYU_INST:TESTWS01
-yarn test:e2e:testws01
+yarn test:e2e:nyu:testws01
 # Tests http://localhost:8003/discovery/search?vid=[VID]
 VIEW=[VIEW] yarn test:e2e
 ```
@@ -55,11 +55,11 @@ Update golden files:
 
 ```shell
 # Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU_DEV
-yarn test:e2e:dev:update-golden-files
+yarn test:e2e:nyu:dev:update-golden-files
 # Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU
-yarn test:e2e:prod:update-golden-files
+yarn test:e2e:nyu:prod:update-golden-files
 # Tests http://localhost:8003/discovery/search?vid=01NYU_INST:TESTWS01
-yarn test:e2e:testws01:update-golden-files
+yarn test:e2e:nyu:testws01:update-golden-files
 # Tests http://localhost:8003/discovery/search?vid=[VID]
 UPDATE_GOLDEN_FILES=true VIEW=[VIEW] yarn test:e2e
 ```
