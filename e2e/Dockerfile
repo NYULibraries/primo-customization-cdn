@@ -1,7 +1,5 @@
 FROM mcr.microsoft.com/playwright:v1.38.1-focal AS builder
 
-ENV IN_CONTAINER true
-
 WORKDIR /e2e
 
 COPY e2e/package.json e2e/yarn.lock ./
@@ -12,8 +10,6 @@ RUN yarn install --frozen-lockfile \
     # Install only the Chromium browser, as it is the only browser needed for the project:
     # Reduce build time and size: no need to install other browser binaries, reduces the size of the image.
     && npx playwright install chromium
-
-ENV PATH /e2e/node_modules/.bin:$PATH
 
 # Copy over remaining e2e files
 COPY e2e/ .
@@ -41,6 +37,8 @@ COPY --from=builder /ms-playwright /ms-playwright
 # Set the PLAYWRIGHT_BROWSERS_PATH environment variable to tell Playwright where to look for the browser binaries
 # https://github.com/microsoft/playwright/blob/1f209204cd18bce7d1bfae50f5af105dec752df8/utils/docker/Dockerfile.focal#L24
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+
+ENV CONTAINER_MODE true
 
 # Entrypoint ensures $PLAYWRIGHT_BASE_URL has started
 ENTRYPOINT [ "./docker-entrypoint.sh" ]

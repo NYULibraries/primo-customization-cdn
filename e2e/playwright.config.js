@@ -48,9 +48,9 @@ const config = {
      We increase the number of retries in all environments to mitigate various
      LibKey-related test instabilities.
    */
-  retries: process.env.IN_CONTAINER ? 4 : 2,
+  retries: process.env.CONTAINER_MODE ? 4 : 2,
   /* Opt out of parallel tests. */
-  workers: process.env.IN_CONTAINER ? 1 : undefined,
+  workers: process.env.CONTAINER_MODE ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
