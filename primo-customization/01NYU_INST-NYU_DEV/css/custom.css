@@ -1,3 +1,9 @@
+prm-action-list .md-nav-item .md-button {
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em; 
+}
 /* Hide 'block+messages', 'personal details' */
 md-tab-item#tab-item-14.md-tab,
 md-tab-item#tab-item-15.md-tab,
