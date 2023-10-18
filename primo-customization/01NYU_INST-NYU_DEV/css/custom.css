@@ -1,9 +1,65 @@
-prm-action-list .md-nav-item .md-button {
+prm-action-container-after .md-nav-item .md-button {
   font-size: 10px;
   line-height: 14px;
   font-weight: 600;
-  letter-spacing: 0.03em; 
+  letter-spacing: 0.03em;
+  margin: 0;
+  padding-bottom: 0.75em;
+  padding-top: 0.75em;
+  color: rgba(58, 58, 58, .8);
+  left: clamp(0.05em, calc(10.55em + 00.02vw), 31.39em);
+  bottom: clamp(0.05em, calc(5.05em + 00.02vw), 5.05em);
 }
+
+prm-action-container-after .md-nav-item:first-of-type {
+  margin-left: 0;
+}
+
+
+@media (max-width: 1700px) {
+
+  prm-action-container-after .md-nav-item .md-button {
+    left: 21.05em;
+  }
+}
+
+/* Iphone 12 Pro */
+@media only screen and (width: 390px) and (height: 844px) {
+
+  prm-action-container-after .md-nav-item .md-button {
+    left: 0.05em;
+    bottom: 0.05em;
+  }
+}
+
+/* iPhone 14 Pro */
+@media only screen and (width: 393px) and (height: 852px) {
+
+  prm-action-container-after .md-nav-item .md-button {
+    left: 0.05em;
+    bottom: 0.05em;
+  }
+}
+
+/* Ipad Pro */
+/* Landscape*/
+@media only screen and (min-device-width: 1366px) and (max-device-height: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
+
+  prm-action-container-after .md-nav-item .md-button {
+    left: 21em;
+    bottom: 5.05em;
+  }
+}
+
+/* Portrait*/
+@media only screen and (min-device-width: 1024px) and (max-device-height: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+
+  prm-action-container-after .md-nav-item .md-button {
+    left: 21.05em;
+    bottom: 5.05em;
+  }
+}
+
 /* Hide 'block+messages', 'personal details' */
 md-tab-item#tab-item-14.md-tab,
 md-tab-item#tab-item-15.md-tab,
