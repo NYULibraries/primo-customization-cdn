@@ -7,6 +7,18 @@ prm-action-container-after .md-nav-item .md-button {
   padding-bottom: 0.75em;
   padding-top: 0.75em;
   color: rgba(58, 58, 58, .8);
+  /**
+ * Leveraging the power of CSS `clamp()` and `calc()` functions for adaptive positioning and scalability.
+ *
+ * The `clamp(MIN, VAL, MAX)` function is used here to create a more responsive and fluid layout.
+ * It dynamically calculates the `left` and `bottom` positioning values between a minimum and maximum range.
+ *
+ * The `calc()` function is utilized to add a small increment based on the viewport width to the base em value
+ *
+ * For an in-depth understanding of these functions, refer to Mozilla's documentation:
+ * - clamp(): https://developer.mozilla.org/en-US/docs/Web/CSS/clamp
+ * - calc(): https://developer.mozilla.org/en-US/docs/Web/CSS/calc
+ */
   left: clamp(0.05em, calc(10.55em + 00.02vw), 31.39em);
   bottom: clamp(0.05em, calc(5.05em + 00.02vw), 5.05em);
 }
