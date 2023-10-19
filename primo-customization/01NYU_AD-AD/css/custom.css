@@ -9,6 +9,12 @@ prm-logo .product-logo .organization-logo:hover {
     box-shadow: none !important;
 }
 
+/* Align the logo horizontally and vertically */
+prm-logo .product-logo .organization-logo {
+    display: flex;
+}
+
+
 /* Hide 'block+messages', 'personal details' */
 md-tab-item#tab-item-14.md-tab,
 md-tab-item#tab-item-15.md-tab,
