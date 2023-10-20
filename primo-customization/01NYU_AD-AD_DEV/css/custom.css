@@ -16,10 +16,10 @@ prm-logo .product-logo .organization-logo {
 
 
 /* Hide 'block+messages', 'personal details' */
-md-tab-item#tab-item-14.md-tab,
-md-tab-item#tab-item-15.md-tab,
-md-tab-item#tab-item-46.md-tab,
-md-tab-item#tab-item-47.md-tab {
+md-tab-item#tab-item-12.md-tab,
+md-tab-item#tab-item-13.md-tab,
+md-tab-item#tab-item-40.md-tab,
+md-tab-item#tab-item-41.md-tab {
     display: none !important
 }
 
@@ -182,6 +182,18 @@ prm-atoz-search-bar {
 .menu-item-indented.my-loans-ctm,
 .menu-item-indented.my-requests-ctm {
     display: none !important;
+}
+
+/* Update text CSS hack */
+span[translate="eshelf.menu.savedItems"] {
+    font-size: 0 !important;
+    /* Hide existing text */
+}
+
+span[translate="eshelf.menu.savedItems"]::after {
+    content: 'Saved Items';
+    font-size: 16px;
+    /* Restore original font size */
 }
 
 
