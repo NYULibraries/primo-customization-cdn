@@ -262,7 +262,7 @@ prm-user-area md-fab-toolbar ._md-fab-action-item .light-on-dark-dialog md-input
 }
 
 .md-button.md-primary {
-    color: #05568a;
+    color: #035488;
 }
 
 .md-button.md-primary:hover:not([disabled]),
@@ -271,7 +271,7 @@ prm-user-area md-fab-toolbar ._md-fab-action-item .light-on-dark-dialog md-input
 .md-button.md-primary.md-focused:not([disabled]),
 .md-button.md-primary._md-focused:not([disabled]) {
     color: white;
-    background-color: #05568a;
+    background-color: #035488;
 }
 
 .md-button.md-secondary {
@@ -290,7 +290,7 @@ prm-user-area md-fab-toolbar ._md-fab-action-item .light-on-dark-dialog md-input
 .md-button.button-confirm,
 .service-form-static-panel button.button-confirm prm-icon+span,
 .service-form-static-panel button.button-confirm prm-icon svg path {
-    color: #799a05;
+    color: #0F6000;
 }
 
 .md-button.button-confirm:hover:not([disabled]),
@@ -309,7 +309,7 @@ prm-user-area md-fab-toolbar ._md-fab-action-item .light-on-dark-dialog md-input
 .service-form-static-panel button.button-confirm prm-icon+span._md-focused:not([disabled]),
 .service-form-static-panel button.button-confirm prm-icon svg path._md-focused:not([disabled]) {
     color: white;
-    background-color: #799a05;
+    background-color: #0F6000;
 }
 
 .light-on-dark-dialog .md-button.button-confirm,
@@ -350,7 +350,7 @@ prm-user-area md-fab-toolbar ._md-fab-action-item .light-on-dark-dialog md-input
 }
 
 .md-button.button-notice {
-    color: #e08303;
+    color: #b84d00;
 }
 
 .md-button.button-notice:hover:not([disabled]),
@@ -359,7 +359,7 @@ prm-user-area md-fab-toolbar ._md-fab-action-item .light-on-dark-dialog md-input
 .md-button.button-notice.md-focused:not([disabled]),
 .md-button.button-notice._md-focused:not([disabled]) {
     color: white;
-    background-color: #e08303;
+    background-color: #b84d00;
 }
 
 .md-button.button-prompt {
@@ -391,7 +391,7 @@ prm-user-area md-fab-toolbar ._md-fab-action-item .light-on-dark-dialog md-input
 .md-button.button-link,
 md-grid-tile .tile-content>.md-button,
 .tiles-grid-tile .tile-content>.md-button {
-    color: #05568a;
+    color: #035488;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
@@ -412,7 +412,7 @@ md-grid-tile .tile-content>.md-button.md-focused:not([disabled]),
 md-grid-tile .tile-content>.md-button._md-focused:not([disabled]),
 .tiles-grid-tile .tile-content>.md-button._md-focused:not([disabled]) {
     color: white;
-    background-color: #05568a;
+    background-color: #035488;
 }
 
 .md-button.button-link.link-alt-color,
@@ -602,7 +602,7 @@ prm-action-list>md-nav-bar .md-nav-item .md-button,
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
     letter-spacing: 0;
-    color: #014774;
+    color: #004572;
 }
 
 .md-button.button-as-link:hover:not([disabled]),
@@ -735,7 +735,7 @@ prm-gallery-collection .collection-folder .item-actions ._md-focused.md-button:n
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
     letter-spacing: 0;
-    color: #05568a;
+    color: #035488;
 }
 
 .md-button.button-as-link-mobile:hover:not([disabled]),
@@ -744,7 +744,7 @@ prm-gallery-collection .collection-folder .item-actions ._md-focused.md-button:n
 .md-button.button-as-link-mobile.md-focused:not([disabled]),
 .md-button.button-as-link-mobile._md-focused:not([disabled]) {
     color: white;
-    background-color: #05568a;
+    background-color: #035488;
 }
 
 .md-button.button-as-link-mobile.link-alt-color,
@@ -2006,7 +2006,7 @@ md-grid-tile .tile-header .md-button,
 md-input-container.has-fixed-message [ng-message] a,
 .separate-list-items md-list-item .item-loader-with-text .md-button,
 md-list-item.list-item-as-link {
-    color: #05568a;
+    color: #035488;
 }
 
 .prm-links.prm-hue1,
@@ -2071,7 +2071,7 @@ md-grid-tile .tile-header .prm-hue1.md-button,
 md-input-container.has-fixed-message [ng-message] a.prm-hue1,
 .separate-list-items md-list-item .item-loader-with-text .prm-hue1.md-button,
 md-list-item.prm-hue1.list-item-as-link {
-    color: #014774;
+    color: #004572;
 }
 
 .prm-links.prm-hue4,
@@ -2126,12 +2126,12 @@ md-grid-tile .tile-header .prm-hue4.md-button,
 md-input-container.has-fixed-message [ng-message] a.prm-hue4,
 .separate-list-items md-list-item .item-loader-with-text .prm-hue4.md-button,
 md-list-item.prm-hue4.list-item-as-link {
-    color: #015183;
+    color: #004e81;
 }
 
 .prm-links-important,
 .text-link {
-    color: #05568a !important;
+    color: #035488 !important;
 }
 
 .prm-links.prm-links-hover,
@@ -2186,7 +2186,7 @@ md-grid-tile .tile-header .prm-links-hover.md-button,
 md-input-container.has-fixed-message [ng-message] a.prm-links-hover,
 .separate-list-items md-list-item .item-loader-with-text .prm-links-hover.md-button,
 md-list-item.prm-links-hover.list-item-as-link {
-    color: #001929;
+    color: #001725;
 }
 
 .prm-links.prm-alt-link,
@@ -2366,7 +2366,7 @@ md-list-item.prm-hue-2.list-item-as-link {
 }
 
 .prm-links-bg {
-    color: #05568a;
+    color: #035488;
 }
 
 .prm-links-bg:hover:not([disabled]),
@@ -2375,36 +2375,36 @@ md-list-item.prm-hue-2.list-item-as-link {
 .prm-links-bg.md-focused:not([disabled]),
 .prm-links-bg._md-focused:not([disabled]) {
     color: white;
-    background-color: #05568a;
+    background-color: #035488;
 }
 
 .prm-links-bg.prm-hue-1 {
-    background-color: rgba(0, 87, 143, 0.1);
+    background-color: rgba(0, 85, 139, 0.1);
 }
 
 .prm-links-background.prm-hue-1 {
-    background-color: rgba(5, 86, 138, 0.1);
+    background-color: rgba(3, 84, 136, 0.1);
 }
 
 .prm-links-background.prm-hue-2 {
-    background-color: rgba(5, 86, 138, 0);
+    background-color: rgba(3, 84, 136, 0);
 }
 
 .prm-links-background.prm-hue-3,
 md-tabs md-ink-bar {
-    background-color: #033759;
+    background-color: #023556;
 }
 
 .prm-links-hover.prm-hue-1 {
-    color: #001929;
+    color: #001725;
 }
 
 .prm-links-hover.prm-hue-2 {
-    color: rgba(0, 25, 41, 0.5);
+    color: rgba(0, 23, 37, 0.5);
 }
 
 .prm-links-hover.prm-hue-3 {
-    color: rgba(5, 86, 138, 0);
+    color: rgba(3, 84, 136, 0);
 }
 
 .prm-text,
@@ -2656,7 +2656,7 @@ prm-breadcrumbs .prm-hue1.md-chip.persistent-facet {
 prm-search-result-frbr-line a>prm-icon:first-child,
 prm-search-result-frbr-line .md-button.arrow-link-button .button-content>prm-icon:first-child,
 .md-button.arrow-link-button prm-search-result-frbr-line .button-content>prm-icon:first-child {
-    color: #e08303;
+    color: #b84d00;
 }
 
 .prm-positive,
@@ -2673,7 +2673,7 @@ prm-search-result-frbr-line .md-button.arrow-link-button .button-content>prm-ico
 .fulltext_linktorsrc_topic,
 .fulltext_topic,
 .esploro_status\.not_restricted {
-    color: #799a05;
+    color: #0F6000;
 }
 
 .prm-positive.prm-hue1,
@@ -2693,13 +2693,13 @@ prm-search-result-frbr-line .md-button.arrow-link-button .button-content>prm-ico
 .prm-hue1.fulltext_linktorsrc_topic,
 .prm-hue1.fulltext_topic,
 .prm-hue1.esploro_status\.not_restricted {
-    color: #719005;
+    color: #0d5600;
 }
 
 .prm-positive-bg,
 .multiselect-submit .multiselect-submit-inner .md-button.md-primary:hover,
 .multiselect-submit .multiselect-submit-inner .md-button.md-primary:focus {
-    background-color: #799a05;
+    background-color: #0F6000;
 }
 
 .prm-negative {
