@@ -11,8 +11,18 @@ aws-export: &aws-export
       echo 'export AWS_SECRET_ACCESS_KEY=${WEB_CDN_AWS_SECRET_ACCESS_KEY}' >> $BASH_ENV
       echo 'export AWS_REGION=us-east-1' >> $BASH_ENV
 
-aws-sync: &aws-sync
-  aws-cli/setup
+# Note that `aws s3 sync ... --exact-timestamps` only works for downloads from S3,
+# not uploads: https://github.com/aws/aws-cli/issues/4460.  The only safe way
+# to update is to upload absolutely everything using `cp` and then deleting
+# removed files using `sync --delete`.  There are many other open GitHub issues
+# related to this behavior.  Here's another: https://github.com/aws/aws-cli/issues/3273.
+aws-sync-s3: &aws-sync-s3
+  run:
+    name: Deploy to S3
+    command: |
+      export AWS_REGION=us-east-1
+      aws s3 cp --recursive ~circleci/app/primo-customization $S3_URI/primo-customization && \
+      aws s3 sync --delete ~circleci/app/primo-customization $S3_URI/primo-customization
 
 version: 2.1
 orbs:
@@ -25,7 +35,8 @@ jobs:
       - checkout
       - setup_remote_docker
       - *aws-export
-      - *aws-sync
+      - aws-cli/setup
+      - *aws-sync-s3
 
 workflows:
   version: 2.1
