@@ -30,7 +30,7 @@ services:
     depends_on:
       - cdn-server
     environment:
-      VIEW: ${VIEW}
+      <<: *x-environment
     networks:
       primo-customization-cdn-net: 
         aliases:
