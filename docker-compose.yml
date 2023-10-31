@@ -35,6 +35,7 @@ services:
       primo-customization-cdn-net: 
         aliases:
           - devenv
+
   e2e:
     <<: *x-build-e2e
     depends_on:
@@ -61,6 +62,29 @@ services:
       - primo-customization-cdn-net
     # volumes:
     #   - ./e2e/tests/golden:/e2e/tests/golden
+
+  # services for local tls, i.e. for login
+  tls:
+    image: primo-customization-cdn-tls-nginx
+    build:
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - devenv-tls
+      - cdn-server
+    extra_hosts:
+      - "nyu.primo.exlibrisgroup.com:216.147.212.109"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+  devenv-tls:
+    image: quay.io/nyulibraries/primo-customization-devenv:nyu.primo.exlibrisgroup.com
+    depends_on:
+      - cdn-server
+    extra_hosts:
+      - "nyu.primo.exlibrisgroup.com:216.147.212.109"
+    environment:
+      <<: *x-environment
 
 networks:
   primo-customization-cdn-net:
