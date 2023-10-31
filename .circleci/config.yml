@@ -26,7 +26,6 @@ aws-sync-s3: &aws-sync-s3
   run:
     name: Deploy to S3
     command: |
-      export AWS_REGION=us-east-1
       aws s3 cp --recursive primo-customization $S3_URI/primo-customization && \
       aws s3 sync --delete primo-customization $S3_URI/primo-customization
 
