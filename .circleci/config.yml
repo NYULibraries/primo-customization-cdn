@@ -27,8 +27,8 @@ aws-sync-s3: &aws-sync-s3
     name: Deploy to S3
     command: |
       export AWS_REGION=us-east-1
-      aws s3 cp --recursive ~circleci/app/primo-customization $S3_URI/primo-customization && \
-      aws s3 sync --delete ~circleci/app/primo-customization $S3_URI/primo-customization
+      aws s3 cp --recursive primo-customization $S3_URI/primo-customization && \
+      aws s3 sync --delete primo-customization $S3_URI/primo-customization
 
 version: 2.1
 orbs:
