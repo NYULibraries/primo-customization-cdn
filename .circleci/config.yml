@@ -57,6 +57,16 @@ jobs:
     environment:
       VIEW: 01NYU_NYHS-NYHS
 
+  run-e2e-nysid-dev:
+    <<: [*docker-defaults, *run-e2e]
+    environment:
+      VIEW: 01NYU_NYSID-NYSID_DEV
+
+  run-e2e-nysid-prod:
+    <<: [*docker-defaults, *run-e2e]
+    environment:
+      VIEW: 01NYU_NYSID-NYSID
+
   run-e2e-nyu-dev:
     <<: [*docker-defaults, *run-e2e]
     environment:
@@ -121,6 +131,14 @@ workflows:
       #      branches:
       #        only:
       #          main
+      #- run-e2e-nysid-dev:
+      #    filters:
+      #      branches:
+      #        ignore: main
+      #- run-e2e-nysid-prod:
+      #    filters:
+      #      branches:
+      #        only: main
       - run-e2e-nyu-dev:
           filters:
             branches:
@@ -145,17 +163,19 @@ workflows:
           requires:
             #- run-e2e-ad-dev
             #- run-e2e-nyhs-dev
+            #- run-e2e-nysid-dev
             - run-e2e-nyu-dev
             - run-e2e-nyu-test
             #- run-e2e-sh-dev
           context: web-cdn-aws-nyulitsdev
           filters:
             branches:
-              ignore: main
+              only: develop
       - deploy_prod:
           requires:
             #- run-e2e-ad-prod
             #- run-e2e-nyhs-prod
+            #- run-e2e-nysid-prod
             - run-e2e-nyu-prod
             #- run-e2e-sh-prod
           context: web-cdn-aws-nyulits
