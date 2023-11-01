@@ -4,6 +4,15 @@
   background-color: transparent;
 }
 
+.section-content .md-chips .md-chip .facet-title:hover:not([disabled]) {
+  background-color: #57068c;
+}
+
+prm-citation-trails-indication .md-button.button-with-icon,
+prm-citation-trails-indication .md-button.md-icon-button {
+  color: #57068c;
+}
+
 .prm-positive,
 .status-available,
 [class*="available"],
