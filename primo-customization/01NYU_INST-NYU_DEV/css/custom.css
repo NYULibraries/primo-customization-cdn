@@ -6,7 +6,10 @@
 
 
 /* Override the existing hover color with #57068c */
-prm-facet-exact .section-title:hover span {
+prm-facet-exact .section-title:hover span,
+prm-facet-range .section-title:hover span,
+prm-facet-exact .section-title:focus span,
+prm-facet-range .section-title:focus span {
   color: #57068c;
 }
 
