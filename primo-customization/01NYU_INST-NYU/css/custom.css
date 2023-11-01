@@ -4,9 +4,12 @@
   background-color: transparent;
 }
 
-.section-content .md-chips .md-chip .facet-title:hover:not([disabled]) {
-  background-color: #57068c;
+
+/* Override the existing hover color with #57068c */
+prm-facet-exact .section-title:hover span {
+  color: #57068c;
 }
+
 
 prm-citation-trails-indication .md-button.button-with-icon,
 prm-citation-trails-indication .md-button.md-icon-button {
