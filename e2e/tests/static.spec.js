@@ -8,7 +8,9 @@ const beautifyHtml = require('js-beautify').html;
 
 const view = process.env.VIEW;
 
-if (view === '01NYU_INST-NYU_DEV' || view === '01NYU_INST-TESTWS01') {
+const viewsForStaticTest = ['01NYU_INST-NYU_DEV', '01NYU_INST-NYU', '01NYU_INST-TESTWS01'];
+
+if (viewsForStaticTest.includes(view)) {
     const vid = view.replaceAll('-', ':');
 
     const testCases = [
@@ -129,7 +131,7 @@ ${e.stderr.toString()}`;
         })
     }
 } else {
-    test.skip('Skipping static.spec.js tests because VIEW does not match 01NYU_INST-NYU_DEV or 01NYU_INST-TESTWS01', async () => {
+    test.skip(`Skipping static.spec.js tests because VIEW does not match ${viewsForStaticTest.join(', ')}`, async () => {
         // This test will be skipped
     });
 }
