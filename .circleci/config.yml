@@ -35,6 +35,8 @@ jobs:
           name: Run tests
           command: |
             docker-compose run e2e
+      - store_artifacts:
+          path: test-results
 
   run-e2e-ad-dev:
     <<: [*docker-defaults, *run-e2e]
@@ -114,14 +116,13 @@ workflows:
   build-and-deploy:
     jobs:
       - run-e2e-ad-dev:
-         filters:
-           branches:
-             ignore: main
+          filters:
+            branches:
+              ignore: main
       - run-e2e-ad-prod:
-           filters:
-             branches:
-               only:
-                 main
+          filters:
+            branches:
+              only: main
       #- run-e2e-nyhs-dev:
       #    filters:
       #      branches:
@@ -152,13 +153,13 @@ workflows:
             branches:
               ignore: main
       - run-e2e-sh-dev:
-         filters:
-           branches:
-             ignore: main
+          filters:
+            branches:
+              ignore: main
       - run-e2e-sh-prod:
-         filters:
-           branches:
-             only: main
+          filters:
+            branches:
+              only: main
       - deploy_dev:
           requires:
             - run-e2e-ad-dev
