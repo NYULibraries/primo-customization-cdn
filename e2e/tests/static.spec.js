@@ -38,7 +38,7 @@ if (viewsForStaticTest.includes(view)) {
             // higher timeout value.  These tests have timed out in containers in
             // both `test.beforeEach()` and the test itself, so we need to increase
             // the timeout for everything in `test.describe()`.
-            if (process.env.IN_CONTAINER) {
+            if (process.env.CONTAINER_MODE) {
                 test.slow();
             }
 
