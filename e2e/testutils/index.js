@@ -7,6 +7,8 @@ const viewQueryMap = {
     '01NYU_INST-NYU': `query=any,contains,gasldfjlak%3D%3D%3Dasgjlk%26%26%26%26!!!!&tab=Unified_Slot&search_scope=DN_and_CI&vid=${vid}&offset=0`,
     '01NYU_INST-NYU_DEV': `query=any,contains,gasldfjlak%3D%3D%3Dasgjlk%26%26%26%26!!!!&tab=Unified_Slot&search_scope=DN_and_CI&vid=${vid}&offset=0`,
     '01NYU_INST-TESTWS01': `query=any,contains,gasldfjlak%3D%3D%3Dasgjlk%26%26%26%26!!!!&tab=Unified_Slot&search_scope=DN_and_CI&vid=${vid}&offset=0`,
+    '01NYU_NYSID-NYSID': `query=any,contains,gasldfjlak%253D%253D%253Dasgjlk%2526%2526%2526%2526!!!!&tab=LibraryCatalog&search_scope=MyInstitution&vid=${vid}&offset=0`,
+    '01NYU_NYSID-NYSID_DEV': `query=any,contains,gasldfjlak%253D%253D%253Dasgjlk%2526%2526%2526%2526!!!!&tab=LibraryCatalog&search_scope=MyInstitution&vid=${vid}&offset=0`,
     '01NYU_US-SH': `query=any,contains,gasldfjlak%3D%3D%3Dasgjlk%26%26%26%26!!!!&tab=default_slot&search_scope=CI_NYUSH_NYU&vid=${vid}&offset=0`,
     '01NYU_US-SH_DEV': `query=any,contains,gasldfjlak%3D%3D%3Dasgjlk%26%26%26%26!!!!&tab=default_slot&search_scope=CI_NYUSH_NYU&vid=${vid}&offset=0`,
 };
