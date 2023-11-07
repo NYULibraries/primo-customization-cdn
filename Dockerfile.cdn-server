@@ -1,0 +1,3 @@
+FROM quay.io/nyulibraries/primo-customization-cdn-server:main
+
+COPY primo-customization ./cdn/primo-customization
