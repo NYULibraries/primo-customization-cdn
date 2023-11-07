@@ -40,6 +40,7 @@ jobs:
           command: |
             mkdir -p test-results
             docker cp "$(docker ps -q -a -f name=app-e2e-run)":/e2e/test-results/. test-results || echo "No test results to copy."
+          when: always
       - store_artifacts:
           path: test-results
       - store_test_results:
