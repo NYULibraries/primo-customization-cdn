@@ -43,8 +43,6 @@ jobs:
           when: always
       - store_artifacts:
           path: test-results
-      - store_test_results:
-          path: test-results
 
   run-e2e-ad-dev:
     <<: [*docker-defaults, *run-e2e]
