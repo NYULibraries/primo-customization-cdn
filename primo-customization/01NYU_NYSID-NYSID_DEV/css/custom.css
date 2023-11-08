@@ -329,11 +329,11 @@ prm-no-search-result>md-card {
     display: none;
 }
 
-
 .logo-image {
     display: block;
     margin: auto;
-    width: 207px;
+    width: 120px;
+    height: 120px;
 }
 
 #banner>.md-primoExplore-theme {
