@@ -13,7 +13,9 @@ x-environment: &x-environment
 
 services:
   cdn-server:
-    image: quay.io/nyulibraries/primo-customization-cdn-server:main
+    image: primo-customization-cdn-cdn-server
+    build:
+      dockerfile: Dockerfile.cdn-server
     ports:
       - "3000:3000"
     networks:
