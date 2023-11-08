@@ -54,6 +54,16 @@ jobs:
     environment:
       VIEW: 01NYU_AD-AD
 
+  run-e2e-cu-dev:
+    <<: [*docker-defaults, *run-e2e]
+    environment:
+      VIEW: 01NYU_CU-CU_DEV
+
+  run-e2e-cu-prod:
+    <<: [*docker-defaults, *run-e2e]
+    environment:
+      VIEW: 01NYU_CU-CU
+
   run-e2e-nyhs-dev:
     <<: [*docker-defaults, *run-e2e]
     environment:
@@ -128,6 +138,15 @@ workflows:
           filters:
             branches:
               only: main
+      #- run-e2e-cu-dev:
+      #    filters:
+      #      branches:
+      #        ignore: main
+      #- run-e2e-cu-prod:
+      #      filters:
+      #        branches:
+      #          only:
+      #            main
       #- run-e2e-nyhs-dev:
       #    filters:
       #      branches:
@@ -168,6 +187,7 @@ workflows:
       - deploy_dev:
           requires:
             - run-e2e-ad-dev
+            #- run-e2e-cu-dev
             #- run-e2e-nyhs-dev
             - run-e2e-nysid-dev
             - run-e2e-nyu-dev
@@ -180,6 +200,7 @@ workflows:
       - deploy_prod:
           requires:
             - run-e2e-ad-prod
+            #- run-e2e-cu-prod
             #- run-e2e-nyhs-prod
             - run-e2e-nysid-prod
             - run-e2e-nyu-prod
