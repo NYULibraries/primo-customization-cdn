@@ -35,17 +35,34 @@ jobs:
           name: Run tests
           command: |
             docker-compose run e2e
+      - run:
+          name: Copy test results
+          command: |
+            mkdir -p test-results
+            docker cp "$(docker ps -q -a -f name=app-e2e-run)":/e2e/test-results/. test-results || echo "No test results to copy."
+          when: always
+      - store_artifacts:
+          path: test-results
 
   run-e2e-ad-dev:
     <<: [*docker-defaults, *run-e2e]
     environment:
       VIEW: 01NYU_AD-AD_DEV
-    <<: *run-e2e
 
   run-e2e-ad-prod:
     <<: [*docker-defaults, *run-e2e]
     environment:
       VIEW: 01NYU_AD-AD
+
+  run-e2e-cu-dev:
+    <<: [*docker-defaults, *run-e2e]
+    environment:
+      VIEW: 01NYU_CU-CU_DEV
+
+  run-e2e-cu-prod:
+    <<: [*docker-defaults, *run-e2e]
+    environment:
+      VIEW: 01NYU_CU-CU
 
   run-e2e-nyhs-dev:
     <<: [*docker-defaults, *run-e2e]
@@ -56,6 +73,16 @@ jobs:
     <<: [*docker-defaults, *run-e2e]
     environment:
       VIEW: 01NYU_NYHS-NYHS
+
+  run-e2e-nysid-dev:
+    <<: [*docker-defaults, *run-e2e]
+    environment:
+      VIEW: 01NYU_NYSID-NYSID_DEV
+
+  run-e2e-nysid-prod:
+    <<: [*docker-defaults, *run-e2e]
+    environment:
+      VIEW: 01NYU_NYSID-NYSID
 
   run-e2e-nyu-dev:
     <<: [*docker-defaults, *run-e2e]
@@ -103,11 +130,19 @@ workflows:
   version: 2.1
   build-and-deploy:
     jobs:
-      #- run-e2e-ad-dev:
+      - run-e2e-ad-dev:
+          filters:
+            branches:
+              ignore: main
+      - run-e2e-ad-prod:
+          filters:
+            branches:
+              only: main
+      #- run-e2e-cu-dev:
       #    filters:
       #      branches:
       #        ignore: main
-      #- run-e2e-ad-prod:
+      #- run-e2e-cu-prod:
       #      filters:
       #        branches:
       #          only:
@@ -121,6 +156,14 @@ workflows:
       #      branches:
       #        only:
       #          main
+      - run-e2e-nysid-dev:
+         filters:
+           branches:
+             ignore: main
+      - run-e2e-nysid-prod:
+         filters:
+           branches:
+             only: main
       - run-e2e-nyu-dev:
           filters:
             branches:
@@ -133,31 +176,35 @@ workflows:
           filters:
             branches:
               ignore: main
-      #- run-e2e-sh-dev:
-      #    filters:
-      #      branches:
-      #        ignore: main
-      #- run-e2e-sh-prod:
-      #    filters:
-      #      branches:
-      #        only: main
-      - deploy_dev:
-          requires:
-            #- run-e2e-ad-dev
-            #- run-e2e-nyhs-dev
-            - run-e2e-nyu-dev
-            - run-e2e-nyu-test
-            #- run-e2e-sh-dev
-          context: web-cdn-aws-nyulitsdev
+      - run-e2e-sh-dev:
           filters:
             branches:
               ignore: main
+      - run-e2e-sh-prod:
+          filters:
+            branches:
+              only: main
+      - deploy_dev:
+          requires:
+            - run-e2e-ad-dev
+            #- run-e2e-cu-dev
+            #- run-e2e-nyhs-dev
+            - run-e2e-nysid-dev
+            - run-e2e-nyu-dev
+            - run-e2e-nyu-test
+            - run-e2e-sh-dev
+          context: web-cdn-aws-nyulitsdev
+          filters:
+            branches:
+              only: develop
       - deploy_prod:
           requires:
-            #- run-e2e-ad-prod
+            - run-e2e-ad-prod
+            #- run-e2e-cu-prod
             #- run-e2e-nyhs-prod
+            - run-e2e-nysid-prod
             - run-e2e-nyu-prod
-            #- run-e2e-sh-prod
+            - run-e2e-sh-prod
           context: web-cdn-aws-nyulits
           filters:
             branches:
