@@ -88,6 +88,7 @@ search-bar-sub-menu div.search-bar-sub-menu {
     background-color: transparent;
 }
 
+
 search-bar-sub-menu ul {
     margin: 0;
     padding: 0;
@@ -105,6 +106,17 @@ search-bar-sub-menu .md-button.md-small {
     min-width: 42px;
     font-weight: bold;
     text-decoration: none;
+}
+
+search-bar-sub-menu .md-button.md-small:hover {
+    color: #1d1616;
+    background-color: rgba(51, 51, 51, 0.1);
+}
+
+button[aria-label="Provide Feedback"].md-button.md-small:focus {
+    box-shadow: inset 0 0 0 2px #3dbbdb !important;
+    color: #1d1616;
+    background-color: rgba(51, 51, 51, 0.1);
 }
 
 .zero-margin,
