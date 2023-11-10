@@ -29,6 +29,12 @@ prm-logo .product-logo .organization-logo:hover {
     box-shadow: none !important;
 }
 
+.logo-image {
+    width: 218px;
+    height: 60px;
+    /* Add other styles as needed */
+}
+
 /* ***************************** */
 /* Styles for user dropdown menu */
 /* ***************************** */
