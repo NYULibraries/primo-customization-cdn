@@ -55,9 +55,11 @@ button.button-confirm prm-icon[icon-definition="magnifying-glass"]:hover {
 
 
 /* Hide the Yellow "Sign in" message */
-prm-alert-bar.flex {
-    display: none;
+prm-alert-bar {
+    display: none !important;
 }
+
+
 
 /* Unhide facet checkboxes by default */
 .multiselect-facet-group.multiselect-inactive .md-chip md-checkbox {
