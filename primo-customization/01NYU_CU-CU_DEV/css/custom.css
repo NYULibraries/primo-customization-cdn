@@ -37,11 +37,16 @@ a:hover {
     width: 218px;
 }
 
-prm-logo .product-logo {
+.prm-logo .product-logo {
     cursor: pointer;
     height: 100%;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
     padding-left: 0.85em;
+    /* Apply padding only to the left */
 }
+
 
 /* ***************************** */
 /* Styles for user dropdown menu */
