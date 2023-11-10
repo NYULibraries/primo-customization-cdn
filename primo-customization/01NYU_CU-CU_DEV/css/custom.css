@@ -40,12 +40,10 @@ a:hover {
 .prm-logo .product-logo {
     cursor: pointer;
     height: 100%;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0.85em;
-    /* Apply padding only to the left */
+    padding: 0 0 0 0.85em;
+    /* top right bottom left */
 }
+
 
 
 /* ***************************** */
