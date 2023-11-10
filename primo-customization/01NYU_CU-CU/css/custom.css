@@ -37,13 +37,9 @@ a:hover {
     width: 218px;
 }
 
-.prm-logo .product-logo {
-    cursor: pointer;
-    height: 100%;
-    padding: 0 0 0 0.85em;
-    /* top right bottom left */
+.product-logo {
+    padding: 0 0 0 0.85em !important;
 }
-
 
 
 /* ***************************** */
