@@ -146,15 +146,14 @@ workflows:
           filters:
             branches:
               only: main
-      #- run-e2e-nyhs-dev:
-      #    filters:
-      #      branches:
-      #        ignore: main
-      #- run-e2e-nyhs-prod:
-      #    filters:
-      #      branches:
-      #        only:
-      #          main
+      - run-e2e-nyhs-dev:
+          filters:
+            branches:
+              ignore: main
+      - run-e2e-nyhs-prod:
+          filters:
+            branches:
+              only: main
       - run-e2e-nysid-dev:
           filters:
             branches:
@@ -187,7 +186,7 @@ workflows:
           requires:
             - run-e2e-ad-dev
             - run-e2e-cu-dev
-            #- run-e2e-nyhs-dev
+            - run-e2e-nyhs-dev
             - run-e2e-nysid-dev
             - run-e2e-nyu-dev
             - run-e2e-nyu-test
@@ -200,7 +199,7 @@ workflows:
           requires:
             - run-e2e-ad-prod
             - run-e2e-cu-prod
-            #- run-e2e-nyhs-prod
+            - run-e2e-nyhs-prod
             - run-e2e-nysid-prod
             - run-e2e-nyu-prod
             - run-e2e-sh-prod

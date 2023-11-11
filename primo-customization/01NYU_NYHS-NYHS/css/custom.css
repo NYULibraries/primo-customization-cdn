@@ -120,3 +120,8 @@ span.search-bar-sub-menu-item.hide-xs {
     list-style-type: none;
     padding-left: 0;
 }
+
+/* https://nyu-lib.monday.com/boards/765008773/pulses/4845899493 */
+prm-no-search-result>md-card {
+    display: none;
+}
