@@ -498,3 +498,23 @@ prm-spinner.prm-hue4.overlay-cover.light-on-dark:after,
 prm-search-bar.prm-hue4 {
   background-color: #57068c;
 }
+
+/* BEGIN "Add styled feedback link to Item Details pages"
+   monday.com: https://nyu-lib.monday.com/boards/765008773/pulses/5434069666 */
+
+/* Hide feedback button in search results */
+#searchResultsContainer .prm-save-to-favorites-button-after-feedback .md-button.md-small {
+  display: none;
+}
+
+.prm-save-to-favorites-button-after-feedback .md-button.md-small {
+  background-color: #F3F3F3;
+  color: #57068c;
+}
+
+.prm-save-to-favorites-button-after-feedback:hover .md-button.md-small {
+  background-color: #57068c;
+  color: white;
+}
+
+/* END "Add styled feedback link to Item Details pages" */
