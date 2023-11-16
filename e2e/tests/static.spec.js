@@ -45,6 +45,9 @@ if (viewsForStaticTest.includes(view)) {
             test.beforeEach(async ({ page }) => {
                 let fullQueryString = `?vid=${vid}`;
                 if (testCase.queryString) {
+                    if (testCase.queryString.includes("vid=")) {
+                        throw new Error("testCase.queryString includes vid: remove it!")
+                    }
                     fullQueryString += `&${testCase.queryString}`;
                 }
                 await page.goto(fullQueryString);
@@ -114,6 +117,7 @@ if (viewsForStaticTest.includes(view)) {
                         message += `
 
 ======= BEGIN DIFF OUTPUT ========
+===== < golden  |  > actual ======
 ${diffOutput}
 ======== END DIFF OUTPUT =========
 
