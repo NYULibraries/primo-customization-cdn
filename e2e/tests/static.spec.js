@@ -24,8 +24,8 @@ if (viewsForStaticTest.includes(view)) {
         {
             key: 'display-finding-aid',
             name: 'Display finding aid',
-            queryString: 'query=any,contains,Irish%20Repertory%20Theater&tab=Unified_Slot&search_scope=DN_and_CI&vid=01NYU_INST:NYU&offset=0',
-            elementToTest: 'a.md-primoExplore-theme',
+            queryString: `query=any,contains,Irish%20Repertory%20Theater&tab=Unified_Slot&search_scope=DN_and_CI&offset=0`,
+            elementToTest: 'a.md-primoExplore-theme[href="https://findingaids.library.nyu.edu/tamwag/aia_080/"]',
             waitForSelector: 'prm-search-result-list',
         }
     ];
