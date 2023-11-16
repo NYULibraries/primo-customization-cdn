@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.38.1-focal AS builder
+FROM mcr.microsoft.com/playwright:v1.39.0-focal AS builder
 
 WORKDIR /e2e
 
@@ -14,7 +14,7 @@ RUN yarn install --frozen-lockfile \
 # Copy over remaining e2e files
 COPY e2e/ .
 
-FROM node:18-slim
+FROM node:lts-bullseye-slim
 
 RUN apt-get update -y && apt-get install -y curl
 

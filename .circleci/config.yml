@@ -138,32 +138,30 @@ workflows:
           filters:
             branches:
               only: main
-      #- run-e2e-cu-dev:
-      #    filters:
-      #      branches:
-      #        ignore: main
-      #- run-e2e-cu-prod:
-      #      filters:
-      #        branches:
-      #          only:
-      #            main
-      #- run-e2e-nyhs-dev:
-      #    filters:
-      #      branches:
-      #        ignore: main
-      #- run-e2e-nyhs-prod:
-      #    filters:
-      #      branches:
-      #        only:
-      #          main
+      - run-e2e-cu-dev:
+          filters:
+            branches:
+              ignore: main
+      - run-e2e-cu-prod:
+          filters:
+            branches:
+              only: main
+      - run-e2e-nyhs-dev:
+          filters:
+            branches:
+              ignore: main
+      - run-e2e-nyhs-prod:
+          filters:
+            branches:
+              only: main
       - run-e2e-nysid-dev:
-         filters:
-           branches:
-             ignore: main
+          filters:
+            branches:
+              ignore: main
       - run-e2e-nysid-prod:
-         filters:
-           branches:
-             only: main
+          filters:
+            branches:
+              only: main
       - run-e2e-nyu-dev:
           filters:
             branches:
@@ -187,8 +185,8 @@ workflows:
       - deploy_dev:
           requires:
             - run-e2e-ad-dev
-            #- run-e2e-cu-dev
-            #- run-e2e-nyhs-dev
+            - run-e2e-cu-dev
+            - run-e2e-nyhs-dev
             - run-e2e-nysid-dev
             - run-e2e-nyu-dev
             - run-e2e-nyu-test
@@ -196,12 +194,12 @@ workflows:
           context: web-cdn-aws-nyulitsdev
           filters:
             branches:
-              only: develop
+              ignore: main
       - deploy_prod:
           requires:
             - run-e2e-ad-prod
-            #- run-e2e-cu-prod
-            #- run-e2e-nyhs-prod
+            - run-e2e-cu-prod
+            - run-e2e-nyhs-prod
             - run-e2e-nysid-prod
             - run-e2e-nyu-prod
             - run-e2e-sh-prod
