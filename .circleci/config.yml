@@ -143,42 +143,27 @@ workflows:
           filters:
             branches:
               ignore: main
-      - run-e2e-ad-prod:
-          filters:
-            branches:
-              only: main
+      - run-e2e-ad-prod
       - run-e2e-cu-dev:
           filters:
             branches:
               ignore: main
-      - run-e2e-cu-prod:
-          filters:
-            branches:
-              only: main
+      - run-e2e-cu-prod
       - run-e2e-nyhs-dev:
           filters:
             branches:
               ignore: main
-      - run-e2e-nyhs-prod:
-          filters:
-            branches:
-              only: main
+      - run-e2e-nyhs-prod
       - run-e2e-nysid-dev:
           filters:
             branches:
               ignore: main
-      - run-e2e-nysid-prod:
-          filters:
-            branches:
-              only: main
+      - run-e2e-nysid-prod
       - run-e2e-nyu-dev:
           filters:
             branches:
               ignore: main
-      - run-e2e-nyu-prod:
-          filters:
-            branches:
-              only: main
+      - run-e2e-nyu-prod
       - run-e2e-nyu-test:
           filters:
             branches:
@@ -187,10 +172,7 @@ workflows:
           filters:
             branches:
               ignore: main
-      - run-e2e-sh-prod:
-          filters:
-            branches:
-              only: main
+      - run-e2e-sh-prod
       - deploy_dev:
           requires:
             - run-e2e-ad-dev
@@ -203,7 +185,7 @@ workflows:
           context: web-cdn-aws-nyulitsdev
           filters:
             branches:
-              ignore: main
+              only: develop
       - deploy_prod:
           requires:
             - run-e2e-ad-prod
