@@ -81,21 +81,31 @@ prm-resource-type-filter-bar md-input-container.prm-hue2.is-active {
 }
 
 
-/* Enlarge top bar to resize the NYHS logo so it's readable */
+/* Enlarge top bar to resize the NYUAD logo so it's readable */
 prm-topbar {
     height: 150px;
 }
 
 
 /* Remove the underline on hover */
-prm-logo .product-logo .organization-logo:hover {
+prm-logo .product-logo .organization-logo:hover,
+a:hover {
     box-shadow: none !important;
 }
 
+
 /* Align the logo horizontally and vertically */
-prm-logo .product-logo .organization-logo {
+prm-logo .product-logo {
     display: flex;
 }
+
+.product-logo {
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+
 
 
 /* Hide 'block+messages', 'personal details' */

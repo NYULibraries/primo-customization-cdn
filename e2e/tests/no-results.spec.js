@@ -32,7 +32,7 @@ for (let i = 0; i < testCases.length; i++) {
 
         test.beforeEach(async ({ page }) => {
             let fullQueryString = `?vid=${vid}`;
-            const queryString = getQueryStringForView(view, vid);
+            const queryString = getQueryStringForView(view);
             if (queryString) {
                 fullQueryString += `&${queryString}`;
             }
