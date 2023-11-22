@@ -29,4 +29,8 @@ rm -rf "${ACTUAL_DIR:?}"/*
 rm -rf "${DIFFS_DIR:?}"/*
 
 # Run tests
-yarn playwright test
+# yarn playwright test
+DEBUG=pw:api,pw:browser yarn playwright test
+# DEBUG=pw:api yarn playwright test
+# DEBUG=pw:network yarn playwright test
+# DEBUG=pw:protocol yarn playwright test
