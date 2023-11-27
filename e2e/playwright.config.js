@@ -55,6 +55,8 @@ const config = {
   reporter: 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    // Toggles bypassing page's Content-Security-Policy
+    bypassCSP: true,
 
     /* Browser to use. See https://playwright.dev/docs/api/class-browsertype. */
     /* We are already using only chromium in our projects.
