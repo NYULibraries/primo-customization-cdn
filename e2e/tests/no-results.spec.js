@@ -31,11 +31,6 @@ for (let i = 0; i < testCases.length; i++) {
         }
 
         test.beforeEach(async ({ page }) => {
-            await page.route('**', route => {
-                console.log(`ROUTE: ${route.request().url()}, ${JSON.stringify(route.request().headers())}`);
-                return route.continue();
-            })
-
             let fullQueryString = `?vid=${vid}`;
             const queryString = getQueryStringForView(view);
             if (queryString) {
