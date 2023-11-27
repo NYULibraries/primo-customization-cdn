@@ -56,7 +56,7 @@ const config = {
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     // Toggle bypassing page's CSP as ExLibris updated their "Content-Security-Policy" to include 'upgrade-insecure-requests'
-    bypassCSP: true,
+    bypassCSP: process.env.CONTAINER_MODE ? true : false,
     /* Browser to use. See https://playwright.dev/docs/api/class-browsertype. */
     /* We are already using only chromium in our projects.
 All tests are run in a headless mode by default */
