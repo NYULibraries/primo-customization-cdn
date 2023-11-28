@@ -2,7 +2,7 @@
 //     https://thirdiron.atlassian.net/wiki/spaces/BrowZineAPIDocs/pages/79200260/Ex+Libris+Primo+Integration
 
 function configureAndInjectLibKey() {
-    // Begin BrowZine - Primo Integration...
+// Begin BrowZine - Primo Integration...
     window.browzine = {
         api    : 'https://public-api.thirdiron.com/public/v1/libraries/177',
         apiKey : '4997c984-6148-41db-a3d4-f1dc44c5602a',
