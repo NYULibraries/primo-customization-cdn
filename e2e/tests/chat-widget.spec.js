@@ -1,5 +1,7 @@
 const { test, expect } = require( '@playwright/test' );
 
+import { setPathAndQueryVid } from '../testutils';
+
 const view = process.env.VIEW;
 
 // We don't have view-based configuration in this repo yet.
@@ -12,12 +14,12 @@ if ( viewsForTest.includes( view ) ) {
 
     const testCases = [
         {
-            name        : 'Home page',
-            queryString : '',
+            name         : 'Home page',
+            pathAndQuery : '/discovery/search?vid=[VID]',
         },
         {
-            name        : '[search] Art',
-            queryString : 'query=any,contains,art&tab=LibraryCatalog&search_scope=MyInstitution&offset=0',
+            name         : '[search] Art',
+            pathAndQuery : '/discovery/search?vid=[VID]&query=any,contains,art&tab=LibraryCatalog&search_scope=MyInstitution&offset=0',
         },
     ];
 
@@ -34,11 +36,7 @@ if ( viewsForTest.includes( view ) ) {
             }
 
             test.beforeEach( async ( { page } ) => {
-                let fullQueryString = `?vid=${vid}`;
-                if ( testCase.queryString ) {
-                    fullQueryString += `&${testCase.queryString}`;
-                }
-                await page.goto( fullQueryString );
+                await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
             } );
 
             test( 'chat widget found on page', async ( { page } ) => {

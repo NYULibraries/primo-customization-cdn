@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 
 import { execSync } from 'child_process';
-import { updateGoldenFiles, } from '../testutils/index.js';
+import { setPathAndQueryVid, updateGoldenFiles, } from '../testutils/index.js';
 
 const { test, expect } = require('@playwright/test');
 const beautifyHtml = require('js-beautify').html;
@@ -17,14 +17,14 @@ if (viewsForStaticTest.includes(view)) {
         {
             key: 'search-bar-submenu',
             name: 'Search bar submenu',
-            queryString: '',
+            pathAndQuery: '/discovery/search?vid=[VID]',
             elementToTest: 'search-bar-sub-menu',
             waitForSelector: 'prm-search-bar',
         },
         {
             key: 'display-finding-aid',
             name: 'Display finding aid',
-            queryString: `query=any,contains,Irish%20Repertory%20Theater&tab=Unified_Slot&search_scope=DN_and_CI&offset=0`,
+            pathAndQuery: '/discovery/search?vid=[VID]&query=any,contains,Irish%20Repertory%20Theater&tab=Unified_Slot&search_scope=DN_and_CI&offset=0',
             elementToTest: 'a.md-primoExplore-theme[href="https://findingaids.library.nyu.edu/tamwag/aia_080/"]',
             waitForSelector: 'prm-search-result-list',
         }
@@ -43,14 +43,7 @@ if (viewsForStaticTest.includes(view)) {
             }
 
             test.beforeEach(async ({ page }) => {
-                let fullQueryString = `?vid=${vid}`;
-                if (testCase.queryString) {
-                    if (testCase.queryString.includes("vid=")) {
-                        throw new Error("testCase.queryString includes vid: remove it!")
-                    }
-                    fullQueryString += `&${testCase.queryString}`;
-                }
-                await page.goto(fullQueryString);
+                await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
 
                 if (process.env.ENABLE_CONSOLE_LOGGING === 'true') {
                     page.on('console', msg => {
