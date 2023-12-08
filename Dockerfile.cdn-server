@@ -1,3 +1,12 @@
 FROM quay.io/nyulibraries/primo-customization-cdn-server:main
 
+# This was needed to clear this error:
+# "failed to solve: cannot replace to directory /var/lib/docker/overlay2/xxvz0jx9romwocpj8bui4x5ew/merged/app/cdn/primo-customization/01NYU_AD-AD_DEV with file"
+# ...in this CircleCI job:
+# https://app.circleci.com/pipelines/github/NYULibraries/primo-customization-cdn/336/workflows/06a963da-aa4e-4e88-a7b7-b21f0b199414/jobs/1474/parallel-runs/0/steps/0-103
+#
+# We might not ever need it again moving forward, but keep it here just in case
+# we make more changes involving symlinks.
+RUN rm -fr ./cdn/primo-customization
+
 COPY primo-customization ./cdn/primo-customization
