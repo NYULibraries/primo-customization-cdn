@@ -34,7 +34,7 @@ services:
     environment:
       <<: *x-environment
     networks:
-      primo-customization-cdn-net: 
+      primo-customization-cdn-net:
         aliases:
           - devenv
 
