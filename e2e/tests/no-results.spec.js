@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 
-import { getQueryStringForView, updateGoldenFiles, } from '../testutils/index.js';
+import { setPathAndQueryVid, updateGoldenFiles, } from '../testutils/index.js';
 
 import { execSync } from 'child_process';
 
@@ -14,6 +14,7 @@ const testCases = [
     {
         key: 'no-search-results',
         name: 'No-search-results page',
+        pathAndQuery: '/discovery/search?vid=[VID]&query=any,contains,gasldfjlak%3D%3D%3Dasgjlk%26%26%26%26!!!!&tab=Unified_Slot&search_scope=DN_and_CI&offset=0',
         elementToTest: 'prm-no-search-result',
         waitForSelector: 'prm-no-search-result-after',
     },
@@ -31,12 +32,7 @@ for (let i = 0; i < testCases.length; i++) {
         }
 
         test.beforeEach(async ({ page }) => {
-            let fullQueryString = `?vid=${vid}`;
-            const queryString = getQueryStringForView(view);
-            if (queryString) {
-                fullQueryString += `&${queryString}`;
-            }
-            await page.goto(fullQueryString);
+            await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
 
             if (process.env.ENABLE_CONSOLE_LOGGING === 'true') {
                 page.on('console', msg => {
