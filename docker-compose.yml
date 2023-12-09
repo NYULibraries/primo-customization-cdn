@@ -34,7 +34,7 @@ services:
     environment:
       <<: *x-environment
     networks:
-      primo-customization-cdn-net: 
+      primo-customization-cdn-net:
         aliases:
           - devenv
 
@@ -44,7 +44,7 @@ services:
       - primo-explore-devenv
     environment:
       <<: *x-environment
-      PLAYWRIGHT_BASE_URL: http://primo-explore-devenv:8003/discovery/search
+      PLAYWRIGHT_BASE_URL: http://primo-explore-devenv:8003
     # https://playwright.dev/docs/ci#docker
     # CI configurations > Docker
     # "Using --ipc=host is also recommended when using Chromium. Without it Chromium can run out of memory and crash."
@@ -57,7 +57,7 @@ services:
       - primo-explore-devenv
     environment:
       <<: *x-environment
-      PLAYWRIGHT_BASE_URL: http://primo-explore-devenv:8003/discovery/search
+      PLAYWRIGHT_BASE_URL: http://primo-explore-devenv:8003
       UPDATE_GOLDEN_FILES: true
     ipc: host
     networks:
