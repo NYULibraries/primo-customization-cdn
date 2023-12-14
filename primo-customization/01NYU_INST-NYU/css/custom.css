@@ -106,11 +106,14 @@ prm-resource-type-filter-bar md-input-container.prm-hue2.is-active {
 
 
 /* Hide 'block+messages', 'personal details' */
-md-tab-item#tab-item-14.md-tab,
-md-tab-item#tab-item-15.md-tab,
-md-tab-item#tab-item-46.md-tab,
-md-tab-item#tab-item-47.md-tab {
-  display: none !important
+md-tab-item:nth-last-of-type(1),
+md-tab-item:nth-last-of-type(2) {
+  display: none !important;
+}
+
+prm-messages-and-blocks,
+prm-personal-info {
+  display: none !important;
 }
 
 prm-messages-and-blocks-overview {
