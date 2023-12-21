@@ -1,7 +1,8 @@
 import * as fs from 'node:fs';
 
+import { modifyCSPHeader, setPathAndQueryVid, updateGoldenFiles, } from '../testutils/index.js';
+
 import { execSync } from 'child_process';
-import { setPathAndQueryVid, updateGoldenFiles, } from '../testutils/index.js';
 
 const { test, expect } = require('@playwright/test');
 const beautifyHtml = require('js-beautify').html;
@@ -43,6 +44,9 @@ if (viewsForStaticTest.includes(view)) {
             }
 
             test.beforeEach(async ({ page }) => {
+                if ( process.env.CONTAINER_MODE ) {
+                    await modifyCSPHeader(page);
+                }
                 await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
 
                 if (process.env.ENABLE_CONSOLE_LOGGING === 'true') {
