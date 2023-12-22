@@ -28,14 +28,23 @@ describe('modifyCSPHeader', () => {
     await modifyCSPHeader(page);
 
     // Assertions
+    expect(page).toBeDefined();
+    expect(page).not.toBeNull();
+    expect(page).toBeTruthy();
+    expect(headersWithDirective['content-security-policy']).toBeDefined();
+    expect(headersWithDirective['content-security-policy']).toContain('upgrade-insecure-requests');
+    expect(headersWithDirective).toBeDefined();
     expect(page.route).toHaveBeenCalled();
+    expect(page.route).toHaveBeenCalledTimes(1);
     expect(route.fetch).toHaveBeenCalled();
+    expect(route.fetch).toHaveBeenCalledTimes(1);
     expect(route.fulfill).toHaveBeenCalledWith({
       response: expect.anything(),
       headers: {
         'content-security-policy': 'default-src self'
       }
     });
+    expect(route.fulfill).toHaveBeenCalledTimes(1);
   });
 
   it('should not alter CSP header if upgrade-insecure-requests is not present', async () => {
@@ -60,14 +69,23 @@ describe('modifyCSPHeader', () => {
     await modifyCSPHeader(page);
 
     // Assertions
+    expect(page).toBeDefined();
+    expect(page).not.toBeNull();
+    expect(page).toBeTruthy();
+    expect(headersWithoutDirective['content-security-policy']).toBeDefined();
+    expect(headersWithoutDirective['content-security-policy']).not.toContain('upgrade-insecure-requests');
+    expect(headersWithoutDirective).toBeDefined();
     expect(page.route).toHaveBeenCalled();
+    expect(page.route).toHaveBeenCalledTimes(1);
     expect(route.fetch).toHaveBeenCalled();
+    expect(route.fetch).toHaveBeenCalledTimes(1);
     expect(route.fulfill).toHaveBeenCalledWith({
       response: expect.anything(),
       headers: {
         'content-security-policy': 'default-src self'
       }
     });
+    expect(route.fulfill).toHaveBeenCalledTimes(1);
   });
 
   it('should remove upgrade-insecure-requests when it is the first directive', async () => {
@@ -92,14 +110,23 @@ describe('modifyCSPHeader', () => {
     await modifyCSPHeader(page);
 
     // Assertions
+    expect(page).toBeDefined();
+    expect(page).not.toBeNull();
+    expect(page).toBeTruthy();
+    expect(headersWithDirectiveFirst['content-security-policy']).toBeDefined();
+    expect(headersWithDirectiveFirst['content-security-policy']).toContain('upgrade-insecure-requests');
+    expect(headersWithDirectiveFirst).toBeDefined();
     expect(page.route).toHaveBeenCalled();
+    expect(page.route).toHaveBeenCalledTimes(1);
     expect(route.fetch).toHaveBeenCalled();
+    expect(route.fetch).toHaveBeenCalledTimes(1);
     expect(route.fulfill).toHaveBeenCalledWith({
       response: expect.anything(),
       headers: {
         'content-security-policy': 'default-src self'
       }
     });
+    expect(route.fulfill).toHaveBeenCalledTimes(1);
   });
 
   it('should remove upgrade-insecure-requests from ExLibris CSP header', async () => {
@@ -124,13 +151,25 @@ describe('modifyCSPHeader', () => {
     await modifyCSPHeader(page);
 
     // Assertions
+    expect(page).toBeDefined();
+    expect(page).not.toBeNull();
+    expect(page).toBeTruthy();
+    expect(headersWithDirective['content-security-policy']).toBeDefined();
+    expect(headersWithDirective['content-security-policy']).toContain('upgrade-insecure-requests');
+    expect(headersWithDirective).toBeDefined();
     expect(page.route).toHaveBeenCalled();
+    expect(page.route).toHaveBeenCalledTimes(1);
     expect(route.fetch).toHaveBeenCalled();
+    expect(route.fetch).toHaveBeenCalledTimes(1);
     expect(route.fulfill).toHaveBeenCalledWith({
       response: expect.anything(),
       headers: {
         'content-security-policy': "object-src blob: 'self' *.exlibrisgroup.com *.exlibrisgroup.com.cn www.google-analytics.com stats.g.doubleclick.net www.youtube.com search.library.nyu.edu; worker-src blob: 'self' *.exlibrisgroup.com *.exlibrisgroup.com.cn www.google-analytics.com stats.g.doubleclick.net www.youtube.com search.library.nyu.edu; report-uri /infra/CSPReportEndpoint.jsp; report-to csp-report-endpoint;"
       }
     });
+    expect(route.fulfill).toHaveBeenCalledTimes(1);
   });
 });
+
+test.todo('setPathAndQueryVid');
+test.todo('updateGoldenFiles');
