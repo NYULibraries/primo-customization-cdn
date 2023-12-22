@@ -1,6 +1,11 @@
 const { modifyCSPHeader } = require('../e2e/testutils');
 
 describe('modifyCSPHeader', () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should remove upgrade-insecure-requests from CSP header', async () => {
     // Mock response headers
     const headersWithDirective = {
