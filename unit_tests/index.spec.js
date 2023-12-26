@@ -1,4 +1,4 @@
-const { allowedViews, modifyCSPHeader, setPathAndQueryVid, updateGoldenFiles } = require('../e2e/testutils');
+const { modifyCSPHeader, setPathAndQueryVid, updateGoldenFiles } = require('../e2e/testutils');
 
 describe('modifyCSPHeader', () => {
 
@@ -208,6 +208,23 @@ describe('updateGoldenFiles', () => {
 
 
 describe('setPathAndQueryVid with VIEW constraint', () => {
+
+  const allowedViews = [
+    '01NYU_AD-AD',
+    '01NYU_AD-AD_DEV',
+    '01NYU_CU-CU',
+    '01NYU_CU-CU_DEV',
+    '01NYU_INST-NYU',
+    '01NYU_INST-NYU_DEV',
+    '01NYU_INST-TESTWS01',
+    '01NYU_NYHS-NYHS',
+    '01NYU_NYHS-NYHS_DEV',
+    '01NYU_NYSID-NYSID',
+    '01NYU_NYSID-NYSID_DEV',
+    '01NYU_US-SH',
+    '01NYU_US-SH_DEV',
+  ];
+
   allowedViews.forEach((allowedView) => {
       describe(`when VIEW is ${allowedView}`, () => {
           // Set the VIEW environment variable to the allowed value
@@ -238,6 +255,6 @@ describe('setPathAndQueryVid with VIEW constraint', () => {
       // Test that an error is thrown
       expect(() => {
           setPathAndQueryVid(pathAndQuery, vid);
-      }).toThrowError(`The provided vid value "${vid}" is not allowed.`);
+      }).toThrowError(`The provided vid value '${vid}' is not allowed.`);
   });
 });
