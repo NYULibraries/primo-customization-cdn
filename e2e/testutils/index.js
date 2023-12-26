@@ -30,7 +30,7 @@ function updateGoldenFiles() {
 
 // Based on https://playwright.dev/docs/next/network#modify-responses
 async function modifyCSPHeader(page) {
-    await page.route('/*', async route => {
+    await page.route('/discovery/search?*', async route => {
         const response = await route.fetch();
         const originalHeaders = response.headers();
 
