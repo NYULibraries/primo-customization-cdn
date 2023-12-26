@@ -1,10 +1,31 @@
+// Define the allowed values for VIEW
+const allowedViews = [
+    '01NYU_AD:AD',
+    '01NYU_AD:AD_DEV',
+    '01NYU_CU:CU',
+    '01NYU_CU:CU_DEV',
+    '01NYU_INST:NYU',
+    '01NYU_INST:NYU_DEV',
+    '01NYU_INST:TESTWSO1',
+    '01NYU_NYHS:NYHS',
+    '01NYU_NYHS:NYHS_DEV',
+    '01NYU_NYSID:NYSID',
+    '01NYU_NYSID:NYSID_DEV',
+    '01NYU_US:SH',
+    '01NYU_US:SH_DEV',
+  ];
+
 function setPathAndQueryVid( pathAndQuery, vid ) {
-    return pathAndQuery.replace( 'vid=[VID]', `vid=${ vid }` );
-}
+    if ( !allowedViews.includes( vid ) ) {
+      throw new Error(`The provided vid value "${vid}" is not allowed.`);
+    }
+
+    return pathAndQuery.replace( 'vid=[VID]', `vid=${vid}` );
+  }
+
 
 function updateGoldenFiles() {
-    return process.env.UPDATE_GOLDEN_FILES &&
-        process.env.UPDATE_GOLDEN_FILES.toLowerCase() !== 'false';
+    return process.env.UPDATE_GOLDEN_FILES?.toLowerCase() === 'true';
 }
 
 // Based on https://playwright.dev/docs/next/network#modify-responses
@@ -35,6 +56,7 @@ async function modifyCSPHeader(page) {
 }
 
 module.exports = {
+    allowedViews,
     modifyCSPHeader,
     setPathAndQueryVid,
     updateGoldenFiles
