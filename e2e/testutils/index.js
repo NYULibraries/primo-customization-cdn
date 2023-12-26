@@ -1,12 +1,12 @@
 // Define the allowed values for VIEW
-const allowedViews = [
+const allowedVids = [
     '01NYU_AD:AD',
     '01NYU_AD:AD_DEV',
     '01NYU_CU:CU',
     '01NYU_CU:CU_DEV',
     '01NYU_INST:NYU',
     '01NYU_INST:NYU_DEV',
-    '01NYU_INST:TESTWSO1',
+    '01NYU_INST:TESTWS01',
     '01NYU_NYHS:NYHS',
     '01NYU_NYHS:NYHS_DEV',
     '01NYU_NYSID:NYSID',
@@ -16,8 +16,8 @@ const allowedViews = [
   ];
 
 function setPathAndQueryVid( pathAndQuery, vid ) {
-    if ( !allowedViews.includes( vid ) ) {
-      throw new Error(`The provided vid value "${vid}" is not allowed.`);
+    if ( !allowedVids.includes( vid ) ) {
+      throw new Error(`The provided vid value '${vid}' is not allowed.`);
     }
 
     return pathAndQuery.replace( 'vid=[VID]', `vid=${vid}` );
@@ -56,7 +56,6 @@ async function modifyCSPHeader(page) {
 }
 
 module.exports = {
-    allowedViews,
     modifyCSPHeader,
     setPathAndQueryVid,
     updateGoldenFiles
