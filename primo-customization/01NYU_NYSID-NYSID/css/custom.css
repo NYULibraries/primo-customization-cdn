@@ -89,7 +89,7 @@ prm-resource-type-filter-bar md-input-container.prm-hue2.is-active {
 /* Enlarge top bar to resize the NYSID logo so it's readable */
 prm-topbar {
     height: 150px;
-    border-bottom: 10px solid #ef4135 !important;
+    border-bottom: 10px solid #ce3438;
 }
 
 prm-topbar .top-nav-bar {
@@ -97,7 +97,7 @@ prm-topbar .top-nav-bar {
 }
 
 prm-topbar div.product-logo {
-    background-color: #ef4135;
+    background-color: #ce3438;
 }
 
 prm-topbar .md-button {
