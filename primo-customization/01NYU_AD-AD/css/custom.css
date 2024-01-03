@@ -113,11 +113,14 @@ prm-logo .product-logo {
 
 
 /* Hide 'block+messages', 'personal details' */
-md-tab-item#tab-item-12.md-tab,
-md-tab-item#tab-item-13.md-tab,
-md-tab-item#tab-item-40.md-tab,
-md-tab-item#tab-item-41.md-tab {
-    display: none !important
+md-tab-item:nth-last-of-type(1),
+md-tab-item:nth-last-of-type(2) {
+    display: none !important;
+}
+
+prm-messages-and-blocks,
+prm-personal-info {
+    display: none !important;
 }
 
 prm-messages-and-blocks-overview {
