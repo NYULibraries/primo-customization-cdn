@@ -140,18 +140,3 @@ prm-personal-info {
 prm-messages-and-blocks-overview {
     display: none !important;
 }
-
-/* Hide 'block+messages', 'personal details' */
-md-tab-item:nth-last-of-type(1),
-md-tab-item:nth-last-of-type(2) {
-    display: none !important;
-}
-
-prm-messages-and-blocks,
-prm-personal-info {
-    display: none !important;
-}
-
-prm-messages-and-blocks-overview {
-    display: none !important;
-}
