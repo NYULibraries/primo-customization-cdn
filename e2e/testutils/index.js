@@ -38,9 +38,9 @@ async function modifyCSPHeader(page) {
         let csp = originalHeaders['content-security-policy'];
         if (csp && csp.includes('upgrade-insecure-requests')) {
 
-            let directives = csp.split(';').map(dir => dir.trim());
+            let directives = csp.split(';').map(directive => directive.trim());
 
-            directives = directives.filter(dir => !dir.toLowerCase().includes('upgrade-insecure-requests'));
+            directives = directives.filter(directive => !directive.toLowerCase().includes('upgrade-insecure-requests'));
 
             csp = directives.join('; ').trim();
         }
