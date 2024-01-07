@@ -19,10 +19,8 @@ COPY unit_tests/ /unit_tests/
 
 # Install unit test dependencies
 WORKDIR /unit_tests
-RUN if [ -f package.json ]; then \
-    yarn install --frozen-lockfile && \
-    yarn cache clean; \
-    fi
+RUN yarn install --frozen-lockfile \
+    && yarn cache clean;
 
 # Return to the e2e directory
 WORKDIR /e2e
