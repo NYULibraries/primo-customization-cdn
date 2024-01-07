@@ -6,11 +6,6 @@ cd /unit_tests
 yarn test
 cd .. && cd e2e
 
-# Check if unit tests passed
-if [ $? -ne 0 ]; then
-    echo "Unit tests failed, stopping build."
-    exit 1
-fi
 
 start_time=$(date +%s)
 timeout=30 #seconds
