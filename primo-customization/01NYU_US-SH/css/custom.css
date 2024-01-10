@@ -105,8 +105,8 @@ prm-logo .product-logo .organization-logo {
 
 
 /* Hide 'block+messages', 'personal details' */
-md-tab-item:nth-last-of-type(1),
-md-tab-item:nth-last-of-type(2) {
+prm-account-overview md-tab-item:nth-last-of-type(1),
+prm-account-overview md-tab-item:nth-last-of-type(2) {
     display: none !important;
 }
 
