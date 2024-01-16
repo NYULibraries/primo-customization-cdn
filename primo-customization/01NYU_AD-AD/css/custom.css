@@ -7,6 +7,11 @@ prm-topbar .md-button:not(.disable-hover):hover:not([disabled]):hover:not([disab
     color: #3a3a3a;
 }
 
+/*  Loading diamond color */
+prm-spinner.half-transparent .diamond {
+    background-color: #3a3a3a;
+}
+
 /*** A11y colors implementation ***/
 .prm-positive,
 .status-available,
