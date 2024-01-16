@@ -17,6 +17,11 @@ prm-spinner.dark-on-light .diamond {
 }
 
 /*** A11y colors implementation ***/
+/* sidebar transparent background */
+.md-dialog-container.fixed-container {
+    background-color: transparent;
+}
+
 .prm-positive,
 .status-available,
 [class*="available"],
