@@ -42,11 +42,6 @@ if (viewsForStaticTest.includes(view)) {
                 }
                 await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
 
-                if (process.env.ENABLE_CONSOLE_LOGGING === 'true') {
-                    page.on('console', msg => {
-                        console.log(`BROWSER CONSOLE: ${msg.type()}: ${msg.text()}`);
-                    });
-                }
             });
 
             test('page HTML matches expected', async ({ page }) => {

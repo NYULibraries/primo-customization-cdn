@@ -30,11 +30,6 @@ for (let i = 0; i < testCases.length; i++) {
             }
             await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
 
-            if (process.env.ENABLE_CONSOLE_LOGGING === 'true') {
-                page.on('console', msg => {
-                    console.log(`BROWSER CONSOLE: ${msg.type()}: ${msg.text()}`);
-                });
-            }
         });
 
         test('page text matches expected', async ({ page }) => {
