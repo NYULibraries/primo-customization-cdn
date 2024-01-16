@@ -104,10 +104,4 @@ Update golden files:
 VIEW=01NYU_INST-NYU_DEV docker compose up e2e-update-golden-files
 ```
 
-To enable console logging in a container for debugging purposes:
-
-```shell
-docker-compose run --rm -e ENABLE_CONSOLE_LOGGING=true -e VIEW=[VIEW] e2e
-```
-
 ---
