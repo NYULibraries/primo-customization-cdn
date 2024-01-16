@@ -12,6 +12,10 @@ prm-spinner.half-transparent .diamond {
     background-color: #3a3a3a;
 }
 
+prm-spinner.dark-on-light .diamond {
+    background-color: #3a3a3a;
+}
+
 /*** A11y colors implementation ***/
 .prm-positive,
 .status-available,
