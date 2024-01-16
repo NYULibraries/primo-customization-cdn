@@ -2,6 +2,12 @@
 /*  Import the chatwidgetEmbed CSS stylesheet into the project. Should be at the top of this file!!
 Do not move or alter the import order   */
 
+/* Hover-state text color for all main menu labels */
+prm-topbar .md-button:not(.disable-hover):hover:not([disabled]):hover:not([disabled]):not(.close-btn-favorits-warning-message) {
+  color: #3a3a3a;
+}
+
+
 /*** A11y colors implementation ***/
 /* sidebar transparent background */
 .md-dialog-container.fixed-container {
