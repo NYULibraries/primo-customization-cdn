@@ -185,7 +185,9 @@ workflows:
           context: web-cdn-aws-nyulitsdev
           filters:
             branches:
-              only: develop
+              only: 
+                - develop
+                - feature/ready_to_remove_blocks_personal
       - deploy_prod:
           requires:
             - run-e2e-ad-prod

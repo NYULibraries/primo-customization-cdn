@@ -229,8 +229,8 @@ prm-no-search-result>md-card {
 }
 
 /* Hide 'block+messages', 'personal details' */
-prm-account-overview md-tab-item:nth-last-of-type(1),
-prm-account-overview md-tab-item:nth-last-of-type(2) {
+prm-account-overview md-tab-item [translate="nui.blocks.header"],
+prm-account-overview md-tab-item [translate="nui.details.header"] {
     display: none !important;
 }
 
