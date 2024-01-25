@@ -6,10 +6,10 @@ describe('modifyCSPHeader', () => {
     jest.clearAllMocks();
   });
 
-  it('should remove upgrade-insecure-requests from CSP header', async () => {
+  it('should remove case-sensitive upgrade-insecure-requests from CSP header', async () => {
     // Mock response headers
     const headersWithDirective = {
-      'content-security-policy': 'default-src self; upgrade-insecure-requests'
+      'content-security-policy': 'default-src self; Upgrade-insecure-requests'
     };
 
     // Mock route.fetch() to return headers with directive
@@ -27,13 +27,16 @@ describe('modifyCSPHeader', () => {
 
     await modifyCSPHeader(page);
 
+    // Capture the headers passed to route.fulfill
+    const modifiedHeaders = route.fulfill.mock.calls[0][0].headers;
+
     // Assertions
     expect(page).toBeDefined();
     expect(page).not.toBeNull();
     expect(page).toBeTruthy();
-    expect(headersWithDirective['content-security-policy']).toBeDefined();
-    expect(headersWithDirective['content-security-policy']).toContain('upgrade-insecure-requests');
-    expect(headersWithDirective).toBeDefined();
+    expect(modifiedHeaders['content-security-policy']).toBeDefined();
+    expect(modifiedHeaders['content-security-policy'].toLowerCase()).not.toContain('upgrade-insecure-requests');
+    expect(modifiedHeaders).toBeDefined();
     expect(page.route).toHaveBeenCalled();
     expect(page.route).toHaveBeenCalledTimes(1);
     expect(route.fetch).toHaveBeenCalled();
@@ -43,6 +46,41 @@ describe('modifyCSPHeader', () => {
       headers: {
         'content-security-policy': 'default-src self'
       }
+    });
+    expect(route.fulfill).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not include content-security-policy in headers if set to undefined', async () => {
+    // Mock response headers with CSP header set to undefined
+    const headersWithCSPUndefined = {
+      'content-security-policy': undefined,
+    };
+
+    // Mock route.fetch() to return headers with CSP header set to undefined
+    const route = {
+      fetch: jest.fn().mockResolvedValue({
+        headers: () => headersWithCSPUndefined
+      }),
+      fulfill: jest.fn()
+    };
+
+    // Mock page.route()
+    const page = {
+      route: jest.fn().mockImplementation((_, handler) => handler(route))
+    };
+
+    await modifyCSPHeader(page);
+
+    // Assertions
+    expect(page).toBeDefined();
+    expect(page).toBeTruthy();
+    expect(route.fetch).toHaveBeenCalled();
+    expect(route.fetch).toHaveBeenCalledTimes(1);
+    expect(route.fulfill).toHaveBeenCalledWith({
+      response: expect.anything(),
+      headers: expect.not.objectContaining({
+        'content-security-policy': undefined
+      })
     });
     expect(route.fulfill).toHaveBeenCalledTimes(1);
   });
@@ -68,13 +106,16 @@ describe('modifyCSPHeader', () => {
 
     await modifyCSPHeader(page);
 
+    const modifiedHeaders = route.fulfill.mock.calls[0][0].headers;
+
+
     // Assertions
     expect(page).toBeDefined();
     expect(page).not.toBeNull();
     expect(page).toBeTruthy();
-    expect(headersWithoutDirective['content-security-policy']).toBeDefined();
-    expect(headersWithoutDirective['content-security-policy']).not.toContain('upgrade-insecure-requests');
-    expect(headersWithoutDirective).toBeDefined();
+    expect(modifiedHeaders['content-security-policy']).toBeDefined();
+    expect(modifiedHeaders['content-security-policy']).not.toContain('upgrade-insecure-requests');
+    expect(modifiedHeaders).toBeDefined();
     expect(page.route).toHaveBeenCalled();
     expect(page.route).toHaveBeenCalledTimes(1);
     expect(route.fetch).toHaveBeenCalled();
@@ -109,13 +150,15 @@ describe('modifyCSPHeader', () => {
 
     await modifyCSPHeader(page);
 
+    const modifiedHeaders = route.fulfill.mock.calls[0][0].headers;
+
     // Assertions
     expect(page).toBeDefined();
     expect(page).not.toBeNull();
     expect(page).toBeTruthy();
-    expect(headersWithDirectiveFirst['content-security-policy']).toBeDefined();
-    expect(headersWithDirectiveFirst['content-security-policy']).toContain('upgrade-insecure-requests');
-    expect(headersWithDirectiveFirst).toBeDefined();
+    expect(modifiedHeaders['content-security-policy']).toBeDefined();
+    expect(modifiedHeaders['content-security-policy']).not.toContain('upgrade-insecure-requests');
+    expect(modifiedHeaders).toBeDefined();
     expect(page.route).toHaveBeenCalled();
     expect(page.route).toHaveBeenCalledTimes(1);
     expect(route.fetch).toHaveBeenCalled();
@@ -128,6 +171,50 @@ describe('modifyCSPHeader', () => {
     });
     expect(route.fulfill).toHaveBeenCalledTimes(1);
   });
+
+  it('should correctly process when only upgrade-insecure-requests directive is present in CSP header', async () => {
+    // Mock response headers with only upgrade-insecure-requests directive in CSP
+    const headersWithOnlyUpgradeDirective = {
+      'content-security-policy': 'upgrade-insecure-requests'
+    };
+
+    // Mock route.fetch() to return headers with only upgrade-insecure-requests directive
+    const route = {
+      fetch: jest.fn().mockResolvedValue({
+        headers: () => headersWithOnlyUpgradeDirective
+      }),
+      fulfill: jest.fn()
+    };
+
+    // Mock page.route()
+    const page = {
+      route: jest.fn().mockImplementation((_, handler) => handler(route))
+    };
+
+    await modifyCSPHeader(page);
+
+    const modifiedHeaders = route.fulfill.mock.calls[0][0].headers;
+
+    // Assertions
+    expect(page).toBeDefined();
+    expect(page).not.toBeNull();
+    expect(page).toBeTruthy();
+    expect(modifiedHeaders['content-security-policy']).toBeDefined();
+    expect(modifiedHeaders['content-security-policy']).toBe('');
+    expect(modifiedHeaders).toBeDefined();
+    expect(page.route).toHaveBeenCalled();
+    expect(page.route).toHaveBeenCalledTimes(1);
+    expect(route.fetch).toHaveBeenCalled();
+    expect(route.fetch).toHaveBeenCalledTimes(1);
+    expect(route.fulfill).toHaveBeenCalledWith({
+      response: expect.anything(),
+      headers: {
+        'content-security-policy': ''
+      }
+    });
+    expect(route.fulfill).toHaveBeenCalledTimes(1);
+  });
+
 
   it('should remove upgrade-insecure-requests from ExLibris CSP header', async () => {
     // Mock response headers
@@ -150,13 +237,15 @@ describe('modifyCSPHeader', () => {
 
     await modifyCSPHeader(page);
 
+    const modifiedHeaders = route.fulfill.mock.calls[0][0].headers;
+
     // Assertions
     expect(page).toBeDefined();
     expect(page).not.toBeNull();
     expect(page).toBeTruthy();
-    expect(headersWithDirective['content-security-policy']).toBeDefined();
-    expect(headersWithDirective['content-security-policy']).toContain('upgrade-insecure-requests');
-    expect(headersWithDirective).toBeDefined();
+    expect(modifiedHeaders['content-security-policy']).toBeDefined();
+    expect(modifiedHeaders['content-security-policy']).not.toContain('upgrade-insecure-requests');
+    expect(modifiedHeaders).toBeDefined();
     expect(page.route).toHaveBeenCalled();
     expect(page.route).toHaveBeenCalledTimes(1);
     expect(route.fetch).toHaveBeenCalled();
