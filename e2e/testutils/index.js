@@ -32,25 +32,31 @@ function updateGoldenFiles() {
 async function modifyCSPHeader(page) {
     await page.route('/discovery/search?*', async route => {
         const response = await route.fetch();
+        // The header names are lowercased by Playwright
+        // https://playwright.dev/docs/next/api/class-response#response-headers
         const originalHeaders = response.headers();
 
         // Prepare the modified CSP header, if necessary
         let csp = originalHeaders['content-security-policy'];
-        if (csp && csp.includes('upgrade-insecure-requests')) {
+        if ( csp && csp.toLowerCase().includes('upgrade-insecure-requests') ) {
 
             let directives = csp.split(';').map(directive => directive.trim());
 
             directives = directives.filter(directive => !directive.toLowerCase().includes('upgrade-insecure-requests'));
 
-            csp = directives.join('; ').trim();
+            csp = directives.length > 0 ? directives.join('; ').trim() : '';
+        }
+
+        let headersForFulfill = { ...originalHeaders };
+        if ( csp !== undefined ) {
+            headersForFulfill['content-security-policy'] = csp;
+        } else {
+            delete headersForFulfill['content-security-policy'];
         }
 
         route.fulfill({
             response,
-            headers: {
-                ...originalHeaders,
-                'content-security-policy': csp ? csp : originalHeaders['content-security-policy']
-            }
+            headers: headersForFulfill
         });
     });
 }
