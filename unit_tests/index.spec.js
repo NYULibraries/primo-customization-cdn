@@ -50,7 +50,7 @@ describe('modifyCSPHeader', () => {
     expect(route.fulfill).toHaveBeenCalledTimes(1);
   });
 
-  it('should not include content-security-policy in headers if set to undefined', async () => {
+  it('should not include content-security-policy in csp if header is undefined', async () => {
     // Mock response headers with CSP header set to undefined
     const headersWithCSPUndefined = {
       'content-security-policy': undefined,
@@ -72,17 +72,12 @@ describe('modifyCSPHeader', () => {
     await modifyCSPHeader(page);
 
     // Assertions
+   // Assertions
     expect(page).toBeDefined();
     expect(page).toBeTruthy();
     expect(route.fetch).toHaveBeenCalled();
     expect(route.fetch).toHaveBeenCalledTimes(1);
-    expect(route.fulfill).toHaveBeenCalledWith({
-      response: expect.anything(),
-      headers: expect.not.objectContaining({
-        'content-security-policy': expect.anything()
-      })
-    });
-    expect(route.fulfill).toHaveBeenCalledTimes(1);
+    expect(route.fulfill).not.toHaveBeenCalled();
   });
 
   it('should not alter CSP header if upgrade-insecure-requests is not present', async () => {
