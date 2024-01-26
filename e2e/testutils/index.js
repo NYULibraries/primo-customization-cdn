@@ -38,6 +38,9 @@ async function modifyCSPHeader(page) {
 
         // Prepare the modified CSP header, if necessary
         let csp = originalHeaders['content-security-policy'];
+        if ( !csp ) {
+            return;
+        }
         if ( csp && csp.toLowerCase().includes('upgrade-insecure-requests') ) {
 
             let directives = csp.split(';').map(directive => directive.trim());
@@ -47,16 +50,12 @@ async function modifyCSPHeader(page) {
             csp = directives.length > 0 ? directives.join('; ').trim() : '';
         }
 
-        let headersForFulfill = { ...originalHeaders };
-        if ( csp !== undefined ) {
-            headersForFulfill['content-security-policy'] = csp;
-        } else {
-            delete headersForFulfill['content-security-policy'];
-        }
-
         route.fulfill({
             response,
-            headers: headersForFulfill
+            headers: {
+                ...originalHeaders,
+                'content-security-policy': csp
+            }
         });
     });
 }
