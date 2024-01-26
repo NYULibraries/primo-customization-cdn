@@ -79,7 +79,7 @@ describe('modifyCSPHeader', () => {
     expect(route.fulfill).toHaveBeenCalledWith({
       response: expect.anything(),
       headers: expect.not.objectContaining({
-        'content-security-policy': undefined
+        'content-security-policy': expect.anything()
       })
     });
     expect(route.fulfill).toHaveBeenCalledTimes(1);
