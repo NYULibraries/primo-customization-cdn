@@ -72,7 +72,6 @@ describe('modifyCSPHeader', () => {
     await modifyCSPHeader(page);
 
     // Assertions
-   // Assertions
     expect(page).toBeDefined();
     expect(page).toBeTruthy();
     expect(route.fetch).toHaveBeenCalled();
