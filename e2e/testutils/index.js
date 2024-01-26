@@ -41,7 +41,7 @@ async function modifyCSPHeader(page) {
         if ( !csp ) {
             route.fulfill({ headers: originalHeaders } );
         }
-        if ( csp && csp.toLowerCase().includes('upgrade-insecure-requests') ) {
+        if ( csp.toLowerCase().includes('upgrade-insecure-requests') ) {
 
             let directives = csp.split(';').map(directive => directive.trim());
 
