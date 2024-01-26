@@ -38,6 +38,9 @@ async function modifyCSPHeader(page) {
 
         // Prepare the modified CSP header, if necessary
         let csp = originalHeaders['content-security-policy'];
+        if ( !csp ) {
+            return;
+        }
         if ( csp && csp.toLowerCase().includes('upgrade-insecure-requests') ) {
 
             let directives = csp.split(';').map(directive => directive.trim());
@@ -51,10 +54,7 @@ async function modifyCSPHeader(page) {
             response,
             headers: {
                 ...originalHeaders,
-                // Setting the CSP header to undefined removes it
-                // See usage in https://playwright.dev/docs/api/class-route#route-continue
-                // if 'originalHeaders['content-security-policy']' is undefined, the header is removed
-                'content-security-policy': csp != null ? csp : originalHeaders['content-security-policy']
+                'content-security-policy': csp
             }
         });
     });
