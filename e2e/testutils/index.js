@@ -47,16 +47,15 @@ async function modifyCSPHeader(page) {
             csp = directives.length > 0 ? directives.join('; ').trim() : '';
         }
 
-        let headersForFulfill = { ...originalHeaders };
-        if ( csp !== undefined ) {
-            headersForFulfill['content-security-policy'] = csp;
-        } else {
-            delete headersForFulfill['content-security-policy'];
-        }
-
         route.fulfill({
             response,
-            headers: headersForFulfill
+            headers: {
+                ...originalHeaders,
+                // Setting the CSP header to undefined removes it
+                // See usage in https://playwright.dev/docs/api/class-route#route-continue
+                // if 'originalHeaders['content-security-policy']' is undefined, the header is removed
+                'content-security-policy': csp != null ? csp : originalHeaders['content-security-policy']
+            }
         });
     });
 }
