@@ -19,6 +19,7 @@ describe('modifyCSPHeader', () => {
 
     // Stub Playwright `page` and `route`.
     const route = {
+      continue : jest.fn(),
       fetch   : jest.fn().mockResolvedValue( {
                                                headers : () => headersWithoutCsp,
                                              } ),
@@ -30,17 +31,9 @@ describe('modifyCSPHeader', () => {
 
     await modifyCSPHeader( page );
 
-    const modifiedHeaders = route.fulfill.mock.calls[ 0 ][ 0 ].headers;
-
-    expect( modifiedHeaders ).toEqual( headersWithoutCsp );
-    // This is redundant, but it's good to be explicit about the fact that we
-    // do not want to accidentally add the CSP header when there wasn't one
-    // originally.
-    expect( modifiedHeaders[ 'content-security-policy' ] ).toBeUndefined();
-    expect( route.fulfill ).toHaveBeenCalledWith( {
-                                                    response : expect.anything(),
-                                                    headers  : headersWithoutCsp,
-                                                  } );
+     // Verify that the continue method was called
+    expect(route.continue).toHaveBeenCalled();
+     expect(route.fulfill).not.toHaveBeenCalled();
   } );
 
   it('should remove case-sensitive upgrade-insecure-requests from CSP header', async () => {
@@ -95,6 +88,7 @@ describe('modifyCSPHeader', () => {
 
     // Mock route.fetch() to return headers with CSP header set to undefined
     const route = {
+      continue: jest.fn(),
       fetch: jest.fn().mockResolvedValue({
         headers: () => headersWithCSPUndefined
       }),
@@ -112,7 +106,8 @@ describe('modifyCSPHeader', () => {
     expect(page).toBeDefined();
     expect(page).toBeTruthy();
     expect(route.fetch).toHaveBeenCalled();
-    expect(route.fetch).toHaveBeenCalledTimes(1);
+    expect(route.continue).toHaveBeenCalled();
+    expect(route.fulfill).not.toHaveBeenCalled();
   });
 
   it('should not alter CSP header if upgrade-insecure-requests is not present', async () => {
