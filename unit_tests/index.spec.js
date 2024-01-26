@@ -113,7 +113,6 @@ describe('modifyCSPHeader', () => {
     expect(page).toBeTruthy();
     expect(route.fetch).toHaveBeenCalled();
     expect(route.fetch).toHaveBeenCalledTimes(1);
-    expect(route.fulfill).not.toHaveBeenCalled();
   });
 
   it('should not alter CSP header if upgrade-insecure-requests is not present', async () => {

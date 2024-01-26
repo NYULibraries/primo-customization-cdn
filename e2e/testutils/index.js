@@ -39,7 +39,7 @@ async function modifyCSPHeader(page) {
         // Prepare the modified CSP header, if necessary
         let csp = originalHeaders['content-security-policy'];
         if ( !csp ) {
-            return;
+            route.fulfill({ headers: originalHeaders } );
         }
         if ( csp && csp.toLowerCase().includes('upgrade-insecure-requests') ) {
 
