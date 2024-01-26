@@ -40,10 +40,8 @@ async function modifyCSPHeader(page) {
         let csp = originalHeaders['content-security-policy'];
         // If original response did not have a CSP header, there's nothing to do,
         // just pass through.
-        // TODO: Once the Jest tests have a `route.continue()` mock, change this
-        // to `return route.continue()`.
         if ( !csp ) {
-            return route.fulfill( {  response, headers: originalHeaders } );
+            return route.continue();
         }
         if ( csp.toLowerCase().includes('upgrade-insecure-requests') ) {
 
