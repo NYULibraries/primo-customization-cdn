@@ -6,6 +6,43 @@ describe('modifyCSPHeader', () => {
     jest.clearAllMocks();
   });
 
+  it( 'should do nothing if a "Content-Security-Policy" header is not present', async () => {
+    const headersWithoutCsp = {
+      'Cache-Control'     : 'max-age=0',
+      'Connection'        : 'keep-alive',
+      'Content-Encoding'  : 'gzip',
+      'Content-Type'      : 'text/html',
+      'Keep-Alive'        : 'timeout=20',
+      'Transfer-Encoding' : 'chunked',
+      'Vary'              : 'accept-encoding',
+    };
+
+    // Stub Playwright `page` and `route`.
+    const route = {
+      fetch   : jest.fn().mockResolvedValue( {
+                                               headers : () => headersWithoutCsp,
+                                             } ),
+      fulfill : jest.fn(),
+    };
+    const page = {
+      route : jest.fn().mockImplementation( ( _, handler ) => handler( route ) )
+    };
+
+    await modifyCSPHeader( page );
+
+    const modifiedHeaders = route.fulfill.mock.calls[ 0 ][ 0 ].headers;
+
+    expect( modifiedHeaders ).toEqual( headersWithoutCsp );
+    // This is redundant, but it's good to be explicit about the fact that we
+    // do not want to accidentally add the CSP header when there wasn't one
+    // originally.
+    expect( modifiedHeaders[ 'content-security-policy' ] ).toBeUndefined();
+    expect( route.fulfill ).toHaveBeenCalledWith( {
+                                                    response : expect.anything(),
+                                                    headers  : headersWithoutCsp,
+                                                  } );
+  } );
+
   it('should remove case-sensitive upgrade-insecure-requests from CSP header', async () => {
     // Mock response headers
     const headersWithDirective = {
