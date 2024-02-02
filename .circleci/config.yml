@@ -187,7 +187,7 @@ workflows:
             branches:
               only: 
                 - develop
-                - feature/ready_to_remove_blocks_personal
+                - chore/install_matomo
       - deploy_prod:
           requires:
             - run-e2e-ad-prod
