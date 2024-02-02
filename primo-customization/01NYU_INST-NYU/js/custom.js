@@ -60,6 +60,7 @@ function injectStatusEmbed() {
 configureAndInjectLibKey();
 injectStatusEmbed();
 
+// used in html/prm-brief-result-after.html
 function findingAidsLinkClickHandler( event ) {
     event.stopPropagation();
 }
@@ -73,3 +74,49 @@ function findingAidsLinkClickHandler( event ) {
     var x = document.getElementsByTagName( 'script' )[0];
     x.parentNode.insertBefore( s, x );
 } )();
+
+(function(){
+  function installMatomo() {
+    // determine vid from querystring
+    // note that this will fail in IE 11 and Opera Mini: https://caniuse.com/urlsearchparams
+    const vid = (new URLSearchParams(window.location.search)).get("vid");
+    console.log("[DEBUG] vid = " + vid);
+
+    // if dev, use dev matomo
+    var siteId;
+    if (vid === "01NYU_INST:NYU_DEV") {
+      siteId = '9';
+    // otherwise, assume we're in prod
+    } else {
+      siteId = '6';
+    }
+    console.log("[DEBUG] matomo siteId = " + siteId);
+    // out-of-the-box script except for siteId var
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="https://nyulib.matomo.cloud/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', siteId]);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='//cdn.matomo.cloud/nyulib.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+  }
+
+  // execute once dom is loaded
+  // thanks to https://stackoverflow.com/a/53601942
+  function documentReady( func ) {
+    // if early to the DOM
+    document.addEventListener("DOMContentLoaded", func);
+    // if late to the DOM
+    if (document.readyState === "interactive" || document.readyState === "complete" ) {
+      func();
+    }
+  }
+  
+  documentReady(function() {
+    installMatomo();
+  });
+})();
