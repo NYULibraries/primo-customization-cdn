@@ -110,18 +110,6 @@ function findingAidsLinkClickHandler( event ) {
     })();
   }
 
-  // execute once dom is loaded
-  // thanks to https://stackoverflow.com/a/53601942
-  function documentReady( func ) {
-    // if early to the DOM
-    document.addEventListener("DOMContentLoaded", func);
-    // if late to the DOM
-    if (document.readyState === "interactive" || document.readyState === "complete" ) {
-      func();
-    }
-  }
-  
-  documentReady(function() {
-    installMatomo();
-  });
+  // no "DOM ready" check needed since this script is added by view package only after DOM is ready
+  installMatomo();
 })();
