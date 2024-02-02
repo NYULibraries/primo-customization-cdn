@@ -82,6 +82,11 @@ function findingAidsLinkClickHandler( event ) {
     const vid = (new URLSearchParams(window.location.search)).get("vid");
     console.log("[DEBUG] vid = " + vid);
 
+    // if we're on localhost or primo-explore-devenv, don't install
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "primo-explore-devenv") {
+      return;
+    }
+
     // if dev, use dev matomo
     var siteId;
     if (vid === "01NYU_INST:NYU_DEV") {
