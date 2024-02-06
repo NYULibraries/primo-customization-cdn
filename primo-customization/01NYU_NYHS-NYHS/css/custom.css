@@ -1,3 +1,5 @@
+@import url("../../01common/css/global.css");
+
 /* Enlarge top bar to resize the NYHS logo so it's readable */
 prm-topbar {
     height: 120px;
@@ -60,13 +62,6 @@ prm-alert-bar {
 }
 
 
-
-/* Unhide facet checkboxes by default */
-.multiselect-facet-group.multiselect-inactive .md-chip md-checkbox {
-    transform: none;
-    transition: none;
-}
-
 /* Remove "My Library Account" */
 .my-library-card-ctm {
     display: none;
@@ -119,24 +114,4 @@ span.search-bar-sub-menu-item.hide-xs {
 .search-bar-sub-menu ul {
     list-style-type: none;
     padding-left: 0;
-}
-
-/* https://nyu-lib.monday.com/boards/765008773/pulses/4845899493 */
-prm-no-search-result>md-card {
-    display: none;
-}
-
-/* Hide 'block+messages', 'personal details' */
-prm-account-overview md-tab-item [translate="nui.blocks.header"],
-prm-account-overview md-tab-item [translate="nui.details.header"] {
-    display: none !important;
-}
-
-prm-messages-and-blocks,
-prm-personal-info {
-    display: none !important;
-}
-
-prm-messages-and-blocks-overview {
-    display: none !important;
 }
