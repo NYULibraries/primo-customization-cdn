@@ -1,6 +1,6 @@
 /* Importing color variables and typography styles into common.css */
 @import "modules/colors-variables.css";
-@import "modules/typography.css";
+
 
 /* Hover-state text color for all main menu labels */
 prm-topbar .md-button:not(.disable-hover):hover:not([disabled]):hover:not([disabled]):not(.close-btn-favorits-warning-message) {
@@ -119,20 +119,7 @@ prm-resource-type-filter-bar md-input-container.prm-hue2.is-active {
     background-color: var(--background-color-black);
 }
 
-/* Hide 'block+messages', 'personal details' */
-prm-account-overview md-tab-item [translate="nui.blocks.header"],
-prm-account-overview md-tab-item [translate="nui.details.header"] {
-    display: none !important;
-}
 
-prm-messages-and-blocks,
-prm-personal-info {
-    display: none !important;
-}
-
-prm-messages-and-blocks-overview {
-    display: none !important;
-}
 
 /* ***************************************** */
 /* Styles for full display */
@@ -389,12 +376,7 @@ a:focus-visible,
 
 
 
-/* <------feedback & library hours--------> */
 
-/* https://nyu-lib.monday.com/boards/765008773/pulses/4845899493 */
-prm-no-search-result>md-card {
-    display: none;
-}
 
 prm-logo {
     /* Override `prm-topbar prm-logo` from (Chrome Dev Tools link address):
@@ -412,11 +394,6 @@ prm-logo {
     width: 100%;
 }
 
-/* Unhide facet checkboxes by default */
-.multiselect-facet-group.multiselect-inactive .md-chip md-checkbox {
-    transform: none;
-    transition: none;
-}
 
 /* bold headers on landing page */
 .md-subhead {
