@@ -1,3 +1,6 @@
+@import url("../../01common/css/global.css");
+@import url("../../01common/css/menu.css");
+
 /*** A11y colors implementation ***/
 .prm-positive,
 .status-available,
@@ -80,12 +83,6 @@ prm-resource-type-filter-bar md-input-container.prm-hue2.is-active {
     background-color: #1C2127;
 }
 
-/* Unhide facet checkboxes by default */
-.multiselect-facet-group.multiselect-inactive .md-chip md-checkbox {
-    transform: none;
-    transition: none;
-}
-
 /* Enlarge top bar to resize the NYSID logo so it's readable */
 prm-topbar {
     height: 150px;
@@ -113,22 +110,6 @@ prm-logo .product-logo .organization-logo:hover {
 /* Align the logo horizontally and vertically */
 prm-logo .product-logo .organization-logo {
     display: flex;
-}
-
-
-/* Hide 'block+messages', 'personal details' */
-prm-account-overview md-tab-item [translate="nui.blocks.header"],
-prm-account-overview md-tab-item [translate="nui.details.header"] {
-    display: none !important;
-}
-
-prm-messages-and-blocks,
-prm-personal-info {
-    display: none !important;
-}
-
-prm-messages-and-blocks-overview {
-    display: none !important;
 }
 
 /* ***************************************** */
@@ -208,28 +189,6 @@ prm-atoz-search-bar {
     prm-atoz-search-bar {
         padding-top: 1.2em !important;
     }
-}
-
-
-/* ***************************** */
-/* Styles for user dropdown menu */
-/* ***************************** */
-
-/* Hide 'My Loans' */
-/* Hide 'My Requests' */
-.menu-item-indented.my-loans-ctm,
-.menu-item-indented.my-requests-ctm {
-    display: none !important;
-}
-
-
-/* Setting the order for `Saved Items` and `Search History` in user dropdown menu */
-.my-refworks-separator-ctm {
-    order: 3;
-}
-
-.my-refworks-ctm {
-    order: 4;
 }
 
 
@@ -322,16 +281,6 @@ a:focus-visible,
     box-shadow: inset 0 0 0 2px #3dbbdb !important;
 }
 
-
-
-/* <------feedback & library hours--------> */
-
-
-/* https://nyu-lib.monday.com/boards/765008773/pulses/4845899493 */
-prm-no-search-result>md-card {
-    display: none;
-}
-
 .logo-image {
     display: block;
     margin: auto;
@@ -343,76 +292,11 @@ prm-no-search-result>md-card {
     width: 100%;
 }
 
-/* Unhide facet checkboxes by default */
-.multiselect-facet-group.multiselect-inactive .md-chip md-checkbox {
-    transform: none;
-    transition: none;
-}
 
 /* bold headers on landing page */
 .md-subhead {
     font-weight: 600;
     margin: 1em .25em auto auto;
-}
-
-/* Hide the side menu except for the invisible
-  'Prev', 'Close', and 'Next' options for accessibility.*/
-prm-full-view .services-index-under button:not(.accessible-close) {
-    display: none;
-}
-
-#full-view-container>*:first-child {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Reorder FullDisplay sections. */
-#searchWithinJournal {
-    order: 1;
-}
-
-/* "Search inside" */
-#getit_link1_0 {
-    order: 2;
-}
-
-/* "View Online" or "How to get it" */
-#getit_link1_1 {
-    order: 3;
-}
-
-/* "Get It" */
-#getit_link2 {
-    order: 4;
-}
-
-#details {
-    order: 5;
-}
-
-/* "Details" */
-#action_list {
-    order: 6;
-}
-
-/* "Send to" */
-#citationTrails {
-    order: 7;
-}
-
-/* "Citations" */
-#links {
-    order: 8;
-}
-
-/* "Links" */
-#virtualBrowse {
-    order: 9;
-}
-
-/* "Virtual Browse" */
-#tags {
-    order: 10;
 }
 
 /* ***************************************************** */
