@@ -3,6 +3,7 @@
 Do not move or alter the import order   */
 
 @import url("../../01common/css/common.css");
+@import url("../../01common/css/global.css");
 
 
 /* Enlarge top bar to resize the NYHS logo so it's readable */
