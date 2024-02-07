@@ -429,50 +429,6 @@ prm-search-bar.prm-hue4 {
 /* END "Add styled feedback link to Item Details pages" */
 
 
-/* chatWidget-embed styles */
-/* chatwidget button styles */
-#nyulibraries_chat_widget .nyulibraries-chat-button {
-    padding: 10px 10px 8px;
-    width: 131.38px;
-    height: 42px;
-    color: #e0d5e8;
-    line-height: normal;
-    white-space: nowrap;
-    box-sizing: border-box;
-}
-
-.nyulibraries-close-icon {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 16px;
-}
-
-
-@media screen and (max-width: 930px) {
-    .nyulibraries-chat-container {
-        width: 100%;
-        right: 0;
-        border-radius: 0;
-    }
-
-    #nyulibraries_chat_widget .nyulibraries-chat-button {
-        width: 100%;
-        max-width: none;
-        right: 0;
-        border-radius: 0;
-    }
-
-    .nyulibraries-chat-frame-wrap {
-        position: relative;
-        right: 10px;
-    }
-}
-
-/* End of chatWidget-embed styles */
-
-
 /* Change text color of "full chapter" field in digitization request form */
 prm-form-field .checkbox-warning-message {
     color: var(--primary-black);
