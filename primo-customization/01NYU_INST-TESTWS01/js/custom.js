@@ -73,3 +73,30 @@ function findingAidsLinkClickHandler( event ) {
     var x = document.getElementsByTagName( 'script' )[0];
     x.parentNode.insertBefore( s, x );
 } )();
+
+// Fix tab order for My Library Account dropdown menu for all NYU views
+// https://nyu-lib.monday.com/boards/765008773/pulses/5227820010
+(function() {
+    function moveRefworksAndSeparatorToLast() {
+        var refworksItem = document.querySelector( '.my-refworks-ctm' );
+        var refworksSeparator = document.querySelector( '.my-refworks-separator-ctm' );
+        var menuContent = document.querySelector( '.prm-user-menu-content' );
+
+        if ( refworksItem && refworksSeparator && menuContent ) {
+            // Move the separator first, so it precedes the refworks item
+            menuContent.appendChild( refworksSeparator );
+            // Then move the refworks item
+            menuContent.appendChild( refworksItem );
+        } else {
+            console.log( "Failed to move the elements: Either my-refworks-ctm, its separator, or their container was not found." );
+        }
+    }
+
+    if ( document.readyState === 'complete' ) {
+        moveRefworksAndSeparatorToLast();
+    } else {
+        document.addEventListener( 'DOMContentLoaded', function() {
+            moveRefworksAndSeparatorToLast();
+        });
+    }
+})();
