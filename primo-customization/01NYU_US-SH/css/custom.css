@@ -307,16 +307,6 @@ span[translate="eshelf.menu.savedItems"]::after {
     /* Restore original font size */
 }
 
-/* Setting the order for `Saved Items` and `Search History` in user dropdown menu */
-.my-refworks-separator-ctm {
-    order: 3;
-}
-
-.my-refworks-ctm {
-    order: 4;
-}
-
-
 /* ******************************************************* */
 /* Styles for search-bar-sub-menu feedback & library hours */
 /* ******************************************************* */
