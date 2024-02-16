@@ -1,4 +1,6 @@
-/* Importing color variables and typography styles into common.css */
+/* Common CSS for AD, NYU, TEST, SH  */
+
+/* Importing color variables into common.css */
 @import "modules/colors-variables.css";
 
 
