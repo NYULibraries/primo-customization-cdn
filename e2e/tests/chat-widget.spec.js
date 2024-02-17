@@ -119,7 +119,7 @@ ${diffOutput}
             });
 
             test( 'chat widget screenshot matches expected', async ({ page }) => {
-                // test.skip(process.platform === 'darwin', 'This test is not implemented for Mac');
+                test.skip(process.platform === 'darwin', 'This test is not implemented for Mac');
                 test.skip(isCUView)
 
                 await page.locator( CHAT_WIDGET_SELECTOR ).waitFor();
