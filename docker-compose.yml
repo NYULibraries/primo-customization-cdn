@@ -20,8 +20,8 @@ services:
       - "3000:3000"
     networks:
       - primo-customization-cdn-net
-    volumes:
-      - ./primo-customization:/app/cdn/primo-customization
+    # volumes:
+    #   - ./primo-customization:/app/cdn/primo-customization
   #  NOTE: This service name `primo-explore-devenv` is hard-coded into the view packages' `getCdn()` code.
   #        https://github.com/NYULibraries/primo-customization/blob/ffadff7421a150d84271bcee3bcb9f37e6ccf678/docker-compose.yml?#L115-#L116
   #        If changing this name, make sure to update that reference.
