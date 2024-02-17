@@ -286,6 +286,25 @@ describe('modifyCSPHeader', () => {
 });
 
 describe('updateGoldenFiles', () => {
+  const testValues = [
+    { value: 'true', expected: true },
+    { value: 'True', expected: true },
+    { value: 'TRUE', expected: true },
+    { value: 'TrUe', expected: true },
+    { value: 'tRUE', expected: true },
+    { value: 'false', expected: false },
+    { value: 'False', expected: false },
+    { value: 'FALSE', expected: false },
+    { value: 'FaLsE', expected: false },
+    { value: 'fALSE', expected: false },
+    { value: 'yes', expected: false },
+    { value: 'no', expected: false },
+    { value: '1', expected: false },
+    { value: '0', expected: false },
+    { value: 'anyOtherValue', expected: false },
+    { value: '', expected: false },
+    { value: undefined, expected: false },
+  ];
 
   beforeEach(() => {
     delete process.env.UPDATE_GOLDEN_FILES;
@@ -298,37 +317,13 @@ describe('updateGoldenFiles', () => {
   it('should return false when UPDATE_GOLDEN_FILES is not set', () => {
       expect(updateGoldenFiles()).toBe(false);
   });
-  it.each(['TRUE', 'TrUe', 'tRUE', 'true'])(
-      'should return true for different case variations of "true"', (value) => {
-          process.env.UPDATE_GOLDEN_FILES = value;
-          expect(updateGoldenFiles()).toBe(true);
-      }
-  );
-
-  it.each(['FALSE', 'FaLsE', 'fALSE', 'false'])(
-      'should return false for different case variations of "false"', (value) => {
-          process.env.UPDATE_GOLDEN_FILES = value;
-          expect(updateGoldenFiles()).toBe(false);
-      }
-  );
-
-  it.each(['yes', 'no', '1', '0', 'false', 'FALSE', 'False', 'anyOtherValue', ''])(
-    'should return false for any value other than variations of "true"', (value) => {
+  it.each(testValues)(
+    'should return $expected for $value value', ({ value, expected }) => {
         process.env.UPDATE_GOLDEN_FILES = value;
-        expect(updateGoldenFiles()).toBe(false);
+        expect(updateGoldenFiles()).toBe(expected);
     }
-);
-
-  it('should return false when UPDATE_GOLDEN_FILES is undefined', () => {
-    expect(updateGoldenFiles()).toBe(false);
-  });
-
-  it('should return true when UPDATE_GOLDEN_FILES is set to true', () => {
-    process.env.UPDATE_GOLDEN_FILES = 'true';
-    expect(updateGoldenFiles()).toBe(true);
-  });
+  );
 });
-
 
 describe('setPathAndQueryVid with VIEW constraint', () => {
 
