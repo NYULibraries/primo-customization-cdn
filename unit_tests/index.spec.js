@@ -286,6 +286,11 @@ describe('modifyCSPHeader', () => {
 });
 
 describe('updateGoldenFiles', () => {
+
+  beforeEach(() => {
+    delete process.env.UPDATE_GOLDEN_FILES;
+  });
+
   afterEach(() => {
       delete process.env.UPDATE_GOLDEN_FILES;
   });
@@ -315,9 +320,13 @@ describe('updateGoldenFiles', () => {
 );
 
   it('should return false when UPDATE_GOLDEN_FILES is undefined', () => {
-    delete process.env.UPDATE_GOLDEN_FILES;
     expect(updateGoldenFiles()).toBe(false);
-});
+  });
+
+  it('should return true when UPDATE_GOLDEN_FILES is set to true', () => {
+    process.env.UPDATE_GOLDEN_FILES = 'true';
+    expect(updateGoldenFiles()).toBe(true);
+  });
 });
 
 
@@ -339,26 +348,19 @@ describe('setPathAndQueryVid with VIEW constraint', () => {
     '01NYU_US-SH_DEV',
   ];
 
-  allowedViews.forEach((allowedView) => {
-      describe(`when VIEW is ${allowedView}`, () => {
-          // Set the VIEW environment variable to the allowed value
-          beforeEach(() => {
-              process.env.VIEW = allowedView;
-          });
+  const currentView = process.env.VIEW;
 
-          // Clean up the VIEW environment variable after each test
-          afterEach(() => {
-              delete process.env.VIEW;
-          });
-
-          test(`replaces vid=[VID] correctly for ${allowedView}`, () => {
-              const vid = process.env.VIEW.replaceAll('-', ':');
-              const pathAndQuery = 'example.com?vid=[VID]&otherParam=value';
-              const result = setPathAndQueryVid(pathAndQuery, vid);
-              expect(result).toBe(`example.com?vid=${vid}&otherParam=value`);
-          });
-      });
+  test(`replaces vid=[VID] correctly if VIEW is allowed`, () => {
+      if (allowedViews.includes(currentView)) {
+          const vid = currentView.replaceAll('-', ':');
+          const pathAndQuery = 'example.com?vid=[VID]&otherParam=value';
+          const result = setPathAndQueryVid(pathAndQuery, vid);
+          expect(result).toBe(`example.com?vid=${vid}&otherParam=value`);
+      } else {
+          throw new Error(`Current VIEW '${currentView}' is not in the allowed list.`);
+      }
   });
+
 
   test('throws error or fails for disallowed VIEW values', () => {
       const disallowedView = 'SOME_INVALID_VALUE';
