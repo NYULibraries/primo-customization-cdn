@@ -2,9 +2,9 @@
 /*  Import the chatwidgetEmbed CSS stylesheet into the project. Should be at the top of this file!!
 Do not move or alter the import order   */
 
-@import url("../../01common/css/common.css");
-@import url("../../01common/css/global.css");
-@import url("../../01common/css/menu.css");
+@import url("../../00_common/css/nyu_common.css");
+@import url("../../00_common/css/global.css");
+@import url("../../00_common/css/menu.css");
 
 
 /* Enlarge top bar to resize the NYHS logo so it's readable */

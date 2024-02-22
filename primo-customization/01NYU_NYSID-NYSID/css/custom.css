@@ -1,5 +1,5 @@
-@import url("../../01common/css/global.css");
-@import url("../../01common/css/menu.css");
+@import url("../../00_common/css/global.css");
+@import url("../../00_common/css/menu.css");
 
 /*** A11y colors implementation ***/
 .prm-positive,
