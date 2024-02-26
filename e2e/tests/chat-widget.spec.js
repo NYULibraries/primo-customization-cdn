@@ -106,7 +106,7 @@ if ( viewsForTest.includes( view ) ) {
 ${diffOutput}
 ======== END DIFF OUTPUT =========
 
-[Recorded in diff file: ${diffFile}]`;
+[Recorded in diff file: ${diffHTMLFile}]`;
                     } catch (e) {
                         // `diff` command failed to create the diff file.
                         message += `  Diff command \`${command}\` failed:
