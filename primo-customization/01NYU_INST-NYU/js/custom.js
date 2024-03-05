@@ -123,13 +123,13 @@ function injectStatusEmbed() {
     document.body.appendChild( scriptTag )
 }
 
-configureAndInjectLibKey();
-insertChatwidgetEmbed();
-installMatomo();
-injectStatusEmbed();
 
 // used in html/prm-brief-result-after.html
 function findingAidsLinkClickHandler( event ) {
     event.stopPropagation();
 }
 
+configureAndInjectLibKey();
+insertChatwidgetEmbed();
+installMatomo();
+injectStatusEmbed();
