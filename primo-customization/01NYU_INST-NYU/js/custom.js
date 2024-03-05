@@ -56,7 +56,26 @@ function insertChatwidgetEmbed() {
     x.parentNode.insertBefore( s, x );
 }
 
+// This function has been made identical for all NYU views in order to make the
+// custom JS file as pseudo-DRY as possible, allowing us to make changes to one
+// view's JS file and simply copy it as-is into the other views.  Toward this
+// end, we need a full map of vids to Matomo siteIds, even though technically
+// each view only needs to know about its own 2-3 siteIds.
 function installMatomo() {
+    // Source:
+    //     "Matomo JS Tracking Codes for Primo VE NYU Views"
+    //     https://docs.google.com/document/d/1Rmmn1q7zNJxm-Ps0uyxbZ1o_GH4YY8hSUFUgQF9AgmU/edit#heading=h.ovisp1bygp5s
+    const SITE_ID = {
+        '01NYU_AD:AD'     : '7',
+        '01NYU_AD:AD_DEV' : '10',
+
+        '01NYU_INST:NYU'     : '6',
+        '01NYU_INST:NYU_DEV' : '9',
+
+        '01NYU_US:SH'     : '8',
+        '01NYU_US:SH_DEV' : '11',
+    }
+
     // determine vid from querystring
     // note that this will fail in IE 11 and Opera Mini: https://caniuse.com/urlsearchparams
     const vid =
@@ -69,14 +88,12 @@ function installMatomo() {
         return;
     }
 
-    // if dev, use dev matomo
-    var siteId;
-    if ( vid === '01NYU_INST:NYU_DEV' ) {
-        siteId = '9';
-        // otherwise, assume we're in prod
-    } else {
-        siteId = '6';
+    const siteId = SITE_ID[ vid ];
+    if ( !siteId ) {
+        console.error( `[ERROR] No siteId found for vid=${ vid }` );
+        return;
     }
+
     console.log( '[DEBUG] matomo siteId = ' + siteId );
     // out-of-the-box script except for siteId var
     var _paq = window._paq = window._paq || [];
