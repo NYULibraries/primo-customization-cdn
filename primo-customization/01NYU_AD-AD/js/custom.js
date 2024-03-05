@@ -46,13 +46,13 @@ function configureAndInjectLibKey() {
     document.head.appendChild( browzine.script );
 }
 
-function insertChatwidgetEmbed() {
-    var s = document.createElement( 'script' );
-    s.type = 'text/javascript';
-    s.async = true;
-    s.src = 'https://cdn.library.nyu.edu/chatwidget-embed/index.min.js';
-    var x = document.getElementsByTagName( 'script' )[ 0 ];
-    x.parentNode.insertBefore( s, x );
+function insertChatWidgetEmbed() {
+    // Always use prod URL for all views.
+    const CHATWIDGET_EMBED_PROD_URL =
+        'https://cdn.library.nyu.edu/chatwidget-embed/index.min.js';
+    const scriptTag = document.createElement( 'script' );
+    scriptTag.setAttribute( 'src', CHATWIDGET_EMBED_PROD_URL );
+    document.body.appendChild( scriptTag )
 }
 
 // out-of-the-box script except for siteId var
@@ -142,6 +142,6 @@ function findingAidsLinkClickHandler( event ) {
 // ****************************************
 
 configureAndInjectLibKey();
-insertChatwidgetEmbed();
+insertChatWidgetEmbed();
 injectStatusEmbed();
 installMatomo();
