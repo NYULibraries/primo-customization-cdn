@@ -55,6 +55,36 @@ function insertChatwidgetEmbed() {
     x.parentNode.insertBefore( s, x );
 }
 
+// out-of-the-box script except for siteId var
+function injectMatomo( siteId ) {
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push( [ 'trackPageView' ] );
+    _paq.push( [ 'enableLinkTracking' ] );
+    (
+        function () {
+            var u = 'https://nyulib.matomo.cloud/';
+            _paq.push( [ 'setTrackerUrl', u + 'matomo.php' ] );
+            _paq.push( [ 'setSiteId', siteId ] );
+            var d = document, g = d.createElement( 'script' ),
+                s = d.getElementsByTagName( 'script' )[ 0 ];
+            g.async = true;
+            g.src = '//cdn.matomo.cloud/nyulib.matomo.cloud/matomo.js';
+            s.parentNode.insertBefore( g, s );
+        }
+    )();
+}
+
+function injectStatusEmbed() {
+    // Always use prod URL for all views:
+    // https://nyu-lib.monday.com/boards/765008773/pulses/5525193850/posts/2571053345
+    const STATUS_EMBED_PROD_URL =
+        'https://cdn.library.nyu.edu/statuspage-embed/index.min.js';
+    const scriptTag = document.createElement( 'script' );
+    scriptTag.setAttribute( 'src', STATUS_EMBED_PROD_URL );
+    document.body.appendChild( scriptTag )
+}
+
 // This function has been made identical for all NYU views in order to make the
 // custom JS file as pseudo-DRY as possible, allowing us to make changes to one
 // view's JS file and simply copy it as-is into the other views.  Toward this
@@ -94,33 +124,8 @@ function installMatomo() {
     }
 
     console.log( '[DEBUG] matomo siteId = ' + siteId );
-    // out-of-the-box script except for siteId var
-    var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push( [ 'trackPageView' ] );
-    _paq.push( [ 'enableLinkTracking' ] );
-    (
-        function () {
-            var u = 'https://nyulib.matomo.cloud/';
-            _paq.push( [ 'setTrackerUrl', u + 'matomo.php' ] );
-            _paq.push( [ 'setSiteId', siteId ] );
-            var d = document, g = d.createElement( 'script' ),
-                s = d.getElementsByTagName( 'script' )[ 0 ];
-            g.async = true;
-            g.src = '//cdn.matomo.cloud/nyulib.matomo.cloud/matomo.js';
-            s.parentNode.insertBefore( g, s );
-        }
-    )();
-}
 
-function injectStatusEmbed() {
-    // Always use prod URL for all views:
-    // https://nyu-lib.monday.com/boards/765008773/pulses/5525193850/posts/2571053345
-    const STATUS_EMBED_PROD_URL =
-        'https://cdn.library.nyu.edu/statuspage-embed/index.min.js';
-    const scriptTag = document.createElement( 'script' );
-    scriptTag.setAttribute( 'src', STATUS_EMBED_PROD_URL );
-    document.body.appendChild( scriptTag )
+    injectMatomo( siteId );
 }
 
 // ****************************************
@@ -138,5 +143,5 @@ function findingAidsLinkClickHandler( event ) {
 
 configureAndInjectLibKey();
 insertChatwidgetEmbed();
-installMatomo();
 injectStatusEmbed();
+installMatomo();
