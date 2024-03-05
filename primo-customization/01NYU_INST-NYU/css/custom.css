@@ -591,3 +591,8 @@ prm-search-bar.prm-hue4 {
 prm-form-field .checkbox-warning-message {
   color: #3A3A3A;
 }
+
+/* Hide brief result snippets */
+div.result-item-text.layout-fill.layout-column.flex>prm-snippet {
+  display: none !important;
+}

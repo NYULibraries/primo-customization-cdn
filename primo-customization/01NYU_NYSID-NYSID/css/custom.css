@@ -474,3 +474,8 @@ button.button-confirm:hover {
 button.button-confirm:hover svg {
     fill: black !important;
 }
+
+/* Hide brief result snippets */
+div.result-item-text.layout-fill.layout-column.flex>prm-snippet {
+    display: none !important;
+}
