@@ -123,11 +123,18 @@ function injectStatusEmbed() {
     document.body.appendChild( scriptTag )
 }
 
+// ****************************************
+// Event handlers
+// ****************************************
 
 // used in html/prm-brief-result-after.html
 function findingAidsLinkClickHandler( event ) {
     event.stopPropagation();
 }
+
+// ****************************************
+// MAIN
+// ****************************************
 
 configureAndInjectLibKey();
 insertChatwidgetEmbed();
