@@ -47,6 +47,49 @@ function configureAndInjectLibKey() {
     document.head.appendChild( browzine.script );
 }
 
+function insertChatwidgetEmbed() {
+    var s = document.createElement( 'script' );
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = 'https://cdn.library.nyu.edu/chatwidget-embed/index.min.js';
+    var x = document.getElementsByTagName( 'script' )[ 0 ];
+    x.parentNode.insertBefore( s, x );
+}
+
+function installMatomo() {
+    // determine vid from querystring
+    // note that this will fail in IE 11 and Opera Mini: https://caniuse.com/urlsearchparams
+    const vid = (new URLSearchParams(window.location.search)).get("vid");
+    console.log("[DEBUG] vid = " + vid);
+
+    // if we're on localhost or primo-explore-devenv, don't install
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "primo-explore-devenv") {
+        return;
+    }
+
+    // if dev, use dev matomo
+    var siteId;
+    if (vid === "01NYU_INST:NYU_DEV") {
+        siteId = '9';
+        // otherwise, assume we're in prod
+    } else {
+        siteId = '6';
+    }
+    console.log("[DEBUG] matomo siteId = " + siteId);
+    // out-of-the-box script except for siteId var
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="https://nyulib.matomo.cloud/";
+        _paq.push(['setTrackerUrl', u+'matomo.php']);
+        _paq.push(['setSiteId', siteId]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src='//cdn.matomo.cloud/nyulib.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+}
+
 function injectStatusEmbed() {
     // Always use prod URL for all views:
     // https://nyu-lib.monday.com/boards/765008773/pulses/5525193850/posts/2571053345
@@ -58,6 +101,8 @@ function injectStatusEmbed() {
 }
 
 configureAndInjectLibKey();
+insertChatwidgetEmbed();
+installMatomo();
 injectStatusEmbed();
 
 // used in html/prm-brief-result-after.html
@@ -65,51 +110,3 @@ function findingAidsLinkClickHandler( event ) {
     event.stopPropagation();
 }
 
-// chatwidget-embed
-( function () {
-    var s = document.createElement( 'script' );
-    s.type = 'text/javascript';
-    s.async = true;
-    s.src = 'https://cdn.library.nyu.edu/chatwidget-embed/index.min.js';
-    var x = document.getElementsByTagName( 'script' )[0];
-    x.parentNode.insertBefore( s, x );
-} )();
-
-(function(){
-    function installMatomo() {
-        // determine vid from querystring
-        // note that this will fail in IE 11 and Opera Mini: https://caniuse.com/urlsearchparams
-        const vid = (new URLSearchParams(window.location.search)).get("vid");
-        console.log("[DEBUG] vid = " + vid);
-
-        // if we're on localhost or primo-explore-devenv, don't install
-        if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "primo-explore-devenv") {
-            return;
-        }
-
-        // if dev, use dev matomo
-        var siteId;
-        if (vid === "01NYU_INST:NYU_DEV") {
-            siteId = '9';
-        // otherwise, assume we're in prod
-        } else {
-            siteId = '6';
-        }
-        console.log("[DEBUG] matomo siteId = " + siteId);
-        // out-of-the-box script except for siteId var
-        var _paq = window._paq = window._paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function() {
-            var u="https://nyulib.matomo.cloud/";
-            _paq.push(['setTrackerUrl', u+'matomo.php']);
-            _paq.push(['setSiteId', siteId]);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.async=true; g.src='//cdn.matomo.cloud/nyulib.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-        })();
-    }
-
-    // no "DOM ready" check needed since this script is added by view package only after DOM is ready
-    installMatomo();
-})();
