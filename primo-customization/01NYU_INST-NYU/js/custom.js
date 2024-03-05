@@ -59,42 +59,49 @@ function insertChatwidgetEmbed() {
 function installMatomo() {
     // determine vid from querystring
     // note that this will fail in IE 11 and Opera Mini: https://caniuse.com/urlsearchparams
-    const vid = (new URLSearchParams(window.location.search)).get("vid");
-    console.log("[DEBUG] vid = " + vid);
+    const vid =
+        new URLSearchParams( window.location.search )
+            .get( 'vid' );
+    console.log( '[DEBUG] vid = ' + vid );
 
     // if we're on localhost or primo-explore-devenv, don't install
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "primo-explore-devenv") {
+    if ( location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === 'primo-explore-devenv' ) {
         return;
     }
 
     // if dev, use dev matomo
     var siteId;
-    if (vid === "01NYU_INST:NYU_DEV") {
+    if ( vid === '01NYU_INST:NYU_DEV' ) {
         siteId = '9';
         // otherwise, assume we're in prod
     } else {
         siteId = '6';
     }
-    console.log("[DEBUG] matomo siteId = " + siteId);
+    console.log( '[DEBUG] matomo siteId = ' + siteId );
     // out-of-the-box script except for siteId var
     var _paq = window._paq = window._paq || [];
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="https://nyulib.matomo.cloud/";
-        _paq.push(['setTrackerUrl', u+'matomo.php']);
-        _paq.push(['setSiteId', siteId]);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.async=true; g.src='//cdn.matomo.cloud/nyulib.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-    })();
+    _paq.push( [ 'trackPageView' ] );
+    _paq.push( [ 'enableLinkTracking' ] );
+    (
+        function () {
+            var u = 'https://nyulib.matomo.cloud/';
+            _paq.push( [ 'setTrackerUrl', u + 'matomo.php' ] );
+            _paq.push( [ 'setSiteId', siteId ] );
+            var d = document, g = d.createElement( 'script' ),
+                s = d.getElementsByTagName( 'script' )[ 0 ];
+            g.async = true;
+            g.src = '//cdn.matomo.cloud/nyulib.matomo.cloud/matomo.js';
+            s.parentNode.insertBefore( g, s );
+        }
+    )();
 }
 
 function injectStatusEmbed() {
     // Always use prod URL for all views:
     // https://nyu-lib.monday.com/boards/765008773/pulses/5525193850/posts/2571053345
-    const STATUS_EMBED_PROD_URL
-        = 'https://cdn.library.nyu.edu/statuspage-embed/index.min.js';
+    const STATUS_EMBED_PROD_URL =
+        'https://cdn.library.nyu.edu/statuspage-embed/index.min.js';
     const scriptTag = document.createElement( 'script' );
     scriptTag.setAttribute( 'src', STATUS_EMBED_PROD_URL );
     document.body.appendChild( scriptTag )
