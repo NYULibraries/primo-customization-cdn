@@ -6,8 +6,8 @@ template_list="alma-howovp-after prm-login-item-after alma-htgi-back-button-afte
 
 for view in $view_list
 do
-  if ! test -e $base_dir/$view/css/custom.css; then
-    echo "Missing custom.css for view '$view'; aborting!"
+  if ! test -e $base_dir/$view/css/external.css; then
+    echo "Missing external.css for view '$view'; aborting!"
     exit 1
   fi
   for template in $template_list
@@ -17,5 +17,5 @@ do
       exit 1
     fi
   done
-  echo "Verified existence of custom.css and all html templates for view '$view'"
+  echo "Verified existence of external.css and all html templates for view '$view'"
 done
