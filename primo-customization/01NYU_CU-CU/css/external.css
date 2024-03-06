@@ -242,3 +242,8 @@ prm-personal-info {
 prm-messages-and-blocks-overview {
     display: none !important;
 }
+
+/* Hide brief result snippets */
+div.result-item-text.layout-fill.layout-column.flex>prm-snippet {
+    display: none !important;
+}
