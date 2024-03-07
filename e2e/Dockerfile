@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.39.0-focal AS builder
+FROM mcr.microsoft.com/playwright:v1.42.1-focal AS builder
 
 WORKDIR /e2e
 
