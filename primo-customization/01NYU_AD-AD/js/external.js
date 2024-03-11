@@ -1,3 +1,18 @@
+// =============================================================================
+// BEGIN NYU SHARED SECTION
+// =============================================================================
+//
+// Code in this section is identical across all dev and prod NYU views,
+// including Abu Dhabi and Shanghai views, but not including the 01NYU_INST test
+// view.
+// All code changes that need to happen in functionality defined in this
+// section should be done and tested in a single NYU view and then copied
+// to all other NYU views.  Currently, dev views are merely symlinks to their
+// prod counterparts, so this effectively means that code edits should be
+// done and tested in a single NYU prod view and then copied to the other NYU
+// prod views.
+// =============================================================================
+
 // Option 2 from:
 //     https://thirdiron.atlassian.net/wiki/spaces/BrowZineAPIDocs/pages/79200260/Ex+Libris+Primo+Integration
 function configureAndInjectLibKey() {
@@ -145,3 +160,12 @@ configureAndInjectLibKey();
 insertChatWidgetEmbed();
 injectStatusEmbed();
 installMatomo();
+
+// =============================================================================
+// END NYU SHARED SECTION
+// =============================================================================
+//
+// All code after this point should be potentially unique to this view,
+// and should NOT be copied indiscriminately to the other views.
+// =============================================================================
+
