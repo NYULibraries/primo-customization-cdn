@@ -241,7 +241,8 @@ function getHomePageHtml() {
         <md-card class="default-card _md md-primoExplore-theme" data-cy="home-harmful-language">
             <md-card-title>
                 <md-card-title-text>
-                    <h2 class="md-headline">Help Us! Replace Harmful Language and Outdated Subject Headings in the
+                    <h2 class="md-headline"><span id="from-cdn-indicator" style="font-weight: bold; color: teal;">[FROM CDN]</span>
+                    Help Us Replace Harmful Language and Outdated Subject Headings in the
                         Catalog</h2>
                 </md-card-title-text>
             </md-card-title>
