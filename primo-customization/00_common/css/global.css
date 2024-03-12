@@ -27,3 +27,8 @@ prm-no-search-result>md-card {
     transform: none;
     transition: none;
 }
+
+/* Hide brief result snippets */
+div.result-item-text.layout-fill.layout-column.flex>prm-snippet {
+    display: none !important;
+}
