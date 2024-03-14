@@ -180,7 +180,7 @@ function customizeHomePage( homePageHtml ) {
     } else {
         // Home page component has not rendered yet.  This will often be the case if
         // not loading the page from cache.
-        console.log( `[DEBUG] Home page <div> not created yet, create MutationObserver` );
+        console.log( '[DEBUG] Home page <div> not created yet, create MutationObserver' );
         createMutationObserver( homePageHtml );
     }
 }
