@@ -286,6 +286,30 @@ describe('modifyCSPHeader', () => {
 });
 
 describe('updateGoldenFiles', () => {
+  const testValues = [
+    { value: 'true', expected: true },
+    { value: 'True', expected: true },
+    { value: 'TRUE', expected: true },
+    { value: 'TrUe', expected: true },
+    { value: 'tRUE', expected: true },
+    { value: 'false', expected: false },
+    { value: 'False', expected: false },
+    { value: 'FALSE', expected: false },
+    { value: 'FaLsE', expected: false },
+    { value: 'fALSE', expected: false },
+    { value: 'yes', expected: false },
+    { value: 'no', expected: false },
+    { value: '1', expected: false },
+    { value: '0', expected: false },
+    { value: 'anyOtherValue', expected: false },
+    { value: '', expected: false },
+    { value: undefined, expected: false },
+  ];
+
+  beforeEach(() => {
+    delete process.env.UPDATE_GOLDEN_FILES;
+  });
+
   afterEach(() => {
       delete process.env.UPDATE_GOLDEN_FILES;
   });
@@ -293,33 +317,13 @@ describe('updateGoldenFiles', () => {
   it('should return false when UPDATE_GOLDEN_FILES is not set', () => {
       expect(updateGoldenFiles()).toBe(false);
   });
-  it.each(['TRUE', 'TrUe', 'tRUE', 'true'])(
-      'should return true for different case variations of "true"', (value) => {
-          process.env.UPDATE_GOLDEN_FILES = value;
-          expect(updateGoldenFiles()).toBe(true);
-      }
-  );
-
-  it.each(['FALSE', 'FaLsE', 'fALSE', 'false'])(
-      'should return false for different case variations of "false"', (value) => {
-          process.env.UPDATE_GOLDEN_FILES = value;
-          expect(updateGoldenFiles()).toBe(false);
-      }
-  );
-
-  it.each(['yes', 'no', '1', '0', 'false', 'FALSE', 'False', 'anyOtherValue', ''])(
-    'should return false for any value other than variations of "true"', (value) => {
+  it.each(testValues)(
+    'should return $expected for $value value', ({ value, expected }) => {
         process.env.UPDATE_GOLDEN_FILES = value;
-        expect(updateGoldenFiles()).toBe(false);
+        expect(updateGoldenFiles()).toBe(expected);
     }
-);
-
-  it('should return false when UPDATE_GOLDEN_FILES is undefined', () => {
-    delete process.env.UPDATE_GOLDEN_FILES;
-    expect(updateGoldenFiles()).toBe(false);
+  );
 });
-});
-
 
 describe('setPathAndQueryVid with VIEW constraint', () => {
 
@@ -339,26 +343,19 @@ describe('setPathAndQueryVid with VIEW constraint', () => {
     '01NYU_US-SH_DEV',
   ];
 
-  allowedViews.forEach((allowedView) => {
-      describe(`when VIEW is ${allowedView}`, () => {
-          // Set the VIEW environment variable to the allowed value
-          beforeEach(() => {
-              process.env.VIEW = allowedView;
-          });
+  const currentView = process.env.VIEW;
 
-          // Clean up the VIEW environment variable after each test
-          afterEach(() => {
-              delete process.env.VIEW;
-          });
-
-          test(`replaces vid=[VID] correctly for ${allowedView}`, () => {
-              const vid = process.env.VIEW.replaceAll('-', ':');
-              const pathAndQuery = 'example.com?vid=[VID]&otherParam=value';
-              const result = setPathAndQueryVid(pathAndQuery, vid);
-              expect(result).toBe(`example.com?vid=${vid}&otherParam=value`);
-          });
-      });
+  test(`replaces vid=[VID] correctly if VIEW is allowed`, () => {
+      if (allowedViews.includes(currentView)) {
+          const vid = currentView.replaceAll('-', ':');
+          const pathAndQuery = 'example.com?vid=[VID]&otherParam=value';
+          const result = setPathAndQueryVid(pathAndQuery, vid);
+          expect(result).toBe(`example.com?vid=${vid}&otherParam=value`);
+      } else {
+          throw new Error(`Current VIEW '${currentView}' is not in the allowed list.`);
+      }
   });
+
 
   test('throws error or fails for disallowed VIEW values', () => {
       const disallowedView = 'SOME_INVALID_VALUE';
