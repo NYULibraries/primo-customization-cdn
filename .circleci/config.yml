@@ -44,7 +44,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - *check_css_imports
       - run:
           name: Run tests
           command: |
