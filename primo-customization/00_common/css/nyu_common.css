@@ -1,7 +1,7 @@
 /* Common CSS for AD, NYU, TEST, SH  */
 
 /* Importing color variables into common.css */
-@import "modules/1/colors-variables.css";
+@import "modules/colors-variables.css";
 
 
 /* Hover-state text color for all main menu labels */
