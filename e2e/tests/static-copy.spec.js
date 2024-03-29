@@ -42,7 +42,7 @@ for (let i = 0; i < testCases.length; i++) {
         continue;
     }
 
-    test.describe.only(`${view}: ${testCase.name}`, () => {
+    test.describe(`${view}: ${testCase.name}`, () => {
 
         test.beforeEach(async ({ page }) => {
             if ( process.env.CONTAINER_MODE ) {
