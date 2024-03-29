@@ -9,7 +9,6 @@ const { test, expect } = require('@playwright/test');
 const view = process.env.VIEW;
 const vid = view.replaceAll('-', ':');
 
-
 const testCases = [
     {
         key             : 'home-page',
