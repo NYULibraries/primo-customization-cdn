@@ -12,6 +12,13 @@ const vid = view.replaceAll('-', ':');
 
 const testCases = [
     {
+        key             : 'home-page',
+        name            : 'Home page',
+        pathAndQuery    : '/discovery/search?vid=[VID]',
+        elementToTest   : 'prm-static',
+        waitForSelector : 'md-card[ data-cy="home-need-help" ]',
+    },
+    {
         key: 'no-search-results',
         name: 'No-search-results page',
         pathAndQuery: '/discovery/search?vid=[VID]&query=any,contains,gasldfjlak%3D%3D%3Dasgjlk%26%26%26%26!!!!&tab=Unified_Slot&search_scope=DN_and_CI&offset=0',
@@ -22,6 +29,19 @@ const testCases = [
 
 for (let i = 0; i < testCases.length; i++) {
     const testCase = testCases[i];
+
+    // For now, we only run home page tests for 01NYU_INST-TESTWS01, because
+    // the package repo homepage_en.html files for dev Abu Dhabi and Shanghai
+    // have "[Abu Dhabi DEV]" and "[Shanghai DEV]" test in them to prevent us
+    // from confusing them with the prod views, and in this CDN repo we have
+    // symlinked the dev golden/ directories to prod, causing false positives
+    // due to prod Abu Dhabi and Shanghai not having the dev indicator text.
+    // TODO: Decide if we still want to have those "[* DEV]" markers, and if so
+    // how to get our CDN tests to work with them.
+    if ( testCase.key === 'home-page' && view !== '01NYU_INST-TESTWS01' ) {
+        continue;
+    }
+
     test.describe(`${view}: ${testCase.name}`, () => {
 
         test.beforeEach(async ({ page }) => {

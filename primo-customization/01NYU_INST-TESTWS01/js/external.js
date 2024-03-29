@@ -1,3 +1,18 @@
+// =============================================================================
+// BEGIN NYU SHARED SECTION
+// =============================================================================
+//
+// Code in this section is identical across all dev and prod NYU views,
+// including Abu Dhabi and Shanghai views, but not including the 01NYU_INST test
+// view.
+// All code changes that need to happen in functionality defined in this
+// section should be done and tested in a single NYU view and then copied
+// to all other NYU views.  Currently, dev views are merely symlinks to their
+// prod counterparts, so this effectively means that code edits should be
+// done and tested in a single NYU prod view and then copied to the other NYU
+// prod views.
+// =============================================================================
+
 // Option 2 from:
 //     https://thirdiron.atlassian.net/wiki/spaces/BrowZineAPIDocs/pages/79200260/Ex+Libris+Primo+Integration
 function configureAndInjectLibKey() {
@@ -105,13 +120,6 @@ function installMatomo() {
         '01NYU_US:SH_DEV' : '11',
     }
 
-    // determine vid from querystring
-    // note that this will fail in IE 11 and Opera Mini: https://caniuse.com/urlsearchparams
-    const vid =
-        new URLSearchParams( window.location.search )
-            .get( 'vid' );
-    console.log( '[DEBUG] vid = ' + vid );
-
     // if we're on localhost or primo-explore-devenv, don't install
     if ( location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === 'primo-explore-devenv' ) {
         return;
@@ -129,6 +137,89 @@ function installMatomo() {
 }
 
 // ****************************************
+// Customize home page
+// ****************************************
+
+const homePageElementTagName = 'prm-static';
+
+function createMutationObserver( homePageHtml ) {
+    const callback = ( mutationList, observer ) => {
+        for ( const mutation of mutationList ) {
+            if ( mutation.type === 'childList' ) {
+                setHomePageHtml( mutation.addedNodes[ 0 ], homePageHtml );
+
+                observer.disconnect();
+            }
+        }
+    };
+
+    const homePageElement = document.querySelector( homePageElementTagName );
+    const config = { childList : true };
+
+    const observer = new MutationObserver( callback );
+    observer.observe( homePageElement, config );
+}
+
+async function customizeHomePage() {
+    const homePageHtml = await getHomePageHtml();
+    if ( ! homePageHtml ) {
+        console.error( '[ERROR] customizeHomePage() was called without `homePageHtml`' );
+
+        return;
+    }
+
+    // Get the <div> within the rendered home page component.  It may or may not have
+    // been created yet.
+    const homePageDivElement = getHomePageDivElement();
+
+    if ( homePageDivElement ) {
+        // Home page component has been rendered.  This will usually be the case if
+        // the page is cached.
+        console.log( '[DEBUG] Home page <div> already created, customize immediately' );
+        setHomePageHtml( homePageDivElement, homePageHtml );
+    } else {
+        // Home page component has not rendered yet.  This will often be the case if
+        // not loading the page from cache.
+        console.log( '[DEBUG] Home page <div> not created yet, create MutationObserver' );
+        createMutationObserver( homePageHtml );
+    }
+}
+
+function getHomePageDivElement() {
+    return document.querySelector( `${ homePageElementTagName } div` );
+}
+
+async function getHomePageHtml() {
+    // See note in Main section about duplicating the package repo `vid` and
+    // `view` code here in the CDN repo.  Here we need `view` to construct
+    // the CDN base URL for the view and hence for the home page HTML file.
+    // An alternate method for getting the HTML file URL would be to remove
+    // the part of the path leading up from this file to the common ancestor
+    // directory for the HTML files.  This method seems to be more transparent,
+    // and might be less brittle than having to know the name of this file
+    // for path suffix removal.
+    const view = vid.replace( ':', '-' );
+    console.log( '[DEBUG] view = ' + view );
+
+    const currentScriptUrl = new URL( document.currentScript.src );
+    const cdnBaseUrlForView = `${ currentScriptUrl.origin }/primo-customization/${ view }`;
+    const homePageHtmlFile = `${ cdnBaseUrlForView }/html/_static/homepage_en-external.html`;
+    console.log( `[DEBUG] homePageHtmlFile = ${ homePageHtmlFile }` );
+
+    let response;
+    try {
+        response = await fetch( homePageHtmlFile );
+
+        return response.text();
+    } catch ( error ) {
+        console.error( `[ERROR] Fetch of ${ homePageHtmlFile }: ${ error }` );
+    }
+}
+function setHomePageHtml( homePageDivElement, homePageHtml ) {
+    homePageDivElement.innerHTML = homePageHtml;
+}
+
+// ****************************************
 // Event handlers
 // ****************************************
 
@@ -141,7 +232,27 @@ function findingAidsLinkClickHandler( event ) {
 // MAIN
 // ****************************************
 
+// Note that these `vid` and `view` assignments are basically duplicating code
+// in the package repo, but we would have to deploy new packages in order to
+// share the `vid` and `view` values (or the code).  For now, we just repeat the
+// work here and hope there's accidental divergence later.
+
+// This will fail in IE 11 and Opera Mini: https://caniuse.com/urlsearchparams
+const vid =
+    new URLSearchParams( window.location.search )
+        .get( 'vid' );
+console.log( '[DEBUG] vid = ' + vid );
+
 configureAndInjectLibKey();
 insertChatWidgetEmbed();
 injectStatusEmbed();
 installMatomo();
+customizeHomePage();
+
+// =============================================================================
+// END NYU SHARED SECTION
+// =============================================================================
+//
+// All code after this point should be potentially unique to this view,
+// and should NOT be copied indiscriminately to the other views.
+// =============================================================================
