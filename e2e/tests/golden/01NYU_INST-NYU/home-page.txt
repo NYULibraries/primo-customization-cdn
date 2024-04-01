@@ -1,4 +1,4 @@
-[DEBUG: THIS TEST SHOULD NEVER PASS] Help Us Replace Harmful Language and Outdated Subject Headings in the Catalog
+Help Us Replace Harmful Language and Outdated Subject Headings in the Catalog
 
 NYU Libraries has launched the Changing the Subject project (Google Doc) to remove harmful and outdated subject headings in our catalog.
 
