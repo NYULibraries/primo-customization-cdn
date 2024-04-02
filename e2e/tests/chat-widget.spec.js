@@ -34,11 +34,13 @@ if ( viewsForTest.includes( view ) ) {
         : 'div#nyulibraries_chat_widget';
 
     const testCases = [
-        {
+        {   
+            key          : 'home-page',
             name         : 'Home page',
             pathAndQuery : '/discovery/search?vid=[VID]',
         },
-        {
+        {   
+            key          : 'search-art',
             name         : '[search] Art',
             pathAndQuery : '/discovery/search?vid=[VID]&query=any,contains,art&tab=LibraryCatalog&search_scope=MyInstitution&offset=0',
         },
@@ -47,7 +49,7 @@ if ( viewsForTest.includes( view ) ) {
     for ( let i = 0; i < testCases.length; i++ ) {
         const testCase = testCases[ i ];
 
-        test.describe( `${view}: ${testCase.name}`, () => {
+        test.describe( `${view}: ${testCase.key}`, () => {
 
             test.beforeEach( async ( { page } ) => {
                 if ( process.env.CONTAINER_MODE ) {
@@ -67,11 +69,11 @@ if ( viewsForTest.includes( view ) ) {
             } );
 
             test( 'chat widget HTML matches expected', async ({ page }) => {
-                const actualHTMLFile = `tests/actual/${view}/chat-widget-${testCase.name}.html`;
+                const actualHTMLFile = `tests/actual/${view}/chat-widget-${testCase.key}.html`;
                 try {
                    fs.unlinkSync(actualHTMLFile);
                 } catch (error) {  }
-                const diffHTMLFile = `tests/diffs/${view}/chat-widget-${testCase.name}.txt`;
+                const diffHTMLFile = `tests/diffs/${view}/chat-widget-${testCase.key}.txt`;
                 try {
                     fs.unlinkSync(diffHTMLFile);
                 } catch (error) {  }
@@ -80,7 +82,7 @@ if ( viewsForTest.includes( view ) ) {
 
                 const actualHTML = beautifyHtml(removeSourceMappingUrlComments(await page.locator( CHAT_WIDGET_SELECTOR ).innerHTML()));
 
-                const goldenFile = `tests/golden/${view}/chat-widget-${testCase.name}.html`;
+                const goldenFile = `tests/golden/${view}/chat-widget-${testCase.key}.html`;
                 if (updateGoldenFiles()) {
                     fs.writeFileSync(goldenFile, actualHTML);
 
@@ -124,7 +126,7 @@ ${diffOutput}
 
                 await page.locator( CHAT_WIDGET_SELECTOR ).waitFor();
 
-                await expect( page.locator( CHAT_WIDGET_SELECTOR ) ).toHaveScreenshot( `chat-widget-${testCase.name}.png` );
+                await expect( page.locator( CHAT_WIDGET_SELECTOR ) ).toHaveScreenshot( `chat-widget-${testCase.key}.png` );
             });
 
         } ) // End `test.describe(...)`
