@@ -9,7 +9,6 @@ const { test, expect } = require('@playwright/test');
 const view = process.env.VIEW;
 const vid = view.replaceAll('-', ':');
 
-
 const testCases = [
     {
         key: 'no-search-results',
@@ -22,6 +21,7 @@ const testCases = [
 
 for (let i = 0; i < testCases.length; i++) {
     const testCase = testCases[i];
+
     test.describe(`${view}: ${testCase.name}`, () => {
 
         test.beforeEach(async ({ page }) => {

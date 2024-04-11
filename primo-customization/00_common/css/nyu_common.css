@@ -1,7 +1,45 @@
-@import url("../../00_common/css/global.css");
-@import url("../../00_common/css/menu.css");
+/* Common CSS for AD, NYU, TEST, SH  */
+
+/* Importing color variables into common.css */
+@import "modules/colors-variables.css";
+
+
+/* Hover-state text color for all main menu labels */
+prm-topbar .md-button:not(.disable-hover):hover:not([disabled]):hover:not([disabled]):not(.close-btn-favorits-warning-message) {
+    color: var(--primary-black);
+}
+
+
+/*  Loading diamond color */
+prm-spinner.half-transparent .diamond {
+    background-color: var(--primary-black);
+}
+
+prm-spinner.dark-on-light .diamond {
+    background-color: var(--primary-black);
+}
 
 /*** A11y colors implementation ***/
+/* sidebar transparent background */
+.md-dialog-container.fixed-container {
+    background-color: transparent;
+}
+
+/* Override the existing hover color with var(--primary-purple) */
+prm-facet-exact .section-title:hover span,
+prm-facet-range .section-title:hover span,
+prm-facet-exact .section-title:focus span,
+prm-facet-range .section-title:focus span {
+    color: var(--primary-purple);
+}
+
+
+prm-citation-trails-indication .md-button.button-with-icon,
+prm-citation-trails-indication .md-button.md-icon-button {
+    color: var(--primary-purple);
+}
+
+
 .prm-positive,
 .status-available,
 [class*="available"],
@@ -16,13 +54,13 @@
 .fulltext_linktorsrc_topic,
 .fulltext_topic,
 .esploro_status\.not_restricted {
-    color: #0F6000;
+    color: var(--success-green);
 }
 
 .md-button.arrow-link-button prm-quick-link .button-content span,
 prm-quick-link .md-button.arrow-link-button .button-content span,
 prm-quick-link a span {
-    color: #0F6000;
+    color: var(--success-green);
 }
 
 .prm-negative.prm-hue1,
@@ -35,7 +73,7 @@ prm-quick-link a span {
 .duedate,
 .esploro_status\.embargoed,
 .esploro_status\.restricted {
-    color: #035488;
+    color: var(--restricted-unavailable);
 }
 
 .prm-open-access {
@@ -50,7 +88,7 @@ prm-quick-link a span {
 prm-citation-color.prm-hue2,
 prm-citation-trails-item .item-type,
 prm-chapters-and-reviews .prm-hue2.item-type {
-    color: #57068c;
+    color: var(--primary-purple);
 }
 
 .prm-primary-color.prm-hue2,
@@ -67,11 +105,11 @@ prm-pre-filters md-input-container.prm-hue2.is-active,
 .md-autocomplete-suggestions .prm-hue2.suggestion-scope,
 md-tab-content .tab-content-header md-input-container md-select-value .prm-hue2.md-text,
 prm-resource-type-filter-bar md-input-container.prm-hue2.is-active {
-    color: #57068c;
+    color: var(--primary-purple);
 }
 
 .md-button {
-    color: #1C2127;
+    color: var(--background-color-black);
 }
 
 .md-button:hover:not([disabled]),
@@ -79,38 +117,10 @@ prm-resource-type-filter-bar md-input-container.prm-hue2.is-active {
 .md-button.hovered:not([disabled]),
 .md-button.md-focused:not([disabled]),
 .md-button._md-focused:not([disabled]) {
-    color: white;
-    background-color: #1C2127;
+    color: var(--white);
+    background-color: var(--background-color-black);
 }
 
-/* Enlarge top bar to resize the NYSID logo so it's readable */
-prm-topbar {
-    height: 150px;
-    border-bottom: 10px solid #ce3438;
-}
-
-prm-topbar .top-nav-bar {
-    background-color: white;
-}
-
-prm-topbar div.product-logo {
-    background-color: #ce3438;
-}
-
-prm-topbar .md-button {
-    color: #22272d !important;
-}
-
-
-/* Remove the underline on hover */
-prm-logo .product-logo .organization-logo:hover {
-    box-shadow: none !important;
-}
-
-/* Align the logo horizontally and vertically */
-prm-logo .product-logo .organization-logo {
-    display: flex;
-}
 
 /* ***************************************** */
 /* Styles for browse search & journal search */
@@ -120,13 +130,13 @@ prm-logo .product-logo .organization-logo {
 .prm-alert-bg,
 .bar.alert-bar,
 .classic-input .search-scope {
-    background-color: rgba(255, 255, 255, 1) !important;
+    background-color: var(--background-border-white) !important;
 }
 
 .prm-alert-border,
 .bar.alert-bar,
 .classic-input .search-scope {
-    border-color: rgba(255, 255, 255, 1) !important;
+    border-color: var(--background-border-white) !important;
 }
 
 prm-autocomplete input {
@@ -136,7 +146,7 @@ prm-autocomplete input {
 prm-browse-search-bar {
     padding-bottom: 60px;
     background-image: url("../assets/img/banner-bg.png") !important;
-    background-color: rgba(255, 255, 255, 1) !important;
+    background-color: var(--background-border-white) !important;
     /* This will act as a fallback */
 }
 
@@ -164,14 +174,14 @@ md-icon.md-primoExplore-theme {
 
 prm-browse-search-bar .clear-button.is-visible:hover,
 prm-browse-search-bar .clear-button.is-visible:focus {
-    color: #fff;
-    background-color: #3a3a3a;
+    color: var(--text-white);
+    background-color: var(--primary-black);
 }
 
 prm-atoz-search-bar {
     padding-bottom: 60px;
     background-image: url("../assets/img/banner-bg.png") !important;
-    background-color: rgba(255, 255, 255, 1) !important;
+    background-color: var(--background-border-white) !important;
     /* This will act as a fallback */
 }
 
@@ -281,11 +291,20 @@ a:focus-visible,
     box-shadow: inset 0 0 0 2px #3dbbdb !important;
 }
 
+
+
+
+
+prm-logo {
+    /* Override `prm-topbar prm-logo` from (Chrome Dev Tools link address):
+    https://sandbox02-na.primo.exlibrisgroup.com/discovery/components/search/topbar/_top-bar.scss */
+    max-width: 300px !important;
+}
+
 .logo-image {
     display: block;
     margin: auto;
-    width: 120px;
-    height: 120px;
+    width: 207px;
 }
 
 #banner>.md-primoExplore-theme {
@@ -303,31 +322,31 @@ a:focus-visible,
 /* EVERYTHING BELOW app-colors / look and feel overrides */
 /* ***************************************************** */
 
-/* search bar */
-
-prm-search-bar,
-prm-tags-search-bar,
-prm-browse-search-bar {
-    background-image: none;
+/* search bar background image */
+prm-search-bar {
     background-color: #f5f7fa;
+    background-image: url('../assets/img/banner-bg.png');
 }
 
-
+.prm-secondary-color,
+prm-search-bookmark-filter .md-button,
+prm-topbar .top-nav-bar {
+    color: var(--primary-purple);
+}
 
 /* Advanced and simple search buttons */
-
-prm-search-bar .search-switch-buttons .md-button.switch-to-advanced {
-    background-color: none !important;
-    color: black;
+.switch-to-simple,
+.switch-to-advanced {
+    background-color: var(--primary-purple) !important;
+    color: var(--text-white) !important;
+    font-weight: bold;
     padding: 0 20px;
 }
 
 .switch-to-simple:hover,
 .switch-to-advanced:hover {
-    color: #53738c;
-    background-color: #fff;
+    background-color: #791CB4 !important;
 }
-
 
 /* buttonVoiceSearch */
 #voiceSearchButton:hover {
@@ -335,26 +354,84 @@ prm-search-bar .search-switch-buttons .md-button.switch-to-advanced {
     color: #05568a;
 }
 
-.large-icon md-icon {
-    height: 34px;
-    width: 34px;
-}
-
 /* button-confirm (magnifying glass)  */
 button.button-confirm {
-    background-color: black !important;
-    color: white !important;
+    background-color: var(--black) !important;
+    color: var(--white) !important;
 }
 
 button.button-confirm svg {
-    fill: white !important;
+    fill: var(--white) !important;
 }
 
 button.button-confirm:hover {
-    background-color: white !important;
-    color: black !important;
+    background-color: var(--white) !important;
+    color: var(--black) !important;
 }
 
 button.button-confirm:hover svg {
-    fill: black !important;
+    fill: var(--black) !important;
+}
+
+
+/* color overrides */
+.prm-primary-bg.prm-hue1,
+prm-spinner.prm-hue1.overlay-cover.light-on-dark:after,
+prm-topbar .top-nav-bar,
+prm-search-bar.prm-hue1 {
+    background-color: var(--primary-purple);
+}
+
+.prm-primary-bg.prm-hue2,
+prm-spinner.prm-hue2.overlay-cover.light-on-dark:after,
+prm-search-bar.prm-hue2,
+md-backdrop.md-opaque {
+    background-color: var(--primary-purple);
+}
+
+.prm-primary-bg.prm-hue3,
+prm-spinner.prm-hue3.overlay-cover.light-on-dark:after,
+prm-search-bar.prm-hue3 {
+    background-color: var(--primary-purple);
+}
+
+.prm-primary-bg.prm-hue3-important,
+prm-spinner.prm-hue3-important.overlay-cover.light-on-dark:after,
+prm-user-area md-fab-toolbar.md-is-open md-fab-trigger .md-fab-toolbar-background,
+prm-user-area md-fab-toolbar.md-is-open md-fab-trigger ._md-fab-toolbar-background,
+prm-search-bar.prm-hue3-important {
+    background-color: var(--primary-purple) !important;
+}
+
+.prm-primary-bg.prm-hue4,
+prm-spinner.prm-hue4.overlay-cover.light-on-dark:after,
+prm-search-bar.prm-hue4 {
+    background-color: var(--primary-purple);
+}
+
+
+/* BEGIN "Add styled feedback link to Item Details pages"
+   monday.com: https://nyu-lib.monday.com/boards/765008773/pulses/5434069666 */
+
+/* Hide feedback button in search results */
+#searchResultsContainer .prm-save-to-favorites-button-after-feedback .md-button.md-small {
+    display: none;
+}
+
+.prm-save-to-favorites-button-after-feedback .md-button.md-small {
+    background-color: #F3F3F3;
+    color: var(--primary-purple);
+}
+
+.prm-save-to-favorites-button-after-feedback:hover .md-button.md-small {
+    background-color: var(--primary-purple);
+    color: var(--white);
+}
+
+/* END "Add styled feedback link to Item Details pages" */
+
+
+/* Change text color of "full chapter" field in digitization request form */
+prm-form-field .checkbox-warning-message {
+    color: var(--primary-black);
 }
