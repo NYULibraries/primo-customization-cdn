@@ -284,15 +284,27 @@ prm-virtual-browse-item md-card>.md-button {
     background-color: rgba(51, 51, 51, 0.1);
 }
 
+/* Remove grey background on hover from "availability" links */
+.neutralized-button.arrow-link-button.md-button.md-primoExplore-theme.md-ink-ripple:hover {
+    background-color: transparent;
+}
+
+/* Update hover state style of "back to locations" button to purple background and white text */
+.back-button.button-with-icon.zero-margin.md-button.md-primoExplore-theme.md-ink-ripple:hover:not([disabled]) {
+    color: var(--text-white);
+    background-color: var(--primary-purple);
+}
+
+prm-action-list ._md-nav-button.md-accent.md-button.md-primoExplore-theme.md-ink-ripple.md-unselected:hover {
+    background-color: var(--light-grey);
+}
+
 button:focus,
 a:focus,
 a:focus-visible,
 .md-primoExplore-theme:focus {
     box-shadow: inset 0 0 0 2px #3dbbdb !important;
 }
-
-
-
 
 
 prm-logo {
