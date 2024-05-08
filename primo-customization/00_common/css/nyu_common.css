@@ -435,3 +435,39 @@ prm-search-bar.prm-hue4 {
 prm-form-field .checkbox-warning-message {
     color: var(--primary-black);
 }
+
+/* BEGIN CSS for "Choose top 50 results" button */
+prm-search-result-tool-bar #chooseTopMax.button-link.md-button.md-primoExplore-theme.md-ink-ripple {
+    color: var(--primary-black);
+    font-style: normal;
+}
+
+/* CSS for hover state "Choose top 50 results" button */
+prm-search-result-tool-bar #chooseTopMax.button-link.md-button.md-primoExplore-theme.md-ink-ripple:hover {
+    background-color: var(--primary-purple);
+    color: var(--text-white);
+}
+
+/* CSS for focus state "Choose top 50 results" button */
+prm-search-result-tool-bar #chooseTopMax.button-link.md-button.md-primoExplore-theme.md-ink-ripple:focus {
+    background-color: transparent;
+    color: var(--primary-black);
+}
+
+/* CSS for focus and hover state */
+prm-search-result-tool-bar #chooseTopMax.button-link.md-button.md-primoExplore-theme.md-ink-ripple:focus:hover {
+    background-color: var(--primary-purple);
+    color: var(--text-white);
+}
+/* END CSS for "Choose top 50 results" button */
+
+/* BEGIN CSS "Dismiss" button */
+prm-search-result-tool-bar .dismiss-link.md-button.md-primoExplore-theme.md-ink-ripple {
+    font-style: normal;
+}
+
+/* CSS for hover state "Dismiss button" button */
+prm-search-result-tool-bar .dismiss-link.md-button.md-primoExplore-theme.md-ink-ripple:hover {
+    background-color: var(--light-grey);
+}
+/* END CSS "Dismiss" button  */
