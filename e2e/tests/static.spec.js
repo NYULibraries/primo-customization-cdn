@@ -19,8 +19,8 @@ if (viewsForStaticTest.includes(view)) {
             key: 'search-bar-submenu',
             name: 'Search bar submenu',
             pathAndQuery: '/discovery/search?vid=[VID]',
-            elementToTest: 'search-bar-sub-menu',
-            waitForSelector: 'prm-search-bar',
+            elementToTest: 'search-bar-sub-menu ul',
+            waitForSelector: 'prm-search-bar-after search-bar-sub-menu ul',
         },
         {
             key: 'display-finding-aid',
@@ -44,81 +44,88 @@ if (viewsForStaticTest.includes(view)) {
 
             });
 
-            test('page HTML matches expected', async ({ page }) => {
-                // Clean actual/ and diffs/ files
-                // NOTE:
-                // We don't bother with error handling because these files get overwritten
-                // anyway, and if there were no previous files, or if a previous cleaning/reset
-                // script or process already deleted the previous files, we don't want the errors
-                // causing distraction.
-                // If deletion fails on existing files, there's a good chance there will
-                // be errors thrown later, which will then correctly fail the test.
-                const actualFile = `tests/actual/${view}/${testCase.key}.html`;
-                try {
-                    fs.unlinkSync(actualFile);
-                } catch (error) {
-                }
-                const diffFile = `tests/diffs/${view}/${testCase.key}.html`;
-                try {
-                    fs.unlinkSync(diffFile);
-                } catch (error) {
-                }
-
-                await page.locator(testCase.waitForSelector).waitFor();
-
-                // * Do not use page.locator(...).textContent(), as the text returned
-                //   by that method will include non-human-readable text.
-                // * Do not use `page.locator( 'html' )` as neither `.innerText()` nor
-                //   `.allInnerTexts()` seem to reliably return useful text content.
-                //   Targeted locators are more reliable, and also make for slimmer
-                //   and more readable golden files.
-                let actual;
-                if (testCase.elementToTest === 'a.md-primoExplore-theme') {
-                    actual = beautifyHtml(await page.locator(testCase.elementToTest).nth(19).innerHTML());
-                } else {
-                    actual = beautifyHtml(await page.locator(testCase.elementToTest).innerHTML());
-                }
-
-                const goldenFile = `tests/golden/${view}/${testCase.key}.html`;
-                if (updateGoldenFiles()) {
-                    fs.writeFileSync(goldenFile, actual);
-
-                    console.log(`Updated golden file ${goldenFile}`);
-
-                    return;
-                }
-                const golden = beautifyHtml(fs.readFileSync(goldenFile, { encoding: 'utf8' }));
-
-                fs.writeFileSync(actualFile, actual);
-
-                const ok = actual === golden;
-
-                let message = `Actual HTML for "${testCase.name}" does not match expected text`;
-                if (!ok) {
-                    const command = `diff ${goldenFile} ${actualFile} | tee ${diffFile}`;
-                    let diffOutput;
+            if ( testCase.key === 'search-bar-submenu' ) {
+                test(`${testCase.name} screenshot matches expected `, async ({ page }) => {
+                    await page.locator(testCase.waitForSelector).waitFor();
+                    await expect( page.locator( testCase.elementToTest ) ).toHaveScreenshot(`search-bar-submenu.png`);
+                });
+            } else {
+                test(`${testCase.name} page HTML matches expected`, async ({ page }) => {
+                    // Clean actual/ and diffs/ files
+                    // NOTE:
+                    // We don't bother with error handling because these files get overwritten
+                    // anyway, and if there were no previous files, or if a previous cleaning/reset
+                    // script or process already deleted the previous files, we don't want the errors
+                    // causing distraction.
+                    // If deletion fails on existing files, there's a good chance there will
+                    // be errors thrown later, which will then correctly fail the test.
+                    const actualFile = `tests/actual/${view}/${testCase.key}.html`;
                     try {
-                        diffOutput = new TextDecoder().decode(execSync(command));
-                        message += `
-
-======= BEGIN DIFF OUTPUT ========
-===== < golden  |  > actual ======
-${diffOutput}
-======== END DIFF OUTPUT =========
-
-[Recorded in diff file: ${diffFile}]`;
-                    } catch (e) {
-                        // `diff` command failed to create the diff file.
-                        message += `  Diff command \`${command}\` failed:
-
-${e.stderr.toString()}`;
+                        fs.unlinkSync(actualFile);
+                    } catch (error) {
                     }
-                }
+                    const diffFile = `tests/diffs/${view}/${testCase.key}.html`;
+                    try {
+                        fs.unlinkSync(diffFile);
+                    } catch (error) {
+                    }
 
-                expect(ok, message).toBe(true);
-            });
-        })
-    }
+                    await page.locator(testCase.waitForSelector).waitFor();
+
+                    // * Do not use page.locator(...).textContent(), as the text returned
+                    //   by that method will include non-human-readable text.
+                    // * Do not use `page.locator( 'html' )` as neither `.innerText()` nor
+                    //   `.allInnerTexts()` seem to reliably return useful text content.
+                    //   Targeted locators are more reliable, and also make for slimmer
+                    //   and more readable golden files.
+                    let actual;
+                    if (testCase.elementToTest === 'a.md-primoExplore-theme') {
+                        actual = beautifyHtml(await page.locator(testCase.elementToTest).nth(19).innerHTML());
+                    } else {
+                        actual = beautifyHtml(await page.locator(testCase.elementToTest).innerHTML());
+                    }
+
+                    const goldenFile = `tests/golden/${view}/${testCase.key}.html`;
+                    if (updateGoldenFiles()) {
+                        fs.writeFileSync(goldenFile, actual);
+
+                        console.log(`Updated golden file ${goldenFile}`);
+
+                        return;
+                    }
+                    const golden = beautifyHtml(fs.readFileSync(goldenFile, { encoding: 'utf8' }));
+
+                    fs.writeFileSync(actualFile, actual);
+
+                    const ok = actual === golden;
+
+                    let message = `Actual HTML for "${testCase.name}" does not match expected text`;
+                    if (!ok) {
+                        const command = `diff ${goldenFile} ${actualFile} | tee ${diffFile}`;
+                        let diffOutput;
+                        try {
+                            diffOutput = new TextDecoder().decode(execSync(command));
+                            message += `
+
+    ======= BEGIN DIFF OUTPUT ========
+    ===== < golden  |  > actual ======
+    ${diffOutput}
+    ======== END DIFF OUTPUT =========
+
+    [Recorded in diff file: ${diffFile}]`;
+                        } catch (e) {
+                            // `diff` command failed to create the diff file.
+                            message += `  Diff command \`${command}\` failed:
+
+    ${e.stderr.toString()}`;
+                        }
+                    }
+
+                    expect(ok, message).toBe(true);
+                }); // end test
+           } // end else
+       }) // end test.describe
+    } // end for loop
 } else {
     test.skip(`Skipping static.spec.js tests because VIEW does not match ${viewsForStaticTest.join(', ')}`, async () => {
         // This test will be skipped
