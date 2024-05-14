@@ -1,5 +1,3 @@
-version: "3.8"
-
 x-build-e2e: &x-build-e2e
   image: primo-customization-cdn-e2e
   build:
