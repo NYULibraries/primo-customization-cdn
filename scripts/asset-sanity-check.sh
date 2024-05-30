@@ -6,6 +6,12 @@ template_list="alma-howovp-after prm-login-item-after alma-htgi-back-button-afte
 
 for view in $view_list
 do
+
+  # Skip the 00_common directory
+  if [ "$view" = "00_common" ]; then
+    continue
+  fi
+
   if ! test -e $base_dir/$view/css/external.css; then
     echo "Missing external.css for view '$view'; aborting!"
     exit 1
