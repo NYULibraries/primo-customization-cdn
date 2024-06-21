@@ -62,19 +62,6 @@ services:
       - primo-customization-cdn-net
     # volumes:
     #   - ./e2e/tests/golden:/e2e/tests/golden
-  e2e-update-screenshots:
-    <<: *x-build-e2e
-    depends_on:
-      - primo-explore-devenv
-    command: "yarn test:e2e --update-snapshots"
-    environment:
-      <<: *x-environment
-      PLAYWRIGHT_BASE_URL: http://primo-explore-devenv:8003
-    ipc: host
-    networks:
-      - primo-customization-cdn-net
-    # volumes:
-    #   - ./e2e/tests/chat-widget.spec.js-snapshots/:/e2e/tests/chat-widget.spec.js-snapshots/
 
   # services for local tls, i.e. for login
   tls:
