@@ -17,18 +17,6 @@ aws-export: &aws-export
       echo 'export AWS_SECRET_ACCESS_KEY=${WEB_CDN_AWS_SECRET_ACCESS_KEY}' >> $BASH_ENV
       echo 'export AWS_REGION=us-east-1' >> $BASH_ENV
 
-# Note that `aws s3 sync ... --exact-timestamps` only works for downloads from S3,
-# not uploads: https://github.com/aws/aws-cli/issues/4460.  The only safe way
-# to update is to upload absolutely everything using `cp` and then deleting
-# removed files using `sync --delete`.  There are many other open GitHub issues
-# related to this behavior.  Here's another: https://github.com/aws/aws-cli/issues/3273.
-aws-sync-s3: &aws-sync-s3
-  run:
-    name: Deploy to S3
-    command: |
-      aws s3 cp --recursive primo-customization $S3_URI/primo-customization && \
-      aws s3 sync --delete primo-customization $S3_URI/primo-customization
-
 version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@4.1.1
@@ -116,6 +104,18 @@ jobs:
     environment:
       VIEW: 01NYU_US-SH
 
+  deploy_test:
+    <<: *docker-defaults
+    steps:
+      - checkout
+      - setup_remote_docker
+      - *asset_sanity_check
+      - *aws-export
+      - aws-cli/setup
+      - run:
+          name: Deploy test views to dev S3
+          command: ./scripts/deploy.sh test
+
   deploy_dev:
     <<: *docker-defaults
     steps:
@@ -124,7 +124,10 @@ jobs:
       - *asset_sanity_check
       - *aws-export
       - aws-cli/setup
-      - *aws-sync-s3
+      - run:
+          name: Deploy dev views to dev S3
+          command: ./scripts/deploy.sh dev
+
   deploy_prod:
     <<: *docker-defaults
     steps:
@@ -133,7 +136,9 @@ jobs:
       - *asset_sanity_check
       - *aws-export
       - aws-cli/setup
-      - *aws-sync-s3
+      - run:
+          name: Deploy prod views to prod S3
+          command: ./scripts/deploy.sh prod
 
 workflows:
   version: 2.1
@@ -198,7 +203,6 @@ workflows:
             - run-e2e-nyhs-dev
             - run-e2e-nysid-dev
             - run-e2e-nyu-dev
-            - run-e2e-nyu-test
             - run-e2e-sh-dev
           context: web-cdn-aws-nyulitsdev
           filters:
@@ -217,3 +221,11 @@ workflows:
           filters:
             branches:
               only: main
+      - deploy_test:
+          requires:
+            - run-e2e-nyu-test
+          context: web-cdn-aws-nyulitsdev
+          filters:
+            branches:
+              only:
+                - /test\/.*/
