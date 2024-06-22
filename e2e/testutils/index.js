@@ -62,15 +62,8 @@ async function modifyCSPHeader(page) {
     });
 }
 
-function removeSourceMappingUrlComments(html) {
-    const regex = new RegExp( '/\\*#\\ssourceMappingURL=\\s*\\S+\\s\\*\\/', 'g' );
-
-    return html.replace( regex, '/* E2E TEST EDIT: sourceMappingURL comments elided */' );
-  }
-
 module.exports = {
     modifyCSPHeader,
-    removeSourceMappingUrlComments,
     setPathAndQueryVid,
     updateGoldenFiles
 };
