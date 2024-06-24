@@ -44,7 +44,7 @@ find "$base_dir" -type f -path "*/css/*.css" -print0 | while IFS= read -r -d '' 
         # File contains @import, process it
         file_dir=$(dirname "$file")
 
-        grep -oE "$regex" "$file" | while read -r import_line; do
+        grep -oE "$regexImportString" "$file" | while read -r import_line; do
             # Extract the actual path
             import_path=$(echo "$import_line" | sed -E "s/$regexImportString/\2/")
             # Check if the extracted path resolves
