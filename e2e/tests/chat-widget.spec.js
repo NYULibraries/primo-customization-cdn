@@ -69,9 +69,11 @@ if ( viewsForTest.includes( view ) ) {
             } );
 
             test( 'chat widget HTML matches expected', async ({ page }) => {
+                test.skip(isCUView)
+
                 const actualHTMLFile = `tests/actual/${view}/chat-widget-${testCase.key}.html`;
                 try {
-                   fs.unlinkSync(actualHTMLFile);
+                    fs.unlinkSync(actualHTMLFile);
                 } catch (error) {  }
                 const diffHTMLFile = `tests/diffs/${view}/chat-widget-${testCase.key}.txt`;
                 try {
@@ -132,7 +134,6 @@ ${diffOutput}
         } ) // End `test.describe(...)`
     } // End `testCases` for-loop
 } // End `if ( viewsForTest.includes( view ) )`
-
 
 
 

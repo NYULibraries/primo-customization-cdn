@@ -66,7 +66,7 @@ services:
     <<: *x-build-e2e
     depends_on:
       - primo-explore-devenv
-    command: "yarn test:e2e --update-snapshots"
+    command: ["yarn", "playwright", "test", "--update-snapshots"]
     environment:
       <<: *x-environment
       PLAYWRIGHT_BASE_URL: http://primo-explore-devenv:8003
