@@ -104,4 +104,15 @@ Update golden files:
 VIEW=01NYU_INST-NYU_DEV docker compose up e2e-update-golden-files
 ```
 
+Update chatwidget PNG files for NYU views:
+
+```shell
+VIEW=[VIEW] docker compose up e2e-update-screenshots
+```
+For example:
+
+```shell
+VIEW=01NYU_INST-NYU_DEV docker compose up e2e-update-screenshots
+```
+
 ---
