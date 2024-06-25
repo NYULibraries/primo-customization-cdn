@@ -44,6 +44,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - *check_css_imports
       - run:
           name: Run tests
           command: |
@@ -128,7 +129,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - *asset_sanity_check
-      - *check_css_imports
       - *aws-export
       - aws-cli/setup
       - *aws-sync-s3
@@ -138,7 +138,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - *asset_sanity_check
-      - *check_css_imports
       - *aws-export
       - aws-cli/setup
       - *aws-sync-s3
