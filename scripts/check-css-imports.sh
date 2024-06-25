@@ -15,6 +15,9 @@ unresolved_errors=()
 resolve_import_path() {
     local import_path=$1
     local file_dir=$2
+    
+    local import_status
+    import_status="$import_path in $file_dir/$(basename "$file")"
 
     # Skip external URLs
     if [[ "$import_path" =~ ^https?:// ]]; then
@@ -25,14 +28,12 @@ resolve_import_path() {
     full_path=$(realpath -- "$file_dir/$import_path" 2>/dev/null)
 
     if [[ ! -f "$full_path" ]]; then
-        local unresolved_entry
-        unresolved_entry="$import_path in $file_dir/$(basename "$file")"
-        echo "Unresolved @import '$unresolved_entry'"
-        unresolved_errors+=("$unresolved_entry")
+        echo "Unresolved @import '$import_status'"
+        unresolved_errors+=("$import_status")
         return 0
     fi
 
-    echo "Resolved @import '$import_path' in $file_dir/$(basename "$file")"
+    echo "Resolved @import '$import_status'"
     return 0
 }
 
