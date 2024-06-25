@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 base_dir="primo-customization"
 regexImportString="@import (url\()?['\"]?([^'\"\)]+)['\"]?\)?;"
@@ -10,51 +10,50 @@ regexImportString="@import (url\()?['\"]?([^'\"\)]+)['\"]?\)?;"
 #   @import url("path/to/file");
 #   @import url(path/to/file);
 
+unresolved_errors=()
+
 resolve_import_path() {
     local import_path=$1
     local file_dir=$2
 
     # Skip external URLs
-    # Bash regex =~ operator
-    # https://stackoverflow.com/questions/19441521/bash-regex-operator
     if [[ "$import_path" =~ ^https?:// ]]; then
         return 0
     fi
-    # realpath to obtain the absolute path of a file via Shell
-    # https://stackoverflow.com/questions/3915040/how-to-obtain-the-absolute-path-of-a-file-via-shell-bash-zsh-sh
-    local full_path=$(realpath -- "$file_dir/$import_path" 2>/dev/null)
 
-    # https://www.gnu.org/software/bash/manual/html_node/Redirections.html
+    local full_path
+    full_path=$(realpath -- "$file_dir/$import_path" 2>/dev/null)
+
     if [[ ! -f "$full_path" ]]; then
-        echo "Error: Unresolved @import '$import_path' in $file_dir" >&2
-        return 1
+        local unresolved_entry
+        unresolved_entry="$import_path in $file_dir/$(basename "$file")"
+        echo "Unresolved @import '$unresolved_entry'"
+        unresolved_errors+=("$unresolved_entry")
+        return 0
     fi
+
+    echo "Resolved @import '$import_path' in $file_dir/$(basename "$file")"
     return 0
 }
 
-# First, find all CSS files in css subdirectories
-# Then, check if they contain @import or @import url() statements before processing further
-# meaning of -print0:
-# https://stackoverflow.com/questions/56221518/whats-meaning-of-print0-in-following-command
-# while IFS= read -r -d $'' file ... explanation:
-# https://stackoverflow.com/questions/18217930/while-ifs-read-r-d-0-file-explanation#comment26704801_18217930
-# read -r -d '' file flags: https://linuxcommand.org/lc3_man_pages/readh.html
-find "$base_dir" -type f -path "*/css/*.css" -print0 | while IFS= read -r -d '' file; do
-    if grep -qE "$regexImportString" "$file"; then
-        # File contains @import, process it
+while IFS= read -r file; do
+    if grep --quiet --extended-regexp "$regexImportString" "$file"; then
         file_dir=$(dirname "$file")
-
-        grep -oE "$regexImportString" "$file" | while read -r import_line; do
-            # Extract the actual path
+        while IFS= read -r import_line; do
             import_path=$(echo "$import_line" | sed -E "s/$regexImportString/\2/")
-            # Check if the extracted path resolves
-            if ! resolve_import_path "$import_path" "$file_dir"; then
-                exit 1
-            else
-                echo "Resolved @import '$import_path' in $file_dir"
-            fi
-        done
+            resolve_import_path "$import_path" "$file_dir"
+        done < <(grep --only-matching --extended-regexp "$regexImportString" "$file")
     fi
-done
+done < <(find "$base_dir" -type f -path "*/css/*.css")
 
+# Check if there are any unresolved paths
+if [[ ${#unresolved_errors[@]} -gt 0 ]]; then
+    echo "The following @import paths are unresolved:"
+    for unresolved in "${unresolved_errors[@]}"; do
+        echo "$unresolved"
+    done
+    echo "Aborting..."
+    exit 1
+fi
 
+exit 0
