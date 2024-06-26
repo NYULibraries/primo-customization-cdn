@@ -49,7 +49,7 @@ if (viewsForStaticTest.includes(view)) {
 
             if ( testCase.key === 'search-bar-submenu' ) {
                 test(`${testCase.name} screenshot matches expected `, async ({ page }) => {
-                    await Promise.all(testCase.waitForSelectors.map(selector => page.locator(selector).waitFor()));
+                    await Promise.all(testCase.waitForSelectors.map(selector => page.locator(selector).waitFor({ timeout: 10000 }) ));
                     await expect( page.locator( testCase.elementToTest ) ).toHaveScreenshot(`search-bar-submenu.png`);
                 });
             } else {
