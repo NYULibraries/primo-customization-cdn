@@ -20,7 +20,10 @@ if (viewsForStaticTest.includes(view)) {
             name: 'Search bar submenu',
             pathAndQuery: '/discovery/search?vid=[VID]',
             elementToTest: 'search-bar-sub-menu ul',
-            waitForSelector: 'prm-search-bar-after search-bar-sub-menu ul',
+            waitForSelectors: [
+                'prm-search-bar-after search-bar-sub-menu ul li:nth-child(1) prm-icon md-icon',
+                'prm-search-bar-after search-bar-sub-menu ul li:nth-child(2) prm-icon md-icon'
+            ],
         },
         {
             key: 'display-finding-aid',
@@ -46,7 +49,7 @@ if (viewsForStaticTest.includes(view)) {
 
             if ( testCase.key === 'search-bar-submenu' ) {
                 test(`${testCase.name} screenshot matches expected `, async ({ page }) => {
-                    await page.locator(testCase.waitForSelector).waitFor();
+                    await Promise.all(testCase.waitForSelectors.map(selector => page.locator(selector).waitFor()));
                     await expect( page.locator( testCase.elementToTest ) ).toHaveScreenshot(`search-bar-submenu.png`);
                 });
             } else {
