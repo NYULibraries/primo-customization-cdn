@@ -21,8 +21,8 @@ if (viewsForStaticTest.includes(view)) {
             pathAndQuery: '/discovery/search?vid=[VID]',
             elementToTest: 'search-bar-sub-menu ul',
             waitForSelectors: [
-                'prm-search-bar-after search-bar-sub-menu ul li:nth-child(1) prm-icon md-icon',
-                'prm-search-bar-after search-bar-sub-menu ul li:nth-child(2) prm-icon md-icon'
+                'prm-search-bar-after search-bar-sub-menu ul li:nth-child(1) prm-icon md-icon svg',
+                'prm-search-bar-after search-bar-sub-menu ul li:nth-child(2) prm-icon md-icon svg'
             ],
         },
         {
