@@ -498,5 +498,39 @@ prm-fines-after h4 {
 }
 /* END Targeting styles in Fine + Fees section */
 
+/* Style Requesting links as buttons */
+prm-request-services .button-as-link.md-button.md-primoExplore-theme.md-ink-ripple.button-external-link[aria-label="Request From Partner Libraries"] {
+    background-color: var(--primary-purple) !important;
+    color: var(--text-white) !important;
+}
 
+prm-request-services .button-as-link.md-button.md-primoExplore-theme.md-ink-ripple.button-external-link[aria-label="Request title for Course Reserves"] {
+    background-color: var(--primary-purple) !important;
+    color: var(--text-white) !important;
+    text-transform: capitalize;
+}
 
+prm-request-services .button-as-link.md-button.md-primoExplore-theme.md-ink-ripple.button-external-link[aria-label="Request From Partner Libraries"]:hover {
+    background-color: #791CB4 !important;
+}
+
+prm-request-services .button-as-link.md-button.md-primoExplore-theme.md-ink-ripple.button-external-link[aria-label="Request title for Course Reserves"]:hover {
+    background-color: #791CB4 !important;
+}
+
+prm-request-services .button-as-link.md-button.md-primoExplore-theme.md-ink-ripple.button-external-link[aria-label="Request From Partner Libraries"] md-icon,
+prm-request-services .button-as-link.md-button.md-primoExplore-theme.md-ink-ripple.button-external-link[aria-label="Request title for Course Reserves"] md-icon {
+    color: var(--text-white) !important;
+}
+/* END Style Requesting links as buttons */
+
+/* Style for the "Show More Items" button */
+prm-location-items .button-link.link-alt-color.zero-margin.md-button.md-primoExplore-theme.md-ink-ripple[aria-label="Show More Items"] {
+    background-color: var(--primary-purple) !important;
+    color: var(--text-white) !important;
+}
+
+prm-location-items .button-link.link-alt-color.zero-margin.md-button.md-primoExplore-theme.md-ink-ripple[aria-label="Show More Items"]:hover {
+    background-color: #791CB4 !important;
+}
+/* END Style for the "Show More Items" button */
