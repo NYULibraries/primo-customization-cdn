@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.42.1-focal
+FROM mcr.microsoft.com/playwright:v1.45.3-jammy
 
 ENV CONTAINER_MODE true
 ENV INSTALL_PATH /e2e
