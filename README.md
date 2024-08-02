@@ -7,6 +7,7 @@ Styles, templates, and other assets for primo-customization CDN for use with [pr
 Start the local primo-explore-devenv for a particular view:
 
 ```
+docker compose pull
 VIEW=01NYU_INST-NYU_DEV docker compose up primo-explore-devenv
 ```
 
@@ -25,6 +26,7 @@ To view pages under authentication locally, you will need to proxy real domains 
 Then, start tls service:
 
 ```
+docker compose pull
 VIEW=01NYU_INST-NYU_DEV docker compose up tls
 ```
 
