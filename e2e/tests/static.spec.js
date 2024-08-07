@@ -9,7 +9,7 @@ const beautifyHtml = require('js-beautify').html;
 
 const view = process.env.VIEW;
 
-const viewsForStaticTest = ['01NYU_INST-NYU_DEV', '01NYU_INST-NYU', '01NYU_INST-TESTWS01', '01NYU_US-SH', '01NYU_US-SH_DEV'];
+const viewsForStaticTest = ['01NYU_INST-NYU_DEV', '01NYU_INST-NYU', '01NYU_INST-TESTWS01', '01NYU_AD-AD', '01NYU_AD-AD_DEV', '01NYU_US-SH', '01NYU_US-SH_DEV'];
 
 if (viewsForStaticTest.includes(view)) {
     const vid = view.replaceAll('-', ':');
