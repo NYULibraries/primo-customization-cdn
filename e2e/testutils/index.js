@@ -33,7 +33,7 @@ function setPathAndQueryVid( pathAndQuery, vid ) {
       throw new Error(`The provided vid value '${vid}' is not allowed.`);
     }
 
-    var result = pathAndQuery.replace( 'vid=[VID]', `vid=${vid}` );
+    let result = pathAndQuery.replace( 'vid=[VID]', `vid=${vid}` );
     
     const scope = scopesForViews[vid];
     if (scope) {
