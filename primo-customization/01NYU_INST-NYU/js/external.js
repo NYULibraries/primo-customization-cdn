@@ -138,13 +138,21 @@ function installMatomo() {
 
 const homePageElementTagName = 'prm-static';
 
-function createMutationObserver( homePageHtml ) {
+function setHomePageHtmlOnLoad( homePageHtml ) {
     const callback = ( mutationList, observer ) => {
+        // Check if any child node has been added or removed
         for ( const mutation of mutationList ) {
             if ( mutation.type === 'childList' ) {
-                setHomePageHtml( mutation.addedNodes[ 0 ], homePageHtml );
+                // Try to get the <div> within the rendered home page component.
+                const homePageDivElement = getHomePageDivElement();
 
-                observer.disconnect();
+                // If home page component has been rendered, add Html and disconnect
+                // Otherwise, we keep listening
+                if ( homePageDivElement ) {
+                    console.log( '[DEBUG] Home page <div> now created, customizing' );
+                    setHomePageHtml( homePageDivElement, homePageHtml );
+                    observer.disconnect();
+                }
             }
         }
     };
@@ -177,7 +185,7 @@ async function customizeHomePage() {
         // Home page component has not rendered yet.  This will often be the case if
         // not loading the page from cache.
         console.log( '[DEBUG] Home page <div> not created yet, create MutationObserver' );
-        createMutationObserver( homePageHtml );
+        setHomePageHtmlOnLoad( homePageHtml );
     }
 }
 
