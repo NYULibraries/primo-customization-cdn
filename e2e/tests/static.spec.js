@@ -37,8 +37,7 @@ if (viewsForStaticTest.includes(view)) {
             name: 'Home page from CDN',
             pathAndQuery: '/discovery/search?vid=[VID]',
             elementToTest: 'prm-static md-content',
-            waitForSelector: 'prm-static md-content',
-            //waitForSelector: 'prm-static md-content.external-homepage',
+            waitForSelector: 'prm-static md-content.external-homepage',
         }
     ];
 
