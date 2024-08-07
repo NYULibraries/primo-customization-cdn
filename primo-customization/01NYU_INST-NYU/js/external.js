@@ -120,13 +120,6 @@ function installMatomo() {
         '01NYU_US:SH_DEV' : '11',
     }
 
-    // determine vid from querystring
-    // note that this will fail in IE 11 and Opera Mini: https://caniuse.com/urlsearchparams
-    const vid =
-        new URLSearchParams( window.location.search )
-            .get( 'vid' );
-    console.log( '[DEBUG] vid = ' + vid );
-
     // if we're on localhost or primo-explore-devenv, don't install
     if ( location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === 'primo-explore-devenv' ) {
         return;
@@ -144,6 +137,95 @@ function installMatomo() {
 }
 
 // ****************************************
+// Customize home page
+// ****************************************
+
+const homePageElementTagName = 'prm-static';
+
+function createMutationObserver( homePageHtml ) {
+    const callback = ( mutationList, observer ) => {
+        for ( const mutation of mutationList ) {
+            if ( mutation.type === 'childList' ) {
+                setHomePageHtml( mutation.addedNodes[ 0 ], homePageHtml );
+
+                observer.disconnect();
+            }
+        }
+    };
+
+    const homePageElement = document.querySelector( homePageElementTagName );
+    const config = { childList : true };
+
+    const observer = new MutationObserver( callback );
+    observer.observe( homePageElement, config );
+}
+
+async function customizeHomePage() {
+    const homePageHtml = await getHomePageHtml();
+    if ( ! homePageHtml ) {
+        console.error( '[ERROR] customizeHomePage() was called without `homePageHtml`' );
+
+        return;
+    }
+
+    // Get the <div> within the rendered home page component.  It may or may not have
+    // been created yet.
+    const homePageDivElement = getHomePageDivElement();
+
+    if ( homePageDivElement ) {
+        // Home page component has been rendered.  This will usually be the case if
+        // the page is cached.
+        console.log( '[DEBUG] Home page <div> already created, customize immediately' );
+        setHomePageHtml( homePageDivElement, homePageHtml );
+    } else {
+        // Home page component has not rendered yet.  This will often be the case if
+        // not loading the page from cache.
+        console.log( '[DEBUG] Home page <div> not created yet, create MutationObserver' );
+        createMutationObserver( homePageHtml );
+    }
+}
+
+function getHomePageDivElement() {
+    return document.querySelector( `${ homePageElementTagName } div` );
+}
+
+async function getHomePageHtml() {
+    // See note in Main section about duplicating the package repo `vid` and
+    // `view` code here in the CDN repo.  Here we need `view` to construct
+    // the CDN base URL for the view and hence for the home page HTML file.
+    // An alternate method for getting the HTML file URL would be to remove
+    // the part of the path leading up from this file to the common ancestor
+    // directory for the HTML files.  This method seems to be more transparent,
+    // and might be less brittle than having to know the name of this file
+    // for path suffix removal.
+    const view = vid.replace( ':', '-' );
+    console.log( '[DEBUG] view = ' + view );
+
+    const currentScriptUrl = new URL( document.currentScript.src );
+    const cdnBaseUrlForView = `${ currentScriptUrl.origin }/primo-customization/${ view }`;
+    const homePageHtmlFile = `${ cdnBaseUrlForView }/html/_static/homepage_en-external.html`;
+    console.log( `[DEBUG] homePageHtmlFile = ${ homePageHtmlFile }` );
+
+    let response;
+    try {
+        response = await fetch( homePageHtmlFile );
+
+        // check if response ok (i.e. status 2xx): fetch does NOT throw error
+        // if response received with error status
+        if (response.ok)
+            return response.text();
+        else
+            console.error( `[ERROR] Fetch of ${ homePageHtmlFile }: ${ response.status }` );
+    } catch ( error ) {
+        console.error( `[ERROR] Fetch of ${ homePageHtmlFile }: ${ error }` );
+    }
+}
+
+function setHomePageHtml( homePageDivElement, homePageHtml ) {
+    homePageDivElement.innerHTML = homePageHtml;
+}
+
+// ****************************************
 // Event handlers
 // ****************************************
 
@@ -156,10 +238,16 @@ function findingAidsLinkClickHandler( event ) {
 // MAIN
 // ****************************************
 
+const vid =
+    new URLSearchParams( window.location.search )
+        .get( 'vid' );
+console.log( '[DEBUG] vid = ' + vid );
+
 configureAndInjectLibKey();
 insertChatWidgetEmbed();
 injectStatusEmbed();
 installMatomo();
+customizeHomePage();
 
 // =============================================================================
 // END NYU SHARED SECTION

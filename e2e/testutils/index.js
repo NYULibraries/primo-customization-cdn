@@ -15,12 +15,30 @@ const allowedVids = [
     '01NYU_US:SH_DEV',
   ];
 
+// Define "default" scopes for views
+// These scopes are NOT the defaults in Primo VE but rather
+// contain all results at NYU (default for NYU-NY, not others)
+const scopesForViews = {
+    '01NYU_INST:NYU':'CI_NYU_CONSORTIA',
+    '01NYU_INST:NYU_DEV':'CI_NYU_CONSORTIA',
+    '01NYU_INST:TESTWS01':'CI_NYU_CONSORTIA',
+    '01NYU_US:SH':'CI_NYUSH_NYU_CONSORTIA',
+    '01NYU_US:SH_DEV':'CI_NYUSH_NYU_CONSORTIA',
+}
+
 function setPathAndQueryVid( pathAndQuery, vid ) {
     if ( !allowedVids.includes( vid ) ) {
       throw new Error(`The provided vid value '${vid}' is not allowed.`);
     }
 
-    return pathAndQuery.replace( 'vid=[VID]', `vid=${vid}` );
+    var result = pathAndQuery.replace( 'vid=[VID]', `vid=${vid}` );
+    
+    const scope = scopesForViews[vid];
+    if (scope) {
+        result = result.replace( 'search_scope=[SCOPE]', `search_scope=${scope}` );
+    }
+
+    return result;
   }
 
 
