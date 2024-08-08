@@ -121,9 +121,9 @@ function installMatomo() {
         return;
     }
 
-    const siteId = SITE_ID[ vid ];
+    const siteId = SITE_ID[ nyu_primo_vid ];
     if ( !siteId ) {
-        console.error( `[ERROR] No siteId found for vid=${ vid }` );
+        console.error( `[ERROR] No siteId found for vid=${ nyu_primo_vid }` );
         return;
     }
 
@@ -152,6 +152,7 @@ function setHomePageHtmlOnLoad( homePageHtml ) {
                     console.log( '[DEBUG] Home page <div> now created, customizing' );
                     setHomePageHtml( homePageDivElement, homePageHtml );
                     observer.disconnect();
+                    return;
                 }
             }
         }
@@ -202,7 +203,13 @@ async function getHomePageHtml() {
     // directory for the HTML files.  This method seems to be more transparent,
     // and might be less brittle than having to know the name of this file
     // for path suffix removal.
-    const view = vid.replace( ':', '-' );
+    const known_vids = [ '01NYU_AD:AD', '01NYU_AD:AD_DEV', '01NYU_INST:NYU', '01NYU_INST:NYU_DEV', '01NYU_US:SH', '01NYU_US:SH_DEV' ]
+    if ( !known_vids.includes(nyu_primo_vid) ) {
+        console.log( '[ERROR] unknown vid for getHomePageHtml: ' + nyu_primo_vid );
+        return;
+    }
+
+    const view = nyu_primo_vid.replace( ':', '-' );
     console.log( '[DEBUG] view = ' + view );
 
     const currentScriptUrl = new URL( document.currentScript.src );
@@ -233,10 +240,15 @@ function setHomePageHtml( homePageDivElement, homePageHtml ) {
 // MAIN
 // ****************************************
 
-const vid =
-    new URLSearchParams( window.location.search )
-        .get( 'vid' );
-console.log( '[DEBUG] vid = ' + vid );
+function getVid() {
+    const vid =
+        new URLSearchParams( window.location.search )
+            .get( 'vid' );
+    console.log( '[DEBUG] vid = ' + vid );
+    return vid;
+}
+
+const nyu_primo_vid = getVid();
 
 configureAndInjectLibKey();
 insertChatWidgetEmbed();
