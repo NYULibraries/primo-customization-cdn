@@ -205,7 +205,6 @@ workflows:
             branches:
               only:
                 - develop
-                - feature/homepage_cdn
       - deploy_prod:
           requires:
             - run-e2e-ad-prod
