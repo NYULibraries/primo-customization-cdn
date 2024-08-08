@@ -203,7 +203,7 @@ async function getHomePageHtml() {
     // directory for the HTML files.  This method seems to be more transparent,
     // and might be less brittle than having to know the name of this file
     // for path suffix removal.
-    const known_vids = [ '01NYU_AD:AD', '01NYU_AD:AD_DEV', '01NYU_INST:NYU', '01NYU_INST:NYU_DEV', '01NYU_US:SH', '01NYU_US:SH_DEV' ]
+    const known_vids = [ '01NYU_AD:AD', '01NYU_AD:AD_DEV', '01NYU_INST:NYU', '01NYU_INST:NYU_DEV', '01NYU_INST:TESTWS01', '01NYU_US:SH', '01NYU_US:SH_DEV' ]
     if ( !known_vids.includes(nyu_primo_vid) ) {
         console.log( '[ERROR] unknown vid for getHomePageHtml: ' + nyu_primo_vid );
         return;
