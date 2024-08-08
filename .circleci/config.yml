@@ -9,6 +9,12 @@ asset_sanity_check: &asset_sanity_check
     command: |
       scripts/asset-sanity-check.sh
 
+check_css_imports: &check_css_imports
+  run:
+    name: Check CSS imports
+    command: |
+      scripts/check-css-imports.sh
+
 aws-export: &aws-export
   run:
     name: Export AWS env vars
@@ -33,6 +39,12 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@4.1.1
 jobs:
+  check-css-imports:
+    <<: *docker-defaults
+    steps:
+      - checkout
+      - *check_css_imports
+
   run-e2e: &run-e2e
     <<: *docker-defaults
     steps:
@@ -139,55 +151,82 @@ workflows:
   version: 2.1
   build-and-deploy:
     jobs:
+      - check-css-imports
       - run-e2e-ad-dev:
+          requires:
+            - check-css-imports
           filters:
             branches:
               ignore: main
       - run-e2e-ad-prod:
+          requires:
+            - check-css-imports
           filters:
             branches:
               only: main
       - run-e2e-cu-dev:
+          requires:
+            - check-css-imports
           filters:
             branches:
               ignore: main
       - run-e2e-cu-prod:
+          requires:
+            - check-css-imports
           filters:
             branches:
               only: main
       - run-e2e-nyhs-dev:
+          requires:
+            - check-css-imports
           filters:
             branches:
               ignore: main
       - run-e2e-nyhs-prod:
+          requires:
+            - check-css-imports
           filters:
             branches:
               only: main
       - run-e2e-nysid-dev:
+          requires:
+            - check-css-imports
           filters:
             branches:
               ignore: main
       - run-e2e-nysid-prod:
+          requires:
+            - check-css-imports
           filters:
             branches:
               only: main
       - run-e2e-nyu-dev:
+          requires:
+            - check-css-imports
           filters:
             branches:
               ignore: main
       - run-e2e-nyu-prod:
+          requires:
+            - check-css-imports
           filters:
             branches:
               only: main
       - run-e2e-nyu-test:
+          requires:
+            - check-css-imports
           filters:
             branches:
               ignore: main
       - run-e2e-sh-dev:
+          requires:
+            - check-css-imports
           filters:
             branches:
               ignore: main
       - run-e2e-sh-prod:
+          requires:
+            - check-css-imports
           filters:
             branches:
               only: main
