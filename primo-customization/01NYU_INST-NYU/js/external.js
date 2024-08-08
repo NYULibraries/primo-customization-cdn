@@ -1,16 +1,12 @@
 // =============================================================================
-// BEGIN NYU SHARED SECTION
+// NYU SHARED 
 // =============================================================================
 //
 // Code in this section is identical across all dev and prod NYU views,
-// including Abu Dhabi and Shanghai views, but not including the 01NYU_INST test
-// view.
+// including Abu Dhabi and Shanghai views: their external.js symlink to this.
 // All code changes that need to happen in functionality defined in this
-// section should be done and tested in a single NYU view and then copied
-// to all other NYU views.  Currently, dev views are merely symlinks to their
-// prod counterparts, so this effectively means that code edits should be
-// done and tested in a single NYU prod view and then copied to the other NYU
-// prod views.
+// section should be tested in all NYU views
+// Additionally, dev views are merely symlinks to their prod counterparts
 // =============================================================================
 
 // Option 2 from:
@@ -120,21 +116,14 @@ function installMatomo() {
         '01NYU_US:SH_DEV' : '11',
     }
 
-    // determine vid from querystring
-    // note that this will fail in IE 11 and Opera Mini: https://caniuse.com/urlsearchparams
-    const vid =
-        new URLSearchParams( window.location.search )
-            .get( 'vid' );
-    console.log( '[DEBUG] vid = ' + vid );
-
     // if we're on localhost or primo-explore-devenv, don't install
     if ( location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === 'primo-explore-devenv' ) {
         return;
     }
 
-    const siteId = SITE_ID[ vid ];
+    const siteId = SITE_ID[ nyu_primo_vid ];
     if ( !siteId ) {
-        console.error( `[ERROR] No siteId found for vid=${ vid }` );
+        console.error( `[ERROR] No siteId found for vid=${ nyu_primo_vid }` );
         return;
     }
 
@@ -144,6 +133,130 @@ function installMatomo() {
 }
 
 // ****************************************
+// Customize home page
+// ****************************************
+
+const homePageElementTagName = 'prm-static';
+
+function setHomePageHtmlOnLoad( homePageHtml ) {
+    const callback = ( mutationList, observer ) => {
+        // Check if any child node has been added or removed
+        for ( const mutation of mutationList ) {
+            if ( mutation.type === 'childList' ) {
+                // Try to get the <div> within the rendered home page component.
+                const homePageDivElement = getHomePageDivElement();
+
+                // If home page component has been rendered, add Html and disconnect
+                // Otherwise, we keep listening
+                if ( homePageDivElement ) {
+                    console.log( '[DEBUG] Home page <div> now created, customizing' );
+                    setHomePageHtml( homePageDivElement, homePageHtml );
+                    observer.disconnect();
+                    return;
+                }
+            }
+        }
+    };
+
+    const homePageElement = document.querySelector( homePageElementTagName );
+    const config = { childList : true };
+
+    const observer = new MutationObserver( callback );
+    observer.observe( homePageElement, config );
+}
+
+async function customizeHomePage() {
+    const homePageHtml = await getHomePageHtml();
+    if ( ! homePageHtml ) {
+        console.error( '[ERROR] customizeHomePage() was called without `homePageHtml`' );
+
+        return;
+    }
+
+    // Get the <div> within the rendered home page component.  It may or may not have
+    // been created yet.
+    const homePageDivElement = getHomePageDivElement();
+
+    if ( homePageDivElement ) {
+        // Home page component has been rendered.  This will usually be the case if
+        // the page is cached.
+        console.log( '[DEBUG] Home page <div> already created, customize immediately' );
+        setHomePageHtml( homePageDivElement, homePageHtml );
+    } else {
+        // Home page component has not rendered yet.  This will often be the case if
+        // not loading the page from cache.
+        console.log( '[DEBUG] Home page <div> not created yet, create MutationObserver' );
+        setHomePageHtmlOnLoad( homePageHtml );
+    }
+}
+
+function getHomePageDivElement() {
+    return document.querySelector( `${ homePageElementTagName } div` );
+}
+
+async function getHomePageHtml() {
+    // See note in Main section about duplicating the package repo `vid` and
+    // `view` code here in the CDN repo.  Here we need `view` to construct
+    // the CDN base URL for the view and hence for the home page HTML file.
+    // An alternate method for getting the HTML file URL would be to remove
+    // the part of the path leading up from this file to the common ancestor
+    // directory for the HTML files.  This method seems to be more transparent,
+    // and might be less brittle than having to know the name of this file
+    // for path suffix removal.
+    const known_vids = [ '01NYU_AD:AD', '01NYU_AD:AD_DEV', '01NYU_INST:NYU', '01NYU_INST:NYU_DEV', '01NYU_INST:TESTWS01', '01NYU_US:SH', '01NYU_US:SH_DEV' ]
+    if ( !known_vids.includes(nyu_primo_vid) ) {
+        console.log( '[ERROR] unknown vid for getHomePageHtml: ' + nyu_primo_vid );
+        return;
+    }
+
+    const view = nyu_primo_vid.replace( ':', '-' );
+    console.log( '[DEBUG] view = ' + view );
+
+    const currentScriptUrl = new URL( document.currentScript.src );
+    const cdnBaseUrlForView = `${ currentScriptUrl.origin }/primo-customization/${ view }`;
+    const homePageHtmlFile = `${ cdnBaseUrlForView }/html/_static/homepage_en-external.html`;
+    console.log( `[DEBUG] homePageHtmlFile = ${ homePageHtmlFile }` );
+
+    let response;
+    try {
+        response = await fetch( homePageHtmlFile );
+
+        // check if response ok (i.e. status 2xx): fetch does NOT throw error
+        // if response received with error status
+        if (response.ok)
+            return response.text();
+        else
+            console.error( `[ERROR] Fetch of ${ homePageHtmlFile }: ${ response.status }` );
+    } catch ( error ) {
+        console.error( `[ERROR] Fetch of ${ homePageHtmlFile }: ${ error }` );
+    }
+}
+
+function setHomePageHtml( homePageDivElement, homePageHtml ) {
+    homePageDivElement.innerHTML = homePageHtml;
+}
+
+// ****************************************
+// MAIN
+// ****************************************
+
+function getVid() {
+    const vid =
+        new URLSearchParams( window.location.search )
+            .get( 'vid' );
+    console.log( '[DEBUG] vid = ' + vid );
+    return vid;
+}
+
+const nyu_primo_vid = getVid();
+
+configureAndInjectLibKey();
+insertChatWidgetEmbed();
+injectStatusEmbed();
+installMatomo();
+customizeHomePage();
+
+// ****************************************
 // Event handlers
 // ****************************************
 
@@ -151,21 +264,3 @@ function installMatomo() {
 function findingAidsLinkClickHandler( event ) {
     event.stopPropagation();
 }
-
-// ****************************************
-// MAIN
-// ****************************************
-
-configureAndInjectLibKey();
-insertChatWidgetEmbed();
-injectStatusEmbed();
-installMatomo();
-
-// =============================================================================
-// END NYU SHARED SECTION
-// =============================================================================
-//
-// All code after this point should be potentially unique to this view,
-// and should NOT be copied indiscriminately to the other views.
-// =============================================================================
-

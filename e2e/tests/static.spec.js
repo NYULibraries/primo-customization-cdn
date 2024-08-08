@@ -9,7 +9,7 @@ const beautifyHtml = require('js-beautify').html;
 
 const view = process.env.VIEW;
 
-const viewsForStaticTest = ['01NYU_INST-NYU_DEV', '01NYU_INST-NYU', '01NYU_INST-TESTWS01'];
+const viewsForStaticTest = ['01NYU_INST-NYU_DEV', '01NYU_INST-NYU', '01NYU_INST-TESTWS01', '01NYU_AD-AD', '01NYU_AD-AD_DEV', '01NYU_US-SH', '01NYU_US-SH_DEV'];
 
 if (viewsForStaticTest.includes(view)) {
     const vid = view.replaceAll('-', ':');
@@ -28,9 +28,16 @@ if (viewsForStaticTest.includes(view)) {
         {
             key: 'display-finding-aid',
             name: 'Display finding aid',
-            pathAndQuery: '/discovery/search?vid=[VID]&query=any,contains,Irish%20Repertory%20Theater&tab=Unified_Slot&search_scope=DN_and_CI&offset=0',
+            pathAndQuery: '/discovery/search?vid=[VID]&query=any,contains,Irish%20Repertory%20Theater&tab=Unified_Slot&search_scope=[SCOPE]&offset=0',
             elementToTest: 'a.md-primoExplore-theme[href="https://findingaids.library.nyu.edu/tamwag/aia_080/"]',
             waitForSelector: 'prm-search-result-list',
+        },
+        {
+            key: 'home-page',
+            name: 'Home page from CDN',
+            pathAndQuery: '/discovery/search?vid=[VID]',
+            elementToTest: 'prm-static md-content',
+            waitForSelector: 'prm-static md-content.external-homepage',
         }
     ];
 
@@ -38,22 +45,22 @@ if (viewsForStaticTest.includes(view)) {
         const testCase = testCases[i];
 
         test.describe(`${view}: ${testCase.name}`, () => {
+            const finalPath =  setPathAndQueryVid( testCase.pathAndQuery, vid );
 
             test.beforeEach(async ({ page }) => {
                 if ( process.env.CONTAINER_MODE ) {
                     await modifyCSPHeader(page);
                 }
-                await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
-
+                await page.goto( finalPath );
             });
 
             if ( testCase.key === 'search-bar-submenu' ) {
-                test(`${testCase.name} screenshot matches expected `, async ({ page }) => {
+                test(`${testCase.name} screenshot matches expected (${finalPath}) `, async ({ page }) => {
                     await Promise.all(testCase.waitForSelectors.map(selector => page.locator(selector).waitFor({ timeout: 10000 }) ));
                     await expect( page.locator( testCase.elementToTest ) ).toHaveScreenshot(`search-bar-submenu.png`);
                 });
             } else {
-                test(`${testCase.name} page HTML matches expected`, async ({ page }) => {
+                test(`${testCase.name} page HTML matches expected (${finalPath}) `, async ({ page }) => {
                     // Clean actual/ and diffs/ files
                     // NOTE:
                     // We don't bother with error handling because these files get overwritten
