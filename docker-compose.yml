@@ -36,6 +36,19 @@ services:
         aliases:
           - devenv
 
+  e2e-package-repo:
+    image: quay.io/nyulibraries/primo-customization-e2e:main
+    depends_on:
+      - primo-explore-devenv
+    environment:
+      <<: *x-environment
+      PLAYWRIGHT_BASE_URL: http://primo-explore-devenv:8003/discovery/search
+    # https://playwright.dev/docs/ci#docker
+    # CI configurations > Docker
+    # "Using --ipc=host is also recommended when using Chromium. Without it Chromium can run out of memory and crash."
+    ipc: host
+    networks:
+      - primo-customization-cdn-net
   e2e:
     <<: *x-build-e2e
     depends_on:

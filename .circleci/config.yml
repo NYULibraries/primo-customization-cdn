@@ -43,6 +43,10 @@ jobs:
           command: |
             docker-compose run e2e
       - run:
+          name: Run tests
+          command: |
+            docker-compose run e2e-package-repo
+      - run:
           name: Copy test results
           command: |
             mkdir -p test-results
