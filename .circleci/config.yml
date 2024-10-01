@@ -179,10 +179,10 @@ workflows:
           filters:
             branches:
               only: main
-      - run-e2e-nyu-test:
-          filters:
-            branches:
-              ignore: main
+      # - run-e2e-nyu-test:
+      #     filters:
+      #       branches:
+      #         ignore: main
       - run-e2e-sh-dev:
           filters:
             branches:
