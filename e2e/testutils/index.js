@@ -6,7 +6,6 @@ const allowedVids = [
     '01NYU_CU:CU_DEV',
     '01NYU_INST:NYU',
     '01NYU_INST:NYU_DEV',
-    '01NYU_INST:TESTWS01',
     '01NYU_NYHS:NYHS',
     '01NYU_NYHS:NYHS_DEV',
     '01NYU_NYSID:NYSID',
@@ -21,7 +20,6 @@ const allowedVids = [
 const scopesForViews = {
     '01NYU_INST:NYU':'CI_NYU_CONSORTIA',
     '01NYU_INST:NYU_DEV':'CI_NYU_CONSORTIA',
-    '01NYU_INST:TESTWS01':'CI_NYU_CONSORTIA',
     '01NYU_AD:AD':'CI_NYUAD_NYU',
     '01NYU_AD:AD_DEV':'CI_NYUAD_NYU',
     '01NYU_US:SH':'CI_NYUSH_NYU_CONSORTIA',

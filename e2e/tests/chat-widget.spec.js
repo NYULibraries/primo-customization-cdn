@@ -19,7 +19,6 @@ const viewsForTest = [
     '01NYU_CU-CU_DEV',
     '01NYU_INST-NYU',
     '01NYU_INST-NYU_DEV',
-    '01NYU_INST-TESTWS01',
     '01NYU_US-SH',
     '01NYU_US-SH_DEV',
   ];

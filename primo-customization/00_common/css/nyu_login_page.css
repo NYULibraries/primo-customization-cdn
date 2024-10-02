@@ -1,0 +1,26 @@
+@import "modules/colors-variables.css";
+
+.login-header #banner.product-logo {
+    background-color: var(--primary-purple);
+}
+
+/* Box with login text should have a border in darker grey */
+.login-card.login-dialog._md.md-primoExplore-theme {
+    border: 1px solid var(--dark-grey);
+}
+
+/* Icon for "opens in a new window" should be primary-black */
+#tab-content-0 prm-login-item prm-icon[external-link], 
+#tab-content-0 prm-login-item prm-icon[external-link] md-icon.md-primoExplore-theme, 
+#tab-content-0 prm-login-item prm-icon[external-link] md-icon.md-primoExplore-theme svg, 
+#tab-content-0 prm-login-item prm-icon[external-link] md-icon.md-primoExplore-theme svg path {
+opacity: 1 !important;
+color: var(--primary-black) !important;
+fill: var(--primary-black) !important;
+}
+
+
+.login-dialog md-list md-list-item .md-list-item-text .list-item-title,
+.login-dialog md-list md-list-item > .md-no-style .md-list-item-text .list-item-title {
+    font-weight: 400;
+}
