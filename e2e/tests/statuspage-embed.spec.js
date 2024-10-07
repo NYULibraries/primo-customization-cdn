@@ -7,7 +7,7 @@ const view = process.env.VIEW;
 // We don't have view-based configuration in this repo yet.
 const viewsForTest = [
     '01NYU_AD-AD_DEV', '01NYU_AD-AD',
-    '01NYU_INST-NYU_DEV', '01NYU_INST-NYU', '01NYU_INST-TESTWS01',
+    '01NYU_INST-NYU_DEV', '01NYU_INST-NYU',
     '01NYU_US-SH_DEV', '01NYU_US-SH',
 ];
 

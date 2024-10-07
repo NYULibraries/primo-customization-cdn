@@ -334,7 +334,6 @@ describe('setPathAndQueryVid with VIEW constraint', () => {
     '01NYU_CU-CU_DEV',
     '01NYU_INST-NYU',
     '01NYU_INST-NYU_DEV',
-    '01NYU_INST-TESTWS01',
     '01NYU_NYHS-NYHS',
     '01NYU_NYHS-NYHS_DEV',
     '01NYU_NYSID-NYSID',
