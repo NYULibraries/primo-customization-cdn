@@ -6,23 +6,21 @@ prm-topbar {
 }
 
 /* NYH logo styles */
+prm-topbar prm-logo {
+    max-width: 325px;
+}
 prm-logo .product-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
 }
 
-.organization-logo {
+.product-logo > .organization-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
 }
 
-prm-logo .logo-image, prm-logo img {
-    max-width: 100%;
-}
 
 /* Hide navigation 'Side Links' in 'Full Display' page */
 prm-full-view .services-index-under #services-index {
