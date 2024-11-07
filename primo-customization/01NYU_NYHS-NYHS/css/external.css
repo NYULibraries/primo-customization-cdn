@@ -2,7 +2,25 @@
 
 /* Enlarge top bar to resize the NYHS logo so it's readable */
 prm-topbar {
-    height: 120px;
+    height: 100px;
+}
+
+/* NYH logo styles */
+prm-logo .product-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+organization-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+prm-logo .logo-image, prm-logo img {
+    max-width: 100%;
 }
 
 /* Hide navigation 'Side Links' in 'Full Display' page */
