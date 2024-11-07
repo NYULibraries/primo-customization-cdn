@@ -10,9 +10,10 @@ prm-logo .product-logo {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
 }
 
-organization-logo {
+.organization-logo {
     display: flex;
     align-items: center;
     justify-content: center;
