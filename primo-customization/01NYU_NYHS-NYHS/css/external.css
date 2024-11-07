@@ -23,8 +23,19 @@ prm-logo .product-logo {
 }
 
 prm-logo .logo-image {
-    max-width: 100%;
     object-fit: contain; 
+}
+
+@media (max-width: 750px) {
+    prm-logo .logo-image  {
+        width: 213px;
+    }
+}
+
+@media (max-width: 650px) {
+    prm-logo .logo-image  {
+        width: 113px;
+    }
 }
 
 
