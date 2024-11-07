@@ -9,6 +9,7 @@ prm-topbar {
 prm-topbar prm-logo {
     max-width: 325px;
 }
+
 prm-logo .product-logo {
     display: flex;
     align-items: center;
@@ -19,6 +20,11 @@ prm-logo .product-logo {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+prm-logo .logo-image {
+    max-width: 100%;
+    object-fit: contain; 
 }
 
 
