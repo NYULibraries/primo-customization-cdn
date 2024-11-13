@@ -2,8 +2,42 @@
 
 /* Enlarge top bar to resize the NYHS logo so it's readable */
 prm-topbar {
-    height: 120px;
+    height: 100px;
 }
+
+/* NYH logo styles */
+prm-topbar prm-logo {
+    max-width: 325px;
+}
+
+prm-logo .product-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-logo > .organization-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+prm-logo .logo-image {
+    object-fit: contain; 
+}
+
+@media (max-width: 750px) {
+    prm-logo .logo-image  {
+        width: 213px;
+    }
+}
+
+@media (max-width: 650px) {
+    prm-logo .logo-image  {
+        width: 113px;
+    }
+}
+
 
 /* Hide navigation 'Side Links' in 'Full Display' page */
 prm-full-view .services-index-under #services-index {
