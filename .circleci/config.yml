@@ -1,6 +1,6 @@
 docker-defaults: &docker-defaults
   docker:
-    - image: cimg/base:2023.07
+    - image: cimg/base:2024.12
   working_directory: ~/app
 
 asset_sanity_check: &asset_sanity_check
