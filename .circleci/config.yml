@@ -30,8 +30,6 @@ aws-sync-s3: &aws-sync-s3
       aws s3 sync --delete primo-customization $S3_URI/primo-customization
 
 version: 2.1
-orbs:
-  aws-cli: circleci/aws-cli@4.1.1
 jobs:
   run-e2e: &run-e2e
     <<: *docker-defaults
