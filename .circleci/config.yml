@@ -1,6 +1,6 @@
 docker-defaults: &docker-defaults
   docker:
-    - image: cimg/base:2023.07
+    - image: cimg/aws:2024.03
   working_directory: ~/app
 
 asset_sanity_check: &asset_sanity_check
@@ -30,8 +30,6 @@ aws-sync-s3: &aws-sync-s3
       aws s3 sync --delete primo-customization $S3_URI/primo-customization
 
 version: 2.1
-orbs:
-  aws-cli: circleci/aws-cli@4.1.1
 jobs:
   run-e2e: &run-e2e
     <<: *docker-defaults
@@ -119,7 +117,6 @@ jobs:
       - setup_remote_docker
       - *asset_sanity_check
       - *aws-export
-      - aws-cli/setup
       - *aws-sync-s3
   deploy_prod:
     <<: *docker-defaults
@@ -128,11 +125,9 @@ jobs:
       - setup_remote_docker
       - *asset_sanity_check
       - *aws-export
-      - aws-cli/setup
       - *aws-sync-s3
 
 workflows:
-  version: 2.1
   build-and-deploy:
     jobs:
       - run-e2e-ad-dev:
