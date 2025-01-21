@@ -128,7 +128,6 @@ jobs:
       - *aws-sync-s3
 
 workflows:
-  version: 2.1
   build-and-deploy:
     jobs:
       - run-e2e-ad-dev:
