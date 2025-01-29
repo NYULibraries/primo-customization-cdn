@@ -57,12 +57,18 @@ function configureAndInjectLibKey() {
     document.head.appendChild( browzine.script );
 }
 
+const CHATWIDGET_EMBED_URLS = {
+    dev: "https://cdn-dev.library.nyu.edu/chatwidget-embed/index.min.js",
+    prod: "https://cdn.library.nyu.edu/chatwidget-embed/index.min.js",
+};
+
 function insertChatWidgetEmbed() {
-    // Always use prod URL for all views.
-    const CHATWIDGET_EMBED_PROD_URL =
-        'https://cdn.library.nyu.edu/chatwidget-embed/index.min.js';
+    const vid = getVid();
+    const env = vid?.endsWith ( '_DEV' ) ? 'dev' : 'prod';
+    
     const scriptTag = document.createElement( 'script' );
-    scriptTag.setAttribute( 'src', CHATWIDGET_EMBED_PROD_URL );
+    scriptTag.setAttribute( 'src', CHATWIDGET_EMBED_URLS[env] );
+    console.log( `[DEBUG] ChatWidget embed URL: ${CHATWIDGET_EMBED_URLS[env]}` );
     document.body.appendChild( scriptTag )
 }
 
