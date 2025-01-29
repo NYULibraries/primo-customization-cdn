@@ -63,8 +63,7 @@ const CHATWIDGET_EMBED_URLS = {
 };
 
 function insertChatWidgetEmbed() {
-    const vid = getVid();
-    const env = vid?.endsWith ( '_DEV' ) ? 'dev' : 'prod';
+    const env = nyu_primo_vid?.endsWith ( '_DEV' ) ? 'dev' : 'prod';
     
     const scriptTag = document.createElement( 'script' );
     scriptTag.setAttribute( 'src', CHATWIDGET_EMBED_URLS[env] );
