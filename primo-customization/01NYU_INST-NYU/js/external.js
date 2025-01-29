@@ -63,7 +63,7 @@ const CHATWIDGET_EMBED_URLS = {
 };
 
 function insertChatWidgetEmbed() {
-    const env = nyu_primo_vid?.endsWith ( '_DEV' ) ? 'dev' : 'prod';
+    const env = nyu_primo_vid?.endsWith ( ':DEV' ) ? 'dev' : 'prod';
     
     const scriptTag = document.createElement( 'script' );
     scriptTag.setAttribute( 'src', CHATWIDGET_EMBED_URLS[env] );
@@ -254,6 +254,7 @@ function getVid() {
 }
 
 const nyu_primo_vid = getVid();
+console.log( '[DEBUG] nyu_primo_vid = ' + nyu_primo_vid );
 
 configureAndInjectLibKey();
 insertChatWidgetEmbed();
