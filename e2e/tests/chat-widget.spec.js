@@ -67,60 +67,6 @@ if ( viewsForTest.includes( view ) ) {
                 expect( true ).toBe( true );
             } );
 
-            test.skip( 'chat widget HTML matches expected', async ({ page }) => {
-                test.skip(isCUView)
-
-                const actualHTMLFile = `tests/actual/${view}/chat-widget-${testCase.key}.html`;
-                try {
-                    fs.unlinkSync(actualHTMLFile);
-                } catch (error) {  }
-                const diffHTMLFile = `tests/diffs/${view}/chat-widget-${testCase.key}.txt`;
-                try {
-                    fs.unlinkSync(diffHTMLFile);
-                } catch (error) {  }
-
-                await page.locator( CHAT_WIDGET_SELECTOR ).waitFor();
-
-                const actualHTML = beautifyHtml(removeSourceMappingUrlComments(await page.locator( CHAT_WIDGET_SELECTOR ).innerHTML()));
-
-                const goldenFile = `tests/golden/${view}/chat-widget-${testCase.key}.html`;
-                if (updateGoldenFiles()) {
-                    fs.writeFileSync(goldenFile, actualHTML);
-
-                    console.log(`Updated golden file ${goldenFile}`);
-
-                    return;
-                }
-                const golden = beautifyHtml(fs.readFileSync(goldenFile, 'utf8'));
-
-                fs.writeFileSync(actualHTMLFile, actualHTML);
-
-                const ok = actualHTML === golden;
-
-                let message = `Actual HTML for "${testCase.name}" does not match expected HTML`;
-                if (!ok) {
-                    const command = `diff ${goldenFile} ${actualHTMLFile} | tee ${diffHTMLFile}`;
-                    let diffOutput;
-                    try {
-                        diffOutput = new TextDecoder().decode(execSync(command));
-                        message += `
-
-======= BEGIN DIFF OUTPUT ========
-${diffOutput}
-======== END DIFF OUTPUT =========
-
-[Recorded in diff file: ${diffHTMLFile}]`;
-                    } catch (e) {
-                        // `diff` command failed to create the diff file.
-                        message += `  Diff command \`${command}\` failed:
-
-            ${e.stderr.toString()}`;
-                    }
-                    }
-
-                expect(ok, message).toBe(true);
-            });
-
             test( 'chat widget screenshot matches expected', async ({ page }) => {
                 test.skip(process.platform === 'darwin', 'This test is not implemented for Mac');
                 test.skip(isCUView)
