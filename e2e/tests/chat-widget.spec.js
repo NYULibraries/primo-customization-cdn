@@ -1,6 +1,7 @@
 import * as fs from 'node:fs';
 
 import {
+    isProdView,
     modifyCSPHeader,
     removeSourceMappingUrlComments,
     setPathAndQueryVid,
@@ -87,7 +88,10 @@ if ( viewsForTest.includes( view ) ) {
 
                 await page.locator( CHAT_WIDGET_SELECTOR ).waitFor();
 
-                const actualHTML = beautifyHtml( removeSourceMappingUrlComments( await page.locator( CHAT_WIDGET_SELECTOR ).innerHTML() ) );
+                const rawHTML = beautifyHtml(
+                    removeSourceMappingUrlComments( await page.locator( CHAT_WIDGET_SELECTOR ).innerHTML() )
+                );
+                const actualHTML = replaceCDNDomainWithPlaceholder( rawHTML, view )
 
                 const goldenFile = `tests/golden/${ view }/chat-widget-${ testCase.key }.html`;
                 if ( updateGoldenFiles() ) {
@@ -140,3 +144,10 @@ ${ diffOutput }
     } // End `testCases` for-loop
 } // End `if ( viewsForTest.includes( view ) )`
 
+function replaceCDNDomainWithPlaceholder( html, view ) {
+    const cdnDomain = isProdView( view ) ?
+                      'cdn.library.nyu.edu' :
+                      'cdn-dev.library.nyu.edu';
+
+    return html.replaceAll( cdnDomain, '[CORRECT CDN DOMAIN FOR VIEW]' );
+}
