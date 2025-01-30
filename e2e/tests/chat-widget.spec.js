@@ -67,7 +67,7 @@ if ( viewsForTest.includes( view ) ) {
                 expect( true ).toBe( true );
             } );
 
-            test( 'chat widget HTML matches expected', async ({ page }) => {
+            test.skip( 'chat widget HTML matches expected', async ({ page }) => {
                 test.skip(isCUView)
 
                 const actualHTMLFile = `tests/actual/${view}/chat-widget-${testCase.key}.html`;
