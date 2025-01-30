@@ -57,27 +57,31 @@ function configureAndInjectLibKey() {
     document.head.appendChild( browzine.script );
 }
 
+const DEV_SUFFIX = 'DEV';
+const ENVIRONMENT_DEV = 'dev';
+const ENVIRONMENT_PROD = 'prod';
+
 const CHATWIDGET_EMBED_URLS = {
-    dev: "https://cdn-dev.library.nyu.edu/chatwidget-embed/",
-    prod: "https://cdn.library.nyu.edu/chatwidget-embed/",
+    [ENVIRONMENT_DEV]: "https://cdn-dev.library.nyu.edu/chatwidget-embed/",
+    [ENVIRONMENT_PROD]: "https://cdn.library.nyu.edu/chatwidget-embed/",
 };
 
 function insertChatWidgetEmbed() {
-    const env = nyu_primo_vid?.endsWith ( 'DEV' ) ? 'dev' : 'prod';
-    console.log( `[DEBUG] ChatWidget environment: ${env}` );
+    const environment = nyu_primo_vid?.endsWith ( DEV_SUFFIX ) ? ENVIRONMENT_DEV : ENVIRONMENT_PROD;
+    console.log( `[DEBUG] ChatWidget environment: ${environment}` );
     
     const scriptTag = document.createElement( 'script' );
-    scriptTag.setAttribute( 'src', `${CHATWIDGET_EMBED_URLS[env]}index.min.js` );
-    console.log( `[DEBUG] ChatWidget embed URL: ${CHATWIDGET_EMBED_URLS[env]}index.min.js` );
+    scriptTag.setAttribute( 'src', `${CHATWIDGET_EMBED_URLS[environment]}index.min.js` );
+    console.log( `[DEBUG] ChatWidget embed URL: ${CHATWIDGET_EMBED_URLS[environment]}index.min.js` );
     document.body.appendChild( scriptTag )
 }
 
 function insertChatWidgetStyles() {
-    const env = nyu_primo_vid?.endsWith ( 'DEV' ) ? 'dev' : 'prod';
+    const environment = nyu_primo_vid?.endsWith ( DEV_SUFFIX ) ? ENVIRONMENT_DEV : ENVIRONMENT_PROD;
 
     const linkTag = document.createElement("link");
     linkTag.rel = "stylesheet";
-    linkTag.href = `${CHATWIDGET_EMBED_URLS[env]}index.min.css`;
+    linkTag.href = `${CHATWIDGET_EMBED_URLS[environment]}index.min.css`;
     document.head.appendChild(linkTag);
 }
 
