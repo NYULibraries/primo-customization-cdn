@@ -58,17 +58,27 @@ function configureAndInjectLibKey() {
 }
 
 const CHATWIDGET_EMBED_URLS = {
-    dev: "https://cdn-dev.library.nyu.edu/chatwidget-embed/index.min.js",
-    prod: "https://cdn.library.nyu.edu/chatwidget-embed/index.min.js",
+    dev: "https://cdn-dev.library.nyu.edu/chatwidget-embed/",
+    prod: "https://cdn.library.nyu.edu/chatwidget-embed/",
 };
 
 function insertChatWidgetEmbed() {
-    const env = nyu_primo_vid?.endsWith ( ':DEV' ) ? 'dev' : 'prod';
+    const env = nyu_primo_vid?.endsWith ( 'DEV' ) ? 'dev' : 'prod';
+    console.log( `[DEBUG] ChatWidget environment: ${env}` );
     
     const scriptTag = document.createElement( 'script' );
-    scriptTag.setAttribute( 'src', CHATWIDGET_EMBED_URLS[env] );
-    console.log( `[DEBUG] ChatWidget embed URL: ${CHATWIDGET_EMBED_URLS[env]}` );
+    scriptTag.setAttribute( 'src', `${CHATWIDGET_EMBED_URLS[env]}index.min.js` );
+    console.log( `[DEBUG] ChatWidget embed URL: ${CHATWIDGET_EMBED_URLS[env]}index.min.js` );
     document.body.appendChild( scriptTag )
+}
+
+function insertChatWidgetStyles() {
+    const env = nyu_primo_vid?.endsWith ( 'DEV' ) ? 'dev' : 'prod';
+
+    const linkTag = document.createElement("link");
+    linkTag.rel = "stylesheet";
+    linkTag.href = `${CHATWIDGET_EMBED_URLS[env]}index.min.css`;
+    document.head.appendChild(linkTag);
 }
 
 // out-of-the-box script except for siteId var
@@ -258,6 +268,7 @@ console.log( '[DEBUG] nyu_primo_vid = ' + nyu_primo_vid );
 
 configureAndInjectLibKey();
 insertChatWidgetEmbed();
+insertChatWidgetStyles();
 injectStatusEmbed();
 installMatomo();
 customizeHomePage();
