@@ -93,7 +93,7 @@ services:
     networks:
       - primo-customization-cdn-net
   devenv-tls:
-    image: quay.io/nyulibraries/primo-customization-devenv:nyu.primo.exlibrisgroup.com
+    image: quay.io/nyulibraries/primo-customization-devenv:main
     depends_on:
       - cdn-server
     extra_hosts:
