@@ -67,7 +67,7 @@ const CHATWIDGET_EMBED_URLS = {
 };
 
 function insertChatWidgetEmbed() {
-    const environment = nyu_primo_vid?.endsWith ( DEV_SUFFIX ) ? ENVIRONMENT_DEV : ENVIRONMENT_PROD;
+    const environment = nyu_primo_vid?.toUpperCase().endsWith ( DEV_SUFFIX ) ? ENVIRONMENT_DEV : ENVIRONMENT_PROD;
     console.log( `[DEBUG] ChatWidget environment: ${environment}` );
     
     const scriptTag = document.createElement( 'script' );
@@ -77,7 +77,7 @@ function insertChatWidgetEmbed() {
 }
 
 function insertChatWidgetStyles() {
-    const environment = nyu_primo_vid?.endsWith ( DEV_SUFFIX ) ? ENVIRONMENT_DEV : ENVIRONMENT_PROD;
+    const environment = nyu_primo_vid?.toUpperCase().endsWith ( DEV_SUFFIX ) ? ENVIRONMENT_DEV : ENVIRONMENT_PROD;
 
     const linkTag = document.createElement("link");
     linkTag.rel = "stylesheet";
