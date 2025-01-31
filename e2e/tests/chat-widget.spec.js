@@ -1,4 +1,6 @@
 import * as fs from 'node:fs';
+import * as os from 'node:os';
+import * as path from 'node:path';
 
 import {
     isProdView,
@@ -13,6 +15,9 @@ import { execSync } from 'node:child_process';
 const { test, expect } = require( '@playwright/test' );
 
 const beautifyHtml = require( 'js-beautify' ).html;
+
+const instantiatedGoldenFileForDiff = path.join( os.tmpdir(),
+                                                 "instantiated-goldenfile.html" )
 
 const view = process.env.VIEW;
 
@@ -88,20 +93,25 @@ if ( viewsForTest.includes( view ) ) {
 
                 await page.locator( CHAT_WIDGET_SELECTOR ).waitFor();
 
-                const rawHTML = beautifyHtml(
+                const actualHTML = beautifyHtml(
                     removeSourceMappingUrlComments( await page.locator( CHAT_WIDGET_SELECTOR ).innerHTML() )
                 );
-                const actualHTML = replaceCDNDomainWithPlaceholder( rawHTML, view )
 
                 const goldenFile = `tests/golden/${ view }/chat-widget-${ testCase.key }.html`;
                 if ( updateGoldenFiles() ) {
-                    fs.writeFileSync( goldenFile, actualHTML );
+                    const goldenFileHTML =
+                        replaceCDNDomainWithPlaceholder( actualHTML, view )
+
+                    fs.writeFileSync( goldenFile, goldenFileHTML );
 
                     console.log( `Updated golden file ${ goldenFile }` );
 
                     return;
                 }
-                const golden = beautifyHtml( fs.readFileSync( goldenFile, 'utf8' ) );
+
+                const golden = replaceCDNPlaceholderWithDomain(
+                    fs.readFileSync( goldenFile, 'utf8' ), view,
+                );
 
                 fs.writeFileSync( actualHTMLFile, actualHTML );
 
@@ -109,7 +119,11 @@ if ( viewsForTest.includes( view ) ) {
 
                 let message = `Actual HTML for "${ testCase.name }" does not match expected HTML`;
                 if ( !ok ) {
-                    const command = `diff ${ goldenFile } ${ actualHTMLFile } | tee ${ diffHTMLFile }`;
+                    fs.writeFileSync( instantiatedGoldenFileForDiff, golden );
+
+                    const command =
+                        `diff ${ instantiatedGoldenFileForDiff } ${ actualHTMLFile } | tee ${ diffHTMLFile }`;
+
                     let diffOutput;
                     try {
                         diffOutput = new TextDecoder().decode( execSync( command ) );
@@ -144,10 +158,16 @@ ${ diffOutput }
     } // End `testCases` for-loop
 } // End `if ( viewsForTest.includes( view ) )`
 
-function replaceCDNDomainWithPlaceholder( html, view ) {
-    const cdnDomain = isProdView( view ) ?
-                      'cdn.library.nyu.edu' :
-                      'cdn-dev.library.nyu.edu';
+function getCDNDomainForView( view ) {
+    return isProdView( view ) ? 'cdn.library.nyu.edu' : 'cdn-dev.library.nyu.edu';
+}
 
-    return html.replaceAll( cdnDomain, '[CORRECT CDN DOMAIN FOR VIEW]' );
+function replaceCDNDomainWithPlaceholder( html, view ) {
+    return html.replaceAll( getCDNDomainForView( view ),
+                            '[CORRECT CDN DOMAIN FOR VIEW]' );
+}
+
+function replaceCDNPlaceholderWithDomain( html, view ) {
+    return html.replaceAll( '[CORRECT CDN DOMAIN FOR VIEW]',
+                            getCDNDomainForView( view ) );
 }
