@@ -26,13 +26,17 @@ const scopesForViews = {
     '01NYU_US:SH_DEV':'CI_NYUSH_NYU_CONSORTIA',
 }
 
+function isProdView( view ) {
+    return ! view.toUpperCase( view ).endsWith( '_DEV' );
+}
+
 function setPathAndQueryVid( pathAndQuery, vid ) {
     if ( !allowedVids.includes( vid ) ) {
       throw new Error(`The provided vid value '${vid}' is not allowed.`);
     }
 
     let result = pathAndQuery.replace( 'vid=[VID]', `vid=${vid}` );
-    
+
     const scope = scopesForViews[vid];
     if (scope) {
         result = result.replace( 'search_scope=[SCOPE]', `search_scope=${scope}` );
@@ -87,6 +91,7 @@ function removeSourceMappingUrlComments(html) {
   }
 
 module.exports = {
+    isProdView,
     modifyCSPHeader,
     removeSourceMappingUrlComments,
     setPathAndQueryVid,

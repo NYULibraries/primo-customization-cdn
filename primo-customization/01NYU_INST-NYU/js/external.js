@@ -1,5 +1,5 @@
 // =============================================================================
-// NYU SHARED 
+// NYU SHARED
 // =============================================================================
 //
 // Code in this section is identical across all dev and prod NYU views,
@@ -59,8 +59,9 @@ function configureAndInjectLibKey() {
 
 function insertChatWidgetEmbed() {
     // Always use prod URL for all views.
-    const CHATWIDGET_EMBED_PROD_URL =
-        'https://cdn.library.nyu.edu/chatwidget-embed/index.min.js';
+    const CHATWIDGET_EMBED_PROD_URL = isProdVid() ?
+        'https://cdn.library.nyu.edu/chatwidget-embed/index.min.js' :
+        'https://cdn-dev.library.nyu.edu/chatwidget-embed/index.min.js';
     const scriptTag = document.createElement( 'script' );
     scriptTag.setAttribute( 'src', CHATWIDGET_EMBED_PROD_URL );
     document.body.appendChild( scriptTag )
@@ -130,6 +131,10 @@ function installMatomo() {
     console.log( '[DEBUG] matomo siteId = ' + siteId );
 
     injectMatomo( siteId );
+}
+
+function isProdVid() {
+    return ! nyu_primo_vid.toUpperCase().endsWith( '_DEV' );
 }
 
 // ****************************************

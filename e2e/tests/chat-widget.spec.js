@@ -1,13 +1,23 @@
 import * as fs from 'node:fs';
+import * as os from 'node:os';
+import * as path from 'node:path';
 
-import { modifyCSPHeader, removeSourceMappingUrlComments, setPathAndQueryVid, updateGoldenFiles } from '../testutils';
+import {
+    isProdView,
+    modifyCSPHeader,
+    removeSourceMappingUrlComments,
+    setPathAndQueryVid,
+    updateGoldenFiles
+} from '../testutils';
 
 import { execSync } from 'node:child_process';
 
 const { test, expect } = require( '@playwright/test' );
 
-
 const beautifyHtml = require( 'js-beautify' ).html;
+
+const instantiatedGoldenFileForDiff = path.join( os.tmpdir(),
+                                                 "instantiated-goldenfile.html" )
 
 const view = process.env.VIEW;
 
@@ -21,24 +31,24 @@ const viewsForTest = [
     '01NYU_INST-NYU_DEV',
     '01NYU_US-SH',
     '01NYU_US-SH_DEV',
-  ];
+];
 
-  const isCUView = view?.includes('01NYU_CU');
+const isCUView = view?.includes( '01NYU_CU' );
 
 if ( viewsForTest.includes( view ) ) {
-    const vid = view.replaceAll('-', ':');
+    const vid = view.replaceAll( '-', ':' );
 
     const CHAT_WIDGET_SELECTOR = isCUView
-        ? 'div#lcs_slide_out-22908'
-        : 'div#nyulibraries_chat_widget';
+                                 ? 'div#lcs_slide_out-22908'
+                                 : 'div#nyulibraries_chat_widget';
 
     const testCases = [
-        {   
+        {
             key          : 'home-page',
             name         : 'Home page',
             pathAndQuery : '/discovery/search?vid=[VID]',
         },
-        {   
+        {
             key          : 'search-art',
             name         : '[search] Art',
             pathAndQuery : '/discovery/search?vid=[VID]&query=any,contains,art&tab=LibraryCatalog&search_scope=MyInstitution&offset=0',
@@ -48,11 +58,11 @@ if ( viewsForTest.includes( view ) ) {
     for ( let i = 0; i < testCases.length; i++ ) {
         const testCase = testCases[ i ];
 
-        test.describe( `${view}: ${testCase.key}`, () => {
+        test.describe( `${ view }: ${ testCase.key }`, () => {
 
             test.beforeEach( async ( { page } ) => {
                 if ( process.env.CONTAINER_MODE ) {
-                    await modifyCSPHeader(page);
+                    await modifyCSPHeader( page );
                 }
                 await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
             } );
@@ -67,74 +77,97 @@ if ( viewsForTest.includes( view ) ) {
                 expect( true ).toBe( true );
             } );
 
-            test( 'chat widget HTML matches expected', async ({ page }) => {
-                test.skip(isCUView)
+            test( 'chat widget HTML matches expected', async ( { page } ) => {
+                test.skip( isCUView )
 
-                const actualHTMLFile = `tests/actual/${view}/chat-widget-${testCase.key}.html`;
+                const actualHTMLFile = `tests/actual/${ view }/chat-widget-${ testCase.key }.html`;
                 try {
-                    fs.unlinkSync(actualHTMLFile);
-                } catch (error) {  }
-                const diffHTMLFile = `tests/diffs/${view}/chat-widget-${testCase.key}.txt`;
+                    fs.unlinkSync( actualHTMLFile );
+                } catch ( error ) {
+                }
+                const diffHTMLFile = `tests/diffs/${ view }/chat-widget-${ testCase.key }.txt`;
                 try {
-                    fs.unlinkSync(diffHTMLFile);
-                } catch (error) {  }
+                    fs.unlinkSync( diffHTMLFile );
+                } catch ( error ) {
+                }
 
                 await page.locator( CHAT_WIDGET_SELECTOR ).waitFor();
 
-                const actualHTML = beautifyHtml(removeSourceMappingUrlComments(await page.locator( CHAT_WIDGET_SELECTOR ).innerHTML()));
+                const actualHTML = beautifyHtml(
+                    removeSourceMappingUrlComments( await page.locator( CHAT_WIDGET_SELECTOR ).innerHTML() )
+                );
 
-                const goldenFile = `tests/golden/${view}/chat-widget-${testCase.key}.html`;
-                if (updateGoldenFiles()) {
-                    fs.writeFileSync(goldenFile, actualHTML);
+                const goldenFile = `tests/golden/${ view }/chat-widget-${ testCase.key }.html`;
+                if ( updateGoldenFiles() ) {
+                    const goldenFileHTML =
+                        replaceCDNDomainWithPlaceholder( actualHTML, view )
 
-                    console.log(`Updated golden file ${goldenFile}`);
+                    fs.writeFileSync( goldenFile, goldenFileHTML );
+
+                    console.log( `Updated golden file ${ goldenFile }` );
 
                     return;
                 }
-                const golden = beautifyHtml(fs.readFileSync(goldenFile, 'utf8'));
 
-                fs.writeFileSync(actualHTMLFile, actualHTML);
+                const golden = replaceCDNPlaceholderWithDomain(
+                    fs.readFileSync( goldenFile, 'utf8' ), view,
+                );
+
+                fs.writeFileSync( actualHTMLFile, actualHTML );
 
                 const ok = actualHTML === golden;
 
-                let message = `Actual HTML for "${testCase.name}" does not match expected HTML`;
-                if (!ok) {
-                    const command = `diff ${goldenFile} ${actualHTMLFile} | tee ${diffHTMLFile}`;
+                let message = `Actual HTML for "${ testCase.name }" does not match expected HTML`;
+                if ( !ok ) {
+                    fs.writeFileSync( instantiatedGoldenFileForDiff, golden );
+
+                    const command =
+                        `diff ${ instantiatedGoldenFileForDiff } ${ actualHTMLFile } | tee ${ diffHTMLFile }`;
+
                     let diffOutput;
                     try {
-                        diffOutput = new TextDecoder().decode(execSync(command));
+                        diffOutput = new TextDecoder().decode( execSync( command ) );
                         message += `
 
 ======= BEGIN DIFF OUTPUT ========
-${diffOutput}
+${ diffOutput }
 ======== END DIFF OUTPUT =========
 
-[Recorded in diff file: ${diffHTMLFile}]`;
-                    } catch (e) {
+[Recorded in diff file: ${ diffHTMLFile }]`;
+                    } catch ( e ) {
                         // `diff` command failed to create the diff file.
-                        message += `  Diff command \`${command}\` failed:
+                        message += `  Diff command \`${ command }\` failed:
 
-            ${e.stderr.toString()}`;
+            ${ e.stderr.toString() }`;
                     }
-                    }
+                }
 
-                expect(ok, message).toBe(true);
-            });
+                expect( ok, message ).toBe( true );
+            } );
 
-            test( 'chat widget screenshot matches expected', async ({ page }) => {
-                test.skip(process.platform === 'darwin', 'This test is not implemented for Mac');
-                test.skip(isCUView)
+            test( 'chat widget screenshot matches expected', async ( { page } ) => {
+                test.skip( process.platform === 'darwin', 'This test is not implemented for Mac' );
+                test.skip( isCUView )
 
                 await page.locator( CHAT_WIDGET_SELECTOR ).waitFor();
 
-                await expect( page.locator( CHAT_WIDGET_SELECTOR ) ).toHaveScreenshot( `chat-widget-${testCase.key}.png` );
-            });
+                await expect( page.locator( CHAT_WIDGET_SELECTOR ) ).toHaveScreenshot( `chat-widget-${ testCase.key }.png` );
+            } );
 
         } ) // End `test.describe(...)`
     } // End `testCases` for-loop
 } // End `if ( viewsForTest.includes( view ) )`
 
+function getCDNDomainForView( view ) {
+    return isProdView( view ) ? 'cdn.library.nyu.edu' : 'cdn-dev.library.nyu.edu';
+}
 
+function replaceCDNDomainWithPlaceholder( html, view ) {
+    return html.replaceAll( getCDNDomainForView( view ),
+                            '[CORRECT CDN DOMAIN FOR VIEW]' );
+}
 
-
-
+function replaceCDNPlaceholderWithDomain( html, view ) {
+    return html.replaceAll( '[CORRECT CDN DOMAIN FOR VIEW]',
+                            getCDNDomainForView( view ) );
+}
