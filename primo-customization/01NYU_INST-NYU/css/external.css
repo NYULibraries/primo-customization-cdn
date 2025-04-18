@@ -7,3 +7,19 @@ Do not move or alter the import order   */
 @import url("../../00_common/css/nyu_login_page.css");
 @import url("../../00_common/css/nyu_menu.css");
 
+/* Styles for an alert in the full item display page */
+.message_alert {
+    display: block;
+    border: 3px solid #57068c;
+    border-radius: 3px;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1C2127;
+}
+
+.message__alert__icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
