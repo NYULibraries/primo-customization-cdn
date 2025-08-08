@@ -7,7 +7,7 @@ function findingAidsLinkClickHandler( event ) {
 
 
 function injectScriptTagForChatWidget() {
-    const COOPER_UNION_CHAT_WIDGET_LOADER_URL = 'https://cooper.libanswers.com/load_chat.php?hash=e1e8429ae379786fe54c6681a8ad95b9';
+    const COOPER_UNION_CHAT_WIDGET_LOADER_URL = 'https://cooper.libanswers.com/load_chat.php?hash=348801bb326eba314a7204d7663bd50be83f1ede5f5cdfbe82126b466e98ddcfe';
 
     const scriptElement = document.createElement( 'script' );
     scriptElement.setAttribute( 'src', COOPER_UNION_CHAT_WIDGET_LOADER_URL );
