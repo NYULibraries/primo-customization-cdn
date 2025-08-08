@@ -29,7 +29,7 @@ if ( viewsForTest.includes( view ) ) {
     const vid = view.replaceAll('-', ':');
 
     const CHAT_WIDGET_SELECTOR = isCUView
-        ? 'div#lcs_slide_out-22908'
+        ? 'div#s-lch-widget-28138'
         : 'div#nyulibraries_chat_widget';
 
     const testCases = [
