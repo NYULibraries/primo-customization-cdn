@@ -1,3 +1,5 @@
+version: 2.1
+
 docker-defaults: &docker-defaults
   docker:
     - image: cimg/aws:2024.03
@@ -17,22 +19,48 @@ aws-export: &aws-export
       echo 'export AWS_SECRET_ACCESS_KEY=${WEB_CDN_AWS_SECRET_ACCESS_KEY}' >> $BASH_ENV
       echo 'export AWS_REGION=us-east-1' >> $BASH_ENV
 
+# Set pointers for immutable artifact paths:
+# We use a short 7-character SHA (via bash substring) and rely on CIRCLE_SHA1 being identical
+# across all jobs in the pipeline. This ensures dev and prod always point to the exact same tested build.
+# See: https://circleci.com/docs/reference/variables/ (CIRCLE_SHA1 docs)
+# - Bash substring trick: https://discuss.circleci.com/t/using-the-abbreviated-version-of-the-github-commit-sha-in-current-version-of-circleci/45103
+# - CIRCLE_SHA1 is stable across all jobs in a pipeline: https://discuss.circleci.com/t/is-circle-sha1-the-same-in-different-jobs/37901
+# IMPORTANT: Each commit SHA gets its own folder (immutable). This means old
+# artifacts will accumulate in S3. To control costs, define an S3 lifecycle
+# policy to expire artifacts older than ~15 days (or whatever retention we agree).
+# This keeps rollback capability for recent builds while avoiding unbounded growth.
+set-release-vars: &set-release-vars
+  run:
+    name: Set release variables (versioned pointer)
+    command: |
+      echo "export RELEASE_SHA=${CIRCLE_SHA1:0:7}" >> $BASH_ENV
+      echo "export DEV_S3_URI=${DEV_S3_BUCKET}/artifacts/sha-${CIRCLE_SHA1:0:7}"   >> $BASH_ENV
+      echo "export PROD_S3_URI=${PROD_S3_BUCKET}/artifacts/sha-${CIRCLE_SHA1:0:7}" >> $BASH_ENV
+
 # Note that `aws s3 sync ... --exact-timestamps` only works for downloads from S3,
 # not uploads: https://github.com/aws/aws-cli/issues/4460.  The only safe way
 # to update is to upload absolutely everything using `cp` and then deleting
 # removed files using `sync --delete`.  There are many other open GitHub issues
 # related to this behavior.  Here's another: https://github.com/aws/aws-cli/issues/3273.
+
 aws-sync-s3: &aws-sync-s3
   run:
-    name: Deploy to S3
+    name: Deploy to S3 (versioned)
     command: |
       aws s3 cp --recursive primo-customization $S3_URI/primo-customization && \
       aws s3 sync --delete primo-customization $S3_URI/primo-customization
 
-version: 2.1
+# ---- jobs ------------------------------------------------------------------
+
+# Single e2e job, parameterized by VIEW
 jobs:
-  run-e2e: &run-e2e
+  run-e2e:
     <<: *docker-defaults
+    parameters:
+      view:
+        type: string
+    environment:
+      VIEW: << parameters.view >>
     steps:
       - checkout
       - setup_remote_docker
@@ -49,156 +77,95 @@ jobs:
       - store_artifacts:
           path: test-results
 
-  run-e2e-ad-dev:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_AD-AD_DEV
-
-  run-e2e-ad-prod:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_AD-AD
-
-  run-e2e-cu-dev:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_CU-CU_DEV
-
-  run-e2e-cu-prod:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_CU-CU
-
-  run-e2e-nyhs-dev:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_NYHS-NYHS_DEV
-
-  run-e2e-nyhs-prod:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_NYHS-NYHS
-
-  run-e2e-nysid-dev:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_NYSID-NYSID_DEV
-
-  run-e2e-nysid-prod:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_NYSID-NYSID
-
-  run-e2e-nyu-dev:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_INST-NYU_DEV
-
-  run-e2e-nyu-prod:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_INST-NYU
-
-
-  run-e2e-sh-dev:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_US-SH_DEV
-
-  run-e2e-sh-prod:
-    <<: [*docker-defaults, *run-e2e]
-    environment:
-      VIEW: 01NYU_US-SH
-
+  # Deploy to dev from main (build-once pointer)
   deploy_dev:
     <<: *docker-defaults
     steps:
       - checkout
-      - setup_remote_docker
       - *asset_sanity_check
       - *aws-export
+      - *set-release-vars
+      - run:
+          name: Set S3 URI (dev)
+          command: echo "export S3_URI=$DEV_S3_URI" >> $BASH_ENV
       - *aws-sync-s3
+
+  # Promote same SHA to prod after manual approval
   deploy_prod:
     <<: *docker-defaults
     steps:
       - checkout
-      - setup_remote_docker
       - *asset_sanity_check
       - *aws-export
+      - *set-release-vars
+      - run:
+          name: Set S3 URI (prod)
+          command: echo "export S3_URI=$PROD_S3_URI" >> $BASH_ENV
       - *aws-sync-s3
 
 workflows:
   build-and-deploy:
     jobs:
-      - run-e2e-ad-dev:
+      # PRs → run dev-flavor e2e (matrix)
+      - run-e2e:
+          # NOTE: `matrix.view` is only valid here (workflow scope).
+          # Inside the job itself we use `parameters.view`.
+          # Docs: https://circleci.com/docs/guides/orchestrate/using-matrix-jobs/
+          # and example of naming: https://discuss.circleci.com/t/name-for-matrix-jobs/47409
+          name: "run-e2e-dev-<< matrix.view >>"
+          matrix:
+            parameters:
+              view:
+                - "01NYU_AD-AD_DEV"
+                - "01NYU_CU-CU_DEV"
+                - "01NYU_NYHS-NYHS_DEV"
+                - "01NYU_NYSID-NYSID_DEV"
+                - "01NYU_INST-NYU_DEV"
+                - "01NYU_US-SH_DEV"
           filters:
             branches:
               ignore: main
-      - run-e2e-ad-prod:
+
+      # main → run prod-flavor e2e (matrix), then deploy to dev
+      - run-e2e:
+          name: "run-e2e-prod-<< matrix.view >>"
+          matrix:
+            parameters:
+              view:
+                - "01NYU_AD-AD"
+                - "01NYU_CU-CU"
+                - "01NYU_NYHS-NYHS"
+                - "01NYU_NYSID-NYSID"
+                - "01NYU_INST-NYU"
+                - "01NYU_US-SH"
           filters:
             branches:
               only: main
-      - run-e2e-cu-dev:
-          filters:
-            branches:
-              ignore: main
-      - run-e2e-cu-prod:
-          filters:
-            branches:
-              only: main
-      - run-e2e-nyhs-dev:
-          filters:
-            branches:
-              ignore: main
-      - run-e2e-nyhs-prod:
-          filters:
-            branches:
-              only: main
-      - run-e2e-nysid-dev:
-          filters:
-            branches:
-              ignore: main
-      - run-e2e-nysid-prod:
-          filters:
-            branches:
-              only: main
-      - run-e2e-nyu-dev:
-          filters:
-            branches:
-              ignore: main
-      - run-e2e-nyu-prod:
-          filters:
-            branches:
-              only: main
-      - run-e2e-sh-dev:
-          filters:
-            branches:
-              ignore: main
-      - run-e2e-sh-prod:
-          filters:
-            branches:
-              only: main
+
       - deploy_dev:
           requires:
-            - run-e2e-ad-dev
-            - run-e2e-cu-dev
-            - run-e2e-nyhs-dev
-            - run-e2e-nysid-dev
-            - run-e2e-nyu-dev
-            - run-e2e-sh-dev
+            - run-e2e-prod-01NYU_AD-AD
+            - run-e2e-prod-01NYU_CU-CU
+            - run-e2e-prod-01NYU_NYHS-NYHS
+            - run-e2e-prod-01NYU_NYSID-NYSID
+            - run-e2e-prod-01NYU_INST-NYU
+            - run-e2e-prod-01NYU_US-SH
           context: web-cdn-aws-nyulitsdev
           filters:
             branches:
-              only:
-                - develop
+              only: main
+      # https://circleci.com/docs/guides/orchestrate/workflows/#holding-a-workflow-for-a-manual-approval
+      - hold_for_prod:
+          type: approval
+          requires:
+            - deploy_dev
+          filters:
+            branches:
+              only: main
+
       - deploy_prod:
           requires:
-            - run-e2e-ad-prod
-            - run-e2e-cu-prod
-            - run-e2e-nyhs-prod
-            - run-e2e-nysid-prod
-            - run-e2e-nyu-prod
-            - run-e2e-sh-prod
+            - hold_for_prod
           context: web-cdn-aws-nyulits
           filters:
             branches:
