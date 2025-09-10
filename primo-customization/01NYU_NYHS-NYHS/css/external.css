@@ -149,3 +149,33 @@ span.search-bar-sub-menu-item.hide-xs {
     list-style-type: none;
     padding-left: 0;
 }
+
+/* ******************************************************* */
+/* Styles for Finding Aid button */
+/* ******************************************************* */
+
+a.md-button.finding-aid-button,
+a.md-button.finding-aid-button:hover,
+a.md-button.finding-aid-button:focus {
+  box-shadow: none !important;
+  text-decoration: none;
+  color: #071531;
+}
+
+a.md-button.finding-aid-button {
+  background-color: #FF6602;
+  border: 1px solid #FF6602;
+  font-weight: bold;
+  padding: 0 20px;
+}
+
+a.md-button.finding-aid-button:hover {
+  background-color: #ff7722;
+  border-color: #ff7722;
+}
+
+a.md-button.finding-aid-button:focus {
+  background-color: #FF6602;
+  border-color: #993c02;
+}
+

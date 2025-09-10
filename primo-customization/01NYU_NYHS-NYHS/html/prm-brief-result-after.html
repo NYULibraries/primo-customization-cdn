@@ -1,5 +1,7 @@
 <div ng-if="$ctrl.getPnx().display.lds51.length > 0">
-    <a href="{{$ctrl.getPnx().display.lds51[0]}}" target="_blank" onclick="findingAidsLinkClickHandler( event )">
+    <a class="md-button finding-aid-button" href="{{$ctrl.getPnx().display.lds51[0]}}" target="_blank" rel="noopener"
+        onclick="findingAidsLinkClickHandler( event )" aria-label="View finding aid in new window"
+        title="Opens finding aid in new window">
         Finding aid online
     </a>
 </div>
