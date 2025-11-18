@@ -57,13 +57,35 @@ function configureAndInjectLibKey() {
     document.head.appendChild( browzine.script );
 }
 
+const DEV_SUFFIX = "DEV";
+
+const CHATWIDGET_BASE_URLS = {
+    dev: "https://cdn-dev.library.nyu.edu/chatwidget-embed/",
+    prod: "https://cdn.library.nyu.edu/chatwidget-embed/",
+};
+
+function getChatWidgetBaseUrl() {
+    return nyu_primo_vid?.toUpperCase().endsWith(DEV_SUFFIX)
+        ? CHATWIDGET_BASE_URLS.dev
+        : CHATWIDGET_BASE_URLS.prod;
+}
+
 function insertChatWidgetEmbed() {
-    // Always use prod URL for all views.
-    const CHATWIDGET_EMBED_PROD_URL =
-        'https://cdn.library.nyu.edu/chatwidget-embed/index.min.js';
-    const scriptTag = document.createElement( 'script' );
-    scriptTag.setAttribute( 'src', CHATWIDGET_EMBED_PROD_URL );
-    document.body.appendChild( scriptTag )
+    const baseUrl = getChatWidgetBaseUrl();
+    console.log(`[DEBUG] ChatWidget embed URL: ${baseUrl}index.min.js`);
+
+    const scriptTag = document.createElement("script");
+    scriptTag.setAttribute("src", `${baseUrl}index.min.js`);
+    document.body.appendChild(scriptTag);
+}
+
+function insertChatWidgetStyles() {
+    const baseUrl = getChatWidgetBaseUrl();
+
+    const linkTag = document.createElement("link");
+    linkTag.rel = "stylesheet";
+    linkTag.href = `${baseUrl}index.min.css`;
+    document.head.appendChild(linkTag);
 }
 
 // out-of-the-box script except for siteId var
@@ -249,9 +271,11 @@ function getVid() {
 }
 
 const nyu_primo_vid = getVid();
+console.log( '[DEBUG] nyu_primo_vid = ' + nyu_primo_vid );
 
 configureAndInjectLibKey();
 insertChatWidgetEmbed();
+insertChatWidgetStyles();
 injectStatusEmbed();
 installMatomo();
 customizeHomePage();
