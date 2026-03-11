@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.45.3-jammy
+FROM mcr.microsoft.com/playwright:v1.58.2-noble
 
 ENV CONTAINER_MODE true
 ENV INSTALL_PATH /e2e
