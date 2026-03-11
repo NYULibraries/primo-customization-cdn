@@ -33,12 +33,12 @@ if ( viewsForTest.includes( view ) ) {
         : 'div#nyulibraries_chat_widget';
 
     const testCases = [
-        {   
+        {
             key          : 'home-page',
             name         : 'Home page',
             pathAndQuery : '/discovery/search?vid=[VID]',
         },
-        {   
+        {
             key          : 'search-art',
             name         : '[search] Art',
             pathAndQuery : '/discovery/search?vid=[VID]&query=any,contains,art&tab=LibraryCatalog&search_scope=MyInstitution&offset=0',
@@ -50,7 +50,8 @@ if ( viewsForTest.includes( view ) ) {
 
         test.describe( `${view}: ${testCase.key}`, () => {
 
-            test.beforeEach( async ( { page }, testInfo ) => {
+            test.beforeEach( async ( { page, context }, testInfo ) => {
+                await context.grantPermissions(['local-network-access']);
                 const baseURL = testInfo.project.use.baseURL;
                 console.log('Playwright baseURL:', baseURL);
                 page.on('console', msg => console.log(`[console:${msg.type()}] ${msg.text()}`));
