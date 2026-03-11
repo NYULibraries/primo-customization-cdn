@@ -50,7 +50,20 @@ if ( viewsForTest.includes( view ) ) {
 
         test.describe( `${view}: ${testCase.key}`, () => {
 
-            test.beforeEach( async ( { page } ) => {
+            test.beforeEach( async ( { page }, testInfo ) => {
+                const baseURL = testInfo.project.use.baseURL;
+                console.log('Playwright baseURL:', baseURL);
+                page.on('console', msg => console.log(`[console:${msg.type()}] ${msg.text()}`));
+                page.on('pageerror', err => console.log(`[pageerror] ${err.message}`));
+                page.on('requestfailed', req =>
+                    console.log(`[requestfailed] ${req.url()} :: ${req.failure()?.errorText}`)
+                );
+                page.on('response', res => {
+                    if (res.status() >= 400) {
+                        console.log(`[response ${res.status()}] ${res.url()}`);
+                    }
+                });
+
                 if ( process.env.CONTAINER_MODE ) {
                     await modifyCSPHeader(page);
                 }
