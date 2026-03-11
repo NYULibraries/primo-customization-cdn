@@ -69,6 +69,13 @@ All tests are run in a headless mode by default */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.PLAYWRIGHT_BASE_URL,
+    ignoreHTTPSErrors: true,
+
+    launchOptions: {
+      args: [
+        `--unsafely-treat-insecure-origin-as-secure=${process.env.PLAYWRIGHT_BASE_URL}`,
+      ]
+    },
 
     // Capture screenshot after each test failure.
     screenshot: 'only-on-failure',
