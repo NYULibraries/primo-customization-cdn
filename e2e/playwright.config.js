@@ -4,6 +4,8 @@ require('dotenv').config(
   { path: require('path').join(__dirname, '.env.test') },
 )
 
+const baseURL = process.env.PLAYWRIGHT_BASE_URL;
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -68,13 +70,13 @@ All tests are run in a headless mode by default */
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.PLAYWRIGHT_BASE_URL,
+    baseURL,
     ignoreHTTPSErrors: true,
 
     launchOptions: {
-      args: [
-        `--unsafely-treat-insecure-origin-as-secure=${process.env.PLAYWRIGHT_BASE_URL}`,
-      ]
+      args: baseURL?.startsWith('http://')
+        ? [`--unsafely-treat-insecure-origin-as-secure=${baseURL}`]
+        : [],
     },
 
     // Capture screenshot after each test failure.
