@@ -10,7 +10,12 @@ cd .. && cd e2e
 start_time=$(date +%s)
 timeout=30 #seconds
 checkUrl=$PLAYWRIGHT_BASE_URL/discovery/search
-while ! curl -f $checkUrl -o /dev/null; do
+curlArgs="-fsS"
+case "$PLAYWRIGHT_BASE_URL" in
+  https://*) curlArgs="$curlArgs -k" ;;
+esac
+
+while ! curl $curlArgs "$checkUrl" -o /dev/null; do
   sleep 3
   now=$(date +%s)
   if [ $(( now - start_time )) -gt $timeout ]; then
