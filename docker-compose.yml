@@ -43,6 +43,7 @@ services:
     environment:
       <<: *x-environment
       PLAYWRIGHT_BASE_URL: https://e2e.nyu.primo.exlibrisgroup.com
+      E2E_READY_URL: http://primo-explore-devenv:8003/discovery/search
     # https://playwright.dev/docs/ci#docker
     # CI configurations > Docker
     # "Using --ipc=host is also recommended when using Chromium. Without it Chromium can run out of memory and crash."

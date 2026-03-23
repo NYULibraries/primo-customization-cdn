@@ -9,9 +9,9 @@ cd .. && cd e2e
 
 start_time=$(date +%s)
 timeout=30 #seconds
-checkUrl=$PLAYWRIGHT_BASE_URL/discovery/search
+checkUrl="${E2E_READY_URL:-http://primo-explore-devenv:8003/discovery/search}"
 curlArgs="-fsS"
-case "$PLAYWRIGHT_BASE_URL" in
+case "$checkUrl" in
   https://*) curlArgs="$curlArgs -k" ;;
 esac
 
