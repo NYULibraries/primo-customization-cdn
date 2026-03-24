@@ -39,20 +39,17 @@ const config = {
      */
     timeout: 10000,
   },
-  /* Run tests in files in parallel */
-  fullyParallel: true,
+  /* Run tests serially for stability in the containerized e2e environment. */
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code.
      We leave this default as-is, since we would want the option to test.only
      when developing locally.
    */
   forbidOnly: !!process.env.CI,
-  /* Original default: `process.env.CI ? 2 : 0`
-     We increase the number of retries in all environments to mitigate various
-     LibKey-related test instabilities.
-   */
-  retries: process.env.CONTAINER_MODE ? 2 : 1,
-  /* Opt out of parallel tests. */
-  workers: process.env.CONTAINER_MODE ? 1 : undefined,
+  /* Retry transient upstream/app timing issues once before failing the run. */
+  retries: 2,
+  /* Opt out of parallel workers for stability. */
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -72,12 +69,6 @@ All tests are run in a headless mode by default */
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
     ignoreHTTPSErrors: true,
-
-    launchOptions: {
-      args: baseURL?.startsWith('http://')
-        ? [`--unsafely-treat-insecure-origin-as-secure=${baseURL}`]
-        : [],
-    },
 
     // Capture screenshot after each test failure.
     screenshot: 'only-on-failure',
