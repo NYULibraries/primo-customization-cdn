@@ -41,6 +41,14 @@ jobs:
           command: |
             docker-compose run e2e
       - run:
+          name: Capture docker diagnostics
+          command: |
+            mkdir -p test-results
+            docker-compose ps > test-results/docker-compose-ps.txt || true
+            docker logs app-e2e-tls-1 > test-results/e2e-tls.log 2>&1 || true
+            docker inspect app-e2e-tls-1 > test-results/e2e-tls.inspect.json 2>&1 || true
+          when: always
+      - run:
           name: Copy test results
           command: |
             mkdir -p test-results
