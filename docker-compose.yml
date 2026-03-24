@@ -92,7 +92,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -ksf https://localhost/discovery/search -H 'Host: e2e.nyu.primo.exlibrisgroup.com'",
+          "curl -ksf https://localhost/healthz -H 'Host: e2e.nyu.primo.exlibrisgroup.com'",
         ]
       start_period: 60s
       interval: 5s
