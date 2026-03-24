@@ -47,7 +47,7 @@ jobs:
             docker-compose ps > test-results/docker-compose-ps.txt || true
             docker logs app-e2e-tls-1 > test-results/e2e-tls.log 2>&1 || true
             docker inspect app-e2e-tls-1 > test-results/e2e-tls.inspect.json 2>&1 || true
-          when: always
+          when: on_fail
       - run:
           name: Copy test results
           command: |
