@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 
-import { modifyCSPHeader, removeSourceMappingUrlComments, setPathAndQueryVid, updateGoldenFiles } from '../testutils';
+import { removeSourceMappingUrlComments, setPathAndQueryVid, updateGoldenFiles } from '../testutils';
 
 import { execSync } from 'node:child_process';
 
@@ -50,25 +50,8 @@ if ( viewsForTest.includes( view ) ) {
 
         test.describe( `${view}: ${testCase.key}`, () => {
 
-            test.beforeEach( async ( { page, context }, testInfo ) => {
-                await context.grantPermissions(['local-network-access']);
-                const baseURL = testInfo.project.use.baseURL;
-                console.log('Playwright baseURL:', baseURL);
-                page.on('console', msg => console.log(`[console:${msg.type()}] ${msg.text()}`));
-                page.on('pageerror', err => console.log(`[pageerror] ${err.message}`));
-                page.on('requestfailed', req =>
-                    console.log(`[requestfailed] ${req.url()} :: ${req.failure()?.errorText}`)
-                );
-                page.on('response', res => {
-                    if (res.status() >= 400) {
-                        console.log(`[response ${res.status()}] ${res.url()}`);
-                    }
-                });
-
-                if ( process.env.CONTAINER_MODE ) {
-                    await modifyCSPHeader(page);
-                }
-                await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
+            test.beforeEach( async ( { page } ) => {
+                await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ), { waitUntil : 'domcontentloaded' } );
             } );
 
             test( 'chat widget found on page', async ( { page } ) => {
