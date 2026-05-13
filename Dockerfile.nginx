@@ -1,4 +1,4 @@
-FROM quay.io/nyulibraries/nginx:1.21.1-0
+FROM quay.io/nyulibraries/nginx:1.29.5-0
 
 USER root
 RUN apk update && apk add --no-cache openssl
