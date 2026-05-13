@@ -342,12 +342,18 @@ describe('setPathAndQueryVid with VIEW constraint', () => {
     '01NYU_US-SH_DEV',
   ];
 
-  test.each( allowedViews )( 'replaces vid=[VID] correctly if VIEW %s is allowed', currentView => {
+  const currentView = process.env.VIEW;
+
+  test(`replaces vid=[VID] correctly if VIEW is allowed`, () => {
+      if (allowedViews.includes(currentView)) {
           const vid = currentView.replaceAll('-', ':');
           const pathAndQuery = 'example.com?vid=[VID]&otherParam=value';
           const result = setPathAndQueryVid(pathAndQuery, vid);
           expect(result).toBe(`example.com?vid=${vid}&otherParam=value`);
-  } );
+      } else {
+          throw new Error(`Current VIEW '${currentView}' is not in the allowed list.`);
+      }
+  });
 
 
   test('throws error or fails for disallowed VIEW values', () => {
@@ -359,6 +365,6 @@ describe('setPathAndQueryVid with VIEW constraint', () => {
       // Test that an error is thrown
       expect(() => {
           setPathAndQueryVid(pathAndQuery, vid);
-      }).toThrow(`The provided vid value '${vid}' is not allowed.`);
+      }).toThrowError(`The provided vid value '${vid}' is not allowed.`);
   });
 });
