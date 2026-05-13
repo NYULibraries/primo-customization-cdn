@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.58.2-jammy
+FROM mcr.microsoft.com/playwright:v1.60.0-jammy
 
 ENV INSTALL_PATH /e2e
 ENV USER pwuser
