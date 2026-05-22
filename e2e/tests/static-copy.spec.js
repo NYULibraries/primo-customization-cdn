@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 
-import { modifyCSPHeader, setPathAndQueryVid, updateGoldenFiles, } from '../testutils/index.js';
+import { setPathAndQueryVid, updateGoldenFiles, } from '../testutils/index.js';
 
 import { execSync } from 'child_process';
 
@@ -25,10 +25,7 @@ for (let i = 0; i < testCases.length; i++) {
     test.describe(`${view}: ${testCase.name}`, () => {
 
         test.beforeEach(async ({ page }) => {
-            if ( process.env.CONTAINER_MODE ) {
-                await modifyCSPHeader(page);
-            }
-            await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
+            await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ), { waitUntil : 'domcontentloaded' } );
 
         });
 

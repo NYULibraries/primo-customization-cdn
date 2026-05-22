@@ -11,4 +11,6 @@ RUN openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:secp384r1 -days 3650
 RUN chmod 600 /nyu.primo.exlibrisgroup.com.key /cdn-dev.library.nyu.edu.key \
   && chmod 644 /nyu.primo.exlibrisgroup.com.crt /cdn-dev.library.nyu.edu.crt
 
-# USER nginx
+# Bake the e2e nginx config into the image so CircleCI remote Docker does not
+# depend on bind-mounted checkout files for service startup.
+COPY nginx/conf.d-e2e/ /etc/nginx/conf.d/

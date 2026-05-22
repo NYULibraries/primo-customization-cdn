@@ -4,6 +4,8 @@ require('dotenv').config(
   { path: require('path').join(__dirname, '.env.test') },
 )
 
+const baseURL = process.env.PLAYWRIGHT_BASE_URL;
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -29,7 +31,7 @@ const config = {
 
   testDir: './tests',
   /* Maximum time one test can run for. */
-  timeout: 90 * 1000,
+  timeout: 30 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -37,20 +39,17 @@ const config = {
      */
     timeout: 10000,
   },
-  /* Run tests in files in parallel */
-  fullyParallel: true,
+  /* Run tests serially for stability in the containerized e2e environment. */
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code.
      We leave this default as-is, since we would want the option to test.only
      when developing locally.
    */
   forbidOnly: !!process.env.CI,
-  /* Original default: `process.env.CI ? 2 : 0`
-     We increase the number of retries in all environments to mitigate various
-     LibKey-related test instabilities.
-   */
-  retries: process.env.CONTAINER_MODE ? 4 : 2,
-  /* Opt out of parallel tests. */
-  workers: process.env.CONTAINER_MODE ? 1 : undefined,
+  /* Retry transient upstream/app timing issues once before failing the run. */
+  retries: 2,
+  /* Opt out of parallel workers for stability. */
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -68,7 +67,8 @@ All tests are run in a headless mode by default */
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.PLAYWRIGHT_BASE_URL,
+    baseURL,
+    ignoreHTTPSErrors: true,
 
     // Capture screenshot after each test failure.
     screenshot: 'only-on-failure',

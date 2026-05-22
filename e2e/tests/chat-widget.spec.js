@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 
-import { modifyCSPHeader, removeSourceMappingUrlComments, setPathAndQueryVid, updateGoldenFiles } from '../testutils';
+import { removeSourceMappingUrlComments, setPathAndQueryVid, updateGoldenFiles } from '../testutils';
 
 import { execSync } from 'node:child_process';
 
@@ -33,12 +33,12 @@ if ( viewsForTest.includes( view ) ) {
         : 'div#nyulibraries_chat_widget';
 
     const testCases = [
-        {   
+        {
             key          : 'home-page',
             name         : 'Home page',
             pathAndQuery : '/discovery/search?vid=[VID]',
         },
-        {   
+        {
             key          : 'search-art',
             name         : '[search] Art',
             pathAndQuery : '/discovery/search?vid=[VID]&query=any,contains,art&tab=LibraryCatalog&search_scope=MyInstitution&offset=0',
@@ -51,10 +51,7 @@ if ( viewsForTest.includes( view ) ) {
         test.describe( `${view}: ${testCase.key}`, () => {
 
             test.beforeEach( async ( { page } ) => {
-                if ( process.env.CONTAINER_MODE ) {
-                    await modifyCSPHeader(page);
-                }
-                await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
+                await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ), { waitUntil : 'domcontentloaded' } );
             } );
 
             test( 'chat widget found on page', async ( { page } ) => {

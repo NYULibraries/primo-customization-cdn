@@ -1,23 +1,22 @@
 #!/bin/sh -e
 
-# Navigate to unit_tests directory and run unit tests
 echo "Running unit tests..."
 cd /unit_tests
 yarn test
-cd .. && cd e2e
 
+cd /e2e
+echo "Waiting for app readiness..."
+APP_READY_URL="${PLAYWRIGHT_BASE_URL:-https://e2e.nyu.primo.exlibrisgroup.com}/discovery/search"
+APP_READY_TIMEOUT_SECONDS=120
+START_TIME="$(date +%s)"
 
-start_time=$(date +%s)
-timeout=30 #seconds
-checkUrl=$PLAYWRIGHT_BASE_URL/discovery/search
-while ! curl -f $checkUrl -o /dev/null; do
-  sleep 3
-  now=$(date +%s)
-  if [ $(( now - start_time )) -gt $timeout ]; then
-    echo "Unable to connect to $checkUrl after $timeout seconds; aborting!"
+until curl -ksf "$APP_READY_URL" >/dev/null; do
+  NOW="$(date +%s)"
+  if [ $(( NOW - START_TIME )) -ge "$APP_READY_TIMEOUT_SECONDS" ]; then
+    echo "App did not become ready at $APP_READY_URL" >&2
     exit 1
   fi
+  sleep 2
 done
 
 exec "$@"
-

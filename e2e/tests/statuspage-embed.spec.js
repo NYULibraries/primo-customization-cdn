@@ -1,6 +1,6 @@
 const { test, expect } = require( '@playwright/test' );
 
-import { modifyCSPHeader, setPathAndQueryVid } from '../testutils';
+import { setPathAndQueryVid } from '../testutils';
 
 const view = process.env.VIEW;
 
@@ -33,10 +33,7 @@ if ( viewsForTest.includes( view ) ) {
         test.describe( `${view}: ${testCase.name}`, () => {
 
             test.beforeEach( async ( { page } ) => {
-                if ( process.env.CONTAINER_MODE ) {
-                    await modifyCSPHeader(page);
-                }
-                await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ) );
+                await page.goto( setPathAndQueryVid( testCase.pathAndQuery, vid ), { waitUntil : 'domcontentloaded' } );
             } );
 
             test( 'StatusPage Embed found on page', async ( { page } ) => {
