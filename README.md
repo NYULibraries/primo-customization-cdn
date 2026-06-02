@@ -82,7 +82,7 @@ How the containerized E2E proxy works:
 - `nginx/conf.d-e2e/default.conf` proxies Primo app traffic to `primo-explore-devenv` and customization assets to `cdn-server`.
 - Docker marks `e2e-tls` healthy via a local `/healthz` endpoint, while the `e2e` container still waits for `/discovery/search` before launching Playwright.
 - JS responses that still contain baked CDN URLs are rewritten to the e2e origin before they reach the browser.
-- The shared rewrite block lives in [nginx/conf.d-e2e/includes/js-rewrites.inc](/Users/vladislavburlutskiy/Documents/GitHub/primo-customization-cdn/nginx/conf.d-e2e/includes/js-rewrites.inc) so the same `sub_filter` rules do not have to be repeated in multiple nginx `location` blocks.
+- The shared rewrite block lives in [nginx/conf.d-e2e/includes/js-rewrites.inc](nginx/conf.d-e2e/includes/js-rewrites.inc) so the same `sub_filter` rules do not have to be repeated in multiple nginx `location` blocks.
 - `proxy_set_header Accept-Encoding "";` is part of that include because nginx `sub_filter` needs the upstream JS response to be uncompressed.
 
 For example:
