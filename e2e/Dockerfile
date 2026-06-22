@@ -1,6 +1,5 @@
-FROM mcr.microsoft.com/playwright:v1.45.3-jammy
+FROM mcr.microsoft.com/playwright:v1.61.0-noble
 
-ENV CONTAINER_MODE true
 ENV INSTALL_PATH /e2e
 ENV USER pwuser
 
@@ -8,12 +7,10 @@ WORKDIR $INSTALL_PATH
 
 COPY e2e/package.json e2e/yarn.lock ./
 RUN yarn install --frozen-lockfile \
-    && yarn cache clean \
-    # Install only the Chromium browser, as it is the only browser needed for the project:
-    # Reduce build time and size: no need to install other browser binaries, reduces the size of the image.
-    && npx playwright install chromium
+    && yarn cache clean
 
 COPY e2e/ .
+RUN chmod +x ./docker-entrypoint.sh
 
 COPY unit_tests/ /unit_tests/
 WORKDIR /unit_tests

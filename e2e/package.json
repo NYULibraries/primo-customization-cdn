@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.45.3",
+    "@playwright/test": "^1.61.0",
     "dotenv": "^17.4.2",
     "js-beautify": "^1.15.4"
   },
