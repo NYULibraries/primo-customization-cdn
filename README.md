@@ -62,6 +62,11 @@ yarn install
 
 ### Run tests
 
+> **Note:** E2E tests are Docker-only. The `test:e2e:*` scripts in `e2e/package.json` are
+> meant to run inside the `e2e` container, which goes through the `e2e-tls` proxy and the
+> `https://e2e.nyu.primo.exlibrisgroup.com` origin. Running them directly on the host with
+> `yarn` will not work.
+
 ```shell
 # Docker-based E2E runs go through a dedicated HTTPS proxy (`e2e-tls`).
 # In the containerized setup, Primo app pages and customization assets are
