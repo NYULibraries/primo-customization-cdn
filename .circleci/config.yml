@@ -1,6 +1,6 @@
 docker-defaults: &docker-defaults
   docker:
-    - image: cimg/aws:2024.03
+    - image: cimg/aws:2026.04.1
   working_directory: ~/app
 
 asset_sanity_check: &asset_sanity_check
