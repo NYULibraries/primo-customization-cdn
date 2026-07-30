@@ -25,8 +25,9 @@ services:
   #        If changing this name, make sure to update that reference.
   primo-explore-devenv:
     image: quay.io/nyulibraries/primo-customization-devenv:main
-    # Same as the image's CMD, plus `--saml`, which makes sign-in work on
-    # localhost with no TLS or `/etc/hosts` changes.
+    # Same as the image's default `primo-explore-devenv:run` script, plus
+    # `--saml`, which makes sign-in work on localhost with no TLS or
+    # `/etc/hosts` changes.
     #
     # `--saml` flips the three login rewrite rules in the devenv's
     # `gulp/primoProxy.js` from `[PL]` to `[RL]`:
@@ -51,10 +52,17 @@ services:
     #
     # The `[PL]`/`[RL]` flag vocabulary comes from connect-modrewrite:
     #   https://www.npmjs.com/package/connect-modrewrite
+    #
+    # We call the image's own npm script rather than inlining what it expands
+    # to, so that changes to it upstream reach us — the image tag is `main`.
+    #
+    # The `--` is required.  Without it npm treats `--saml` as its own flag and
+    # silently drops it, and the devenv then starts up looking perfectly normal;
+    # you only discover the flag was lost when sign-in fails.
     command:
       - sh
       - -c
-      - cd /app/primo-explore-devenv && node_modules/.bin/gulp run --ve --saml --view $$VIEW
+      - npm run primo-explore-devenv:run -- $$VIEW --saml
     ports:
       - "8003:8003"
     depends_on:
