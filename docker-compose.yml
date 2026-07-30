@@ -25,6 +25,14 @@ services:
   #        If changing this name, make sure to update that reference.
   primo-explore-devenv:
     image: quay.io/nyulibraries/primo-customization-devenv:main
+    # Same as the image's CMD, plus `--saml`, which makes sign-in work on
+    # localhost with no TLS or `/etc/hosts` changes.  Without it the login
+    # endpoints are proxied server-side, so the browser never navigates to
+    # Ex Libris and SAML cannot complete.
+    command:
+      - sh
+      - -c
+      - cd /app/primo-explore-devenv && node_modules/.bin/gulp run --ve --saml --view $$VIEW
     ports:
       - "8003:8003"
     depends_on:
@@ -75,33 +83,6 @@ services:
       - primo-customization-cdn-net
     # volumes:
     #   - ./e2e/tests/chat-widget.spec.js-snapshots/:/e2e/tests/chat-widget.spec.js-snapshots/
-
-  # services for local tls, i.e. for login
-  tls:
-    image: primo-customization-cdn-tls-nginx
-    build:
-      dockerfile: Dockerfile.nginx
-    ports:
-      - "443:443"
-    depends_on:
-      - devenv-tls
-      - cdn-server
-    extra_hosts:
-      - "nyu.primo.exlibrisgroup.com:216.147.212.109"
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-    networks:
-      - primo-customization-cdn-net
-  devenv-tls:
-    image: quay.io/nyulibraries/primo-customization-devenv:main
-    depends_on:
-      - cdn-server
-    extra_hosts:
-      - "nyu.primo.exlibrisgroup.com:216.147.212.109"
-    environment:
-      <<: *x-environment
-    networks:
-      - primo-customization-cdn-net
 
 networks:
   primo-customization-cdn-net:
