@@ -26,9 +26,31 @@ services:
   primo-explore-devenv:
     image: quay.io/nyulibraries/primo-customization-devenv:main
     # Same as the image's CMD, plus `--saml`, which makes sign-in work on
-    # localhost with no TLS or `/etc/hosts` changes.  Without it the login
-    # endpoints are proxied server-side, so the browser never navigates to
-    # Ex Libris and SAML cannot complete.
+    # localhost with no TLS or `/etc/hosts` changes.
+    #
+    # `--saml` flips the three login rewrite rules in the devenv's
+    # `gulp/primoProxy.js` from `[PL]` to `[RL]`:
+    #   https://github.com/ExLibrisGroup/primo-explore-devenv/blob/226e3125310b72bb9a357f52524c98918956c6e3/gulp/primoProxy.js#L187-L195
+    # With `[PL]` the devenv fetches the login endpoint server-side, so the
+    # browser never navigates to Ex Libris and the SAML round trip cannot
+    # complete; with `[RL]` the browser is redirected, authenticates at the IdP,
+    # and returns to localhost with `?primoExploreJwt=...`.
+    #
+    # The flag is undocumented by Ex Libris.  It was added in 2018 by a community
+    # contributor and is mentioned publicly only in a closed issue thread:
+    #   https://github.com/ExLibrisGroup/primo-explore-devenv/commit/624bd763
+    #   https://github.com/ExLibrisGroup/primo-explore-devenv/issues/129
+    #
+    # There is also a `--cas` flag, for sites whose SSO is CAS rather than SAML.
+    # We do not use it — NYU authenticates via Shibboleth/SAML — but it is worth
+    # knowing about, because it sets the same `[RL]` rewrite flags and was added
+    # for the same reason.  It is the best corroboration that this really is the
+    # intended way to sign in against a local devenv:
+    #   https://github.com/ExLibrisGroup/primo-explore-devenv/commit/24863657
+    #   https://github.com/ExLibrisGroup/primo-explore-devenv/issues/86
+    #
+    # The `[PL]`/`[RL]` flag vocabulary comes from connect-modrewrite:
+    #   https://www.npmjs.com/package/connect-modrewrite
     command:
       - sh
       - -c
