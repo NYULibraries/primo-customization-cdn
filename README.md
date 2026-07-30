@@ -28,6 +28,10 @@ This depends on the devenv being run with gulp's `--saml` flag, which `docker-co
 for you.  Without it, the login endpoints are proxied server-side, the browser never navigates to
 Ex Libris, and the sign-in fails.
 
+Signing *out*, however, does not work locally: Shibboleth rejects a logout return URL on
+`localhost`.  That is enforced at the IdP and cannot be fixed from this repo.  To get back to a
+signed-out state, clear site data for `localhost:8003`.
+
 ## E2E tests
 
 We utilize [Playwright](https://playwright.dev/docs/intro) for our E2E tests.
