@@ -7,9 +7,11 @@ Do not move or alter the import order   */
 @import url("../../00_common/css/nyu_menu.css");
 
 
-/* Enlarge top bar to resize the NYUAD logo so it's readable */
+/* Size the top bar to match the NYUSH view. Primo's own
+   `prm-logo .product-logo` supplies height: 100% and padding: 0.85em,
+   which is what sets the logo's clear space, so no override is needed here. */
 prm-topbar {
-    height: 150px;
+    height: 80px;
 }
 
 
@@ -17,18 +19,6 @@ prm-topbar {
 prm-logo .product-logo .organization-logo:hover,
 a:hover {
     box-shadow: none !important;
-}
-
-
-/* Align the logo horizontally and vertically */
-prm-logo .product-logo {
-    display: flex;
-}
-
-.product-logo {
-    justify-content: center;
-    align-items: center;
-    height: 100%;
 }
 
 
