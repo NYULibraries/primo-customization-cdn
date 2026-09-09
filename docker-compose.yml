@@ -42,16 +42,21 @@ services:
     # complete; with `[RL]` the browser is redirected, authenticates at the IdP,
     # and returns to localhost with `?primoExploreJwt=...`.
     #
-    # The flag is undocumented by Ex Libris.  It was added in 2018 by a community
-    # contributor and is mentioned publicly only in a closed issue thread:
+    # The flag is undocumented by Ex Libris.  It came in as a community
+    # contribution in 2018: issue #83 reported that sign-in fails under SAML
+    # because the proxied login request returns a 500, and PR #84 answered it by
+    # adding `--saml` to redirect those requests instead.  Merged 2018-09-20.
+    #   https://github.com/ExLibrisGroup/primo-explore-devenv/issues/83
+    #   https://github.com/ExLibrisGroup/primo-explore-devenv/pull/84
     #   https://github.com/ExLibrisGroup/primo-explore-devenv/commit/624bd763
+    # A later thread covers the same ground and is how most people run across it:
     #   https://github.com/ExLibrisGroup/primo-explore-devenv/issues/129
     #
     # There is also a `--cas` flag, for sites whose SSO is CAS rather than SAML.
     # We do not use it — NYU authenticates via Shibboleth/SAML — but it is worth
     # knowing about, because it sets the same `[RL]` rewrite flags and was added
-    # for the same reason.  It is the best corroboration that this really is the
-    # intended way to sign in against a local devenv:
+    # for the same reason, in response to issue #86 — further confirmation that
+    # redirecting is the intended way to sign in against a local devenv:
     #   https://github.com/ExLibrisGroup/primo-explore-devenv/commit/24863657
     #   https://github.com/ExLibrisGroup/primo-explore-devenv/issues/86
     #
