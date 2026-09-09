@@ -69,6 +69,9 @@ All tests are run in a headless mode by default */
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
     ignoreHTTPSErrors: true,
+    // Service workers must not bypass the Matomo request block in fixtures.js.
+    // https://playwright.dev/docs/api/class-browsercontext#browser-context-route
+    serviceWorkers: 'block',
 
     // Capture screenshot after each test failure.
     screenshot: 'only-on-failure',

@@ -90,6 +90,14 @@ How the containerized E2E proxy works:
 - The shared rewrite block lives in [nginx/conf.d-e2e/includes/js-rewrites.inc](nginx/conf.d-e2e/includes/js-rewrites.inc) so the same `sub_filter` rules do not have to be repeated in multiple nginx `location` blocks.
 - `proxy_set_header Accept-Encoding "";` is part of that include because nginx `sub_filter` needs the upstream JS response to be uncompressed.
 
+All Playwright specs import `test` and `expect` from `e2e/fixtures.js`. Its
+[automatic fixture](https://playwright.dev/docs/test-fixtures#automatic-fixtures)
+blocks Matomo scripts and collection requests before navigation, so E2E visits do
+not enter dev or production analytics. Service workers are disabled to keep them
+from bypassing the block. See the
+[request routing documentation](https://playwright.dev/docs/api/class-browsercontext#browser-context-route)
+for the service-worker restriction and the effect on HTTP caching.
+
 For example:
 
 ```shell

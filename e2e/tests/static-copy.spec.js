@@ -4,7 +4,7 @@ import { setPathAndQueryVid, updateGoldenFiles, } from '../testutils/index.js';
 
 import { execSync } from 'child_process';
 
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('../fixtures');
 
 const view = process.env.VIEW;
 const vid = view.replaceAll('-', ':');

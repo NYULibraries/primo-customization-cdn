@@ -4,7 +4,7 @@ import { removeSourceMappingUrlComments, setPathAndQueryVid, updateGoldenFiles }
 
 import { execSync } from 'node:child_process';
 
-const { test, expect } = require( '@playwright/test' );
+const { test, expect } = require( '../fixtures' );
 
 
 const beautifyHtml = require( 'js-beautify' ).html;
