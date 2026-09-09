@@ -1,5 +1,9 @@
+# The `primo-customization-cdn-*` images are built locally and never published to a
+# registry, so a bare `docker compose pull` fails on them with "pull access denied".
+# `pull_policy: never` makes `pull` skip them; `up` still builds them when absent.
 x-build-e2e: &x-build-e2e
   image: primo-customization-cdn-e2e
+  pull_policy: never
   build:
     context: ./
     dockerfile: e2e/Dockerfile
@@ -7,11 +11,12 @@ x-build-e2e: &x-build-e2e
       - primo-customization-cdn-e2e
 
 x-environment: &x-environment
-  VIEW: ${VIEW}
+  VIEW: ${VIEW:-}
 
 services:
   cdn-server:
     image: primo-customization-cdn-cdn-server
+    pull_policy: never
     build:
       dockerfile: Dockerfile.cdn-server
     ports:
@@ -79,6 +84,7 @@ services:
   # services for local tls, i.e. for login
   tls:
     image: primo-customization-cdn-tls-nginx
+    pull_policy: never
     build:
       dockerfile: Dockerfile.nginx
     ports:
