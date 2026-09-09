@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.61.0-noble
+FROM mcr.microsoft.com/playwright:v1.63.0-noble
 
 ENV INSTALL_PATH /e2e
 ENV USER pwuser
