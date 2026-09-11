@@ -6,12 +6,12 @@ Styles, templates, and other assets for primo-customization CDN for use with [pr
 
 Start the local primo-explore-devenv for a particular view:
 
-```
+```shell
 docker compose pull
 VIEW=01NYU_INST-NYU_DEV docker compose up primo-explore-devenv
 ```
 
-Then view your edits in `primo-customization/01NYU_INST-NYU_DEV/` at http://localhost:8003/discovery/search?vid=01NYU_INST:NYU_DEV
+Then view your edits in `primo-customization/01NYU_INST-NYU_DEV/` at <http://localhost:8003/discovery/search?vid=01NYU_INST:NYU_DEV>
 
 ### Local Login
 
@@ -43,11 +43,11 @@ We utilize [Playwright](https://playwright.dev/docs/intro) for our E2E tests.
 
 ## Getting started
 
-* [Install](https://github.com/NYULibraries/primo-customization-cdn/blob/main/README.md#install)
-* [Start the local primo-explore-devenv for a particular view](https://github.com/NYULibraries/primo-customization-cdn/blob/main/README.md#usage)
-  * Make sure to match the local Primo and e2e test views.  Not doing so can lead to
+- [Install](https://github.com/NYULibraries/primo-customization-cdn/blob/main/README.md#install)
+- [Start the local primo-explore-devenv for a particular view](https://github.com/NYULibraries/primo-customization-cdn/blob/main/README.md#usage)
+  - Make sure to match the local Primo and e2e test views.  Not doing so can lead to
     inaccurate test results.
-* [Run tests](https://github.com/NYULibraries/primo-customization-cdn/blob/main/README.md#run-tests)
+- [Run tests](https://github.com/NYULibraries/primo-customization-cdn/blob/main/README.md#run-tests)
 
 ### Install
 
@@ -60,55 +60,64 @@ yarn install
 
 ### Run tests
 
-```shell
-# Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU_DEV
-yarn test:e2e:nyu:dev
-# Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU
-yarn test:e2e:nyu:prod
-# Tests http://localhost:8003/discovery/search?vid=[VID]
-VIEW=[VIEW] yarn test:e2e
-```
-
-Update golden files:
+> **Note:** E2E tests are Docker-only. The `test:e2e:*` scripts in `e2e/package.json` are
+> meant to run inside the `e2e` container, which goes through the `e2e-tls` proxy and the
+> `https://e2e.nyu.primo.exlibrisgroup.com` origin. Running them directly on the host with
+> `yarn` will not work.
 
 ```shell
-# Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU_DEV
-yarn test:e2e:nyu:dev:update-golden-files
-# Tests http://localhost:8003/discovery/search?vid=01NYU_INST:NYU
-yarn test:e2e:nyu:prod:update-golden-files
-# Tests http://localhost:8003/discovery/search?vid=[VID]
-UPDATE_GOLDEN_FILES=true VIEW=[VIEW] yarn test:e2e
+# Docker-based E2E runs go through a dedicated HTTPS proxy (`e2e-tls`).
+# In the containerized setup, Primo app pages and customization assets are
+# served from the same secure e2e origin:
+#   https://e2e.nyu.primo.exlibrisgroup.com
+#
+# The e2e container runs `unit_tests/` before launching Playwright.
+#
+# The `e2e/` test code is copied into the image, so when you change Playwright
+# tests, config, or the e2e Dockerfile, rebuild or use `--build`.
+VIEW=[VIEW] docker compose up --build e2e
 ```
 
-Using Docker Compose:
+How the containerized E2E proxy works:
 
-```shell
-VIEW=[VIEW] docker compose up e2e
-```
+- The browser only talks to `https://e2e.nyu.primo.exlibrisgroup.com`.
+- `e2e-tls` is built from `Dockerfile.nginx-e2e`, which bakes `nginx/conf.d-e2e/` into the image instead of relying on a bind mount.
+- `nginx/conf.d-e2e/default.conf` proxies Primo app traffic to `primo-explore-devenv` and customization assets to `cdn-server`.
+- Docker marks `e2e-tls` healthy via a local `/healthz` endpoint, while the `e2e` container still waits for `/discovery/search` before launching Playwright.
+- JS responses that still contain baked CDN URLs are rewritten to the e2e origin before they reach the browser.
+- The shared rewrite block lives in [nginx/conf.d-e2e/includes/js-rewrites.inc](nginx/conf.d-e2e/includes/js-rewrites.inc) so the same `sub_filter` rules do not have to be repeated in multiple nginx `location` blocks.
+- `proxy_set_header Accept-Encoding "";` is part of that include because nginx `sub_filter` needs the upstream JS response to be uncompressed.
+
+All Playwright specs import `test` and `expect` from `e2e/fixtures.js`. Its
+[automatic fixture](https://playwright.dev/docs/test-fixtures#automatic-fixtures)
+blocks Matomo scripts and collection requests before navigation, so E2E visits do
+not enter dev or production analytics. Service workers are disabled to keep them
+from bypassing the block. See the
+[request routing documentation](https://playwright.dev/docs/api/class-browsercontext#browser-context-route)
+for the service-worker restriction and the effect on HTTP caching.
 
 For example:
 
 ```shell
-# Tests http://primo-explore-devenv:8003/discovery/search?vid=01NYU_INST-NYU_DEV
-VIEW=01NYU_INST-NYU_DEV docker compose up e2e
+# Tests https://e2e.nyu.primo.exlibrisgroup.com/discovery/search?vid=01NYU_INST:NYU_DEV
+VIEW=01NYU_INST-NYU_DEV docker compose up --build e2e
 ```
 
 Update golden files:
 
 ```shell
-# Tests http://primo-explore-devenv:8003/discovery/search?vid=01NYU_INST-NYU_DEV
-VIEW=01NYU_INST-NYU_DEV docker compose up e2e-update-golden-files
+# Tests https://e2e.nyu.primo.exlibrisgroup.com/discovery/search?vid=01NYU_INST:NYU_DEV
+VIEW=01NYU_INST-NYU_DEV docker compose up --build e2e-update-golden-files
 ```
 
 Update chatwidget PNG files for NYU views:
 
 ```shell
-VIEW=[VIEW] docker compose up e2e-update-screenshots
+VIEW=[VIEW] docker compose up --build e2e-update-screenshots
 ```
+
 For example:
 
 ```shell
-VIEW=01NYU_INST-NYU_DEV docker compose up e2e-update-screenshots
+VIEW=01NYU_INST-NYU_DEV docker compose up --build e2e-update-screenshots
 ```
-
----
