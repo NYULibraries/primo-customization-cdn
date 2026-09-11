@@ -1,7 +1,7 @@
 FROM quay.io/nyulibraries/nginx:1.29.5-0
 
 USER root
-RUN apk update && apk add --no-cache openssl
+RUN apk add --no-cache openssl curl
 RUN openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:secp384r1 -days 3650 \
   -nodes -keyout nyu.primo.exlibrisgroup.com.key -out nyu.primo.exlibrisgroup.com.crt -subj "/CN=nyu.primo.exlibrisgroup.com" \
   -addext "subjectAltName=DNS:nyu.primo.exlibrisgroup.com,DNS:*.primo.exlibrisgroup.com,IP:10.0.0.1"
@@ -11,4 +11,6 @@ RUN openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:secp384r1 -days 3650
 RUN chmod 600 /nyu.primo.exlibrisgroup.com.key /cdn-dev.library.nyu.edu.key \
   && chmod 644 /nyu.primo.exlibrisgroup.com.crt /cdn-dev.library.nyu.edu.crt
 
-# USER nginx
+# Bake the e2e nginx config into the image so CircleCI remote Docker does not
+# depend on bind-mounted checkout files for service startup.
+COPY nginx/conf.d-e2e/ /etc/nginx/conf.d/
