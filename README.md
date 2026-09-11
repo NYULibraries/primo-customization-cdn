@@ -15,24 +15,22 @@ Then view your edits in `primo-customization/01NYU_INST-NYU_DEV/` at <http://loc
 
 ### Local Login
 
-To view pages under authentication locally, you will need to proxy real domains to your localhost by adding the following to `/etc/hosts`:
+Signing in works directly against `http://localhost:8003`. No `/etc/hosts` changes, no TLS, and no
+self-signed certificates are needed.
 
-```shell
-127.0.0.1 nyu.primo.exlibrisgroup.com
-127.0.0.1 cdn-dev.library.nyu.edu
-127.0.0.1 cdn.library.nyu.edu
-```
+Clicking sign-in redirects the browser to Ex Libris, SAML completes there, and you are returned to
+`localhost` with a `primoExploreJwt` query parameter.  The devenv serves the local `index.html` for
+that URL, and the app then uses the JWT to authorize the API calls that the devenv proxies to real
+Primo.  Because the session travels in that token rather than in a cookie scoped to
+`exlibrisgroup.com`, the browser does not need to be on the real hostname.
 
-Then, start tls service:
+This depends on the devenv being run with gulp's `--saml` flag, which `docker-compose.yml` passes
+for you.  Without it, the login endpoints are proxied server-side, the browser never navigates to
+Ex Libris, and the sign-in fails.
 
-```shell
-docker compose pull
-VIEW=01NYU_INST-NYU_DEV docker compose up tls
-```
-
-You will then need to validate the two self-signed certs in your browser for the above domains, after which you can use `nyu.primo.exlibrisgroup.com` in your browser. Be sure to confirm that you are indeed proxying to your local server.
-
-NOTE: Don't forget to undo your `/etc/hosts` edits when finished!
+Signing *out*, however, does not work locally: Shibboleth rejects a logout return URL on
+`localhost`.  That is enforced at the IdP and cannot be fixed from this repo.  To get back to a
+signed-out state, clear site data for `localhost:8003`.
 
 ## E2E tests
 
