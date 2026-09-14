@@ -26,7 +26,8 @@ Primo.  Because the session travels in that token rather than in a cookie scoped
 
 This depends on the devenv being run with gulp's `--saml` flag, which `docker-compose.yml` passes
 for you.  Without it, the login endpoints are proxied server-side, the browser never navigates to
-Ex Libris, and the sign-in fails.
+Ex Libris, and the sign-in fails.  The flag isn't in Ex Libris's documentation; it was added upstream
+in [ExLibrisGroup/primo-explore-devenv#84](https://github.com/ExLibrisGroup/primo-explore-devenv/pull/84).
 
 Signing *out*, however, does not work locally: Shibboleth rejects a logout return URL on
 `localhost`.  That is enforced at the IdP and cannot be fixed from this repo.  To get back to a
