@@ -139,6 +139,7 @@ function installMatomo() {
 const homePageElementTagName = 'prm-static';
 
 async function customizeHomePage() {
+    // fetch custom homepage
     const homePageHtml = await getHomePageHtml();
     if ( ! homePageHtml ) {
         console.error( '[ERROR] customizeHomePage() was called without `homePageHtml`' );
@@ -146,21 +147,20 @@ async function customizeHomePage() {
         return;
     }
 
-    const replaceStatic = () =>
-        document.querySelectorAll(homePageElementTagName).forEach(el => {
+    // find non-customized homepage elements and replace with custom homepage
+    // data-custom attribute prevents infinite iteration
+    const setHomePageHtml = () =>
+        document.querySelectorAll(`${homePageElementTagName} > div:not([data-custom])`).forEach(div => {
+            div.dataset.custom = '1';
+            div.innerHTML = homePageHtml;
             console.log( '[DEBUG] (Re-)customized homepage HTML' );
-            const tpl = document.createElement('template');
-            tpl.innerHTML = homePageHtml;
-            el.replaceWith(tpl.content);
         });
 
-    new MutationObserver(replaceStatic).observe(document.body, { childList: true, subtree: true });
-    replaceStatic(); // in case the element is already present
+    // whenever the page changes, re-check for homepage customization
+    new MutationObserver(setHomePageHtml).observe(document.body, { childList: true, subtree: true });
+    // in case the element is already present
+    setHomePageHtml();
     console.log( '[DEBUG] Set up customized homepage HTML' );
-}
-
-function getHomePageDivElement() {
-    return document.querySelector( `${ homePageElementTagName } div` );
 }
 
 async function getHomePageHtml() {
