@@ -46,40 +46,6 @@ function updateGoldenFiles() {
     return process.env.UPDATE_GOLDEN_FILES?.toLowerCase() === 'true';
 }
 
-// Based on https://playwright.dev/docs/next/network#modify-responses
-async function modifyCSPHeader(page) {
-    await page.route('/discovery/search?*', async route => {
-        const response = await route.fetch();
-        // The header names are lowercased by Playwright
-        // https://playwright.dev/docs/next/api/class-response#response-headers
-        const originalHeaders = response.headers();
-
-        // Prepare the modified CSP header, if necessary
-        let csp = originalHeaders['content-security-policy'];
-        // If original response did not have a CSP header, there's nothing to do,
-        // just pass through.
-        if ( !csp ) {
-            return route.continue();
-        }
-        if ( csp.toLowerCase().includes('upgrade-insecure-requests') ) {
-
-            let directives = csp.split(';').map(directive => directive.trim());
-
-            directives = directives.filter(directive => !directive.toLowerCase().includes('upgrade-insecure-requests'));
-
-            csp = directives.length > 0 ? directives.join('; ').trim() : '';
-        }
-
-        route.fulfill({
-            response,
-            headers: {
-                ...originalHeaders,
-                'content-security-policy': csp
-            }
-        });
-    });
-}
-
 function removeSourceMappingUrlComments(html) {
     const regex = new RegExp( '/\\*#\\ssourceMappingURL=\\s*\\S+\\s\\*\\/', 'g' );
 
@@ -87,7 +53,6 @@ function removeSourceMappingUrlComments(html) {
   }
 
 module.exports = {
-    modifyCSPHeader,
     removeSourceMappingUrlComments,
     setPathAndQueryVid,
     updateGoldenFiles

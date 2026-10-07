@@ -138,34 +138,8 @@ function installMatomo() {
 
 const homePageElementTagName = 'prm-static';
 
-function setHomePageHtmlOnLoad( homePageHtml ) {
-    const callback = ( mutationList, observer ) => {
-        // Check if any child node has been added or removed
-        for ( const mutation of mutationList ) {
-            if ( mutation.type === 'childList' ) {
-                // Try to get the <div> within the rendered home page component.
-                const homePageDivElement = getHomePageDivElement();
-
-                // If home page component has been rendered, add Html and disconnect
-                // Otherwise, we keep listening
-                if ( homePageDivElement ) {
-                    console.log( '[DEBUG] Home page <div> now created, customizing' );
-                    setHomePageHtml( homePageDivElement, homePageHtml );
-                    observer.disconnect();
-                    return;
-                }
-            }
-        }
-    };
-
-    const homePageElement = document.querySelector( homePageElementTagName );
-    const config = { childList : true };
-
-    const observer = new MutationObserver( callback );
-    observer.observe( homePageElement, config );
-}
-
 async function customizeHomePage() {
+    // fetch custom homepage
     const homePageHtml = await getHomePageHtml();
     if ( ! homePageHtml ) {
         console.error( '[ERROR] customizeHomePage() was called without `homePageHtml`' );
@@ -173,25 +147,20 @@ async function customizeHomePage() {
         return;
     }
 
-    // Get the <div> within the rendered home page component.  It may or may not have
-    // been created yet.
-    const homePageDivElement = getHomePageDivElement();
+    // find non-customized homepage elements and replace with custom homepage
+    // data-custom attribute prevents infinite iteration
+    const setHomePageHtml = () =>
+        document.querySelectorAll(`${homePageElementTagName} > div:not([data-custom])`).forEach(div => {
+            div.dataset.custom = '1';
+            div.innerHTML = homePageHtml;
+            console.log( '[DEBUG] (Re-)customized homepage HTML' );
+        });
 
-    if ( homePageDivElement ) {
-        // Home page component has been rendered.  This will usually be the case if
-        // the page is cached.
-        console.log( '[DEBUG] Home page <div> already created, customize immediately' );
-        setHomePageHtml( homePageDivElement, homePageHtml );
-    } else {
-        // Home page component has not rendered yet.  This will often be the case if
-        // not loading the page from cache.
-        console.log( '[DEBUG] Home page <div> not created yet, create MutationObserver' );
-        setHomePageHtmlOnLoad( homePageHtml );
-    }
-}
-
-function getHomePageDivElement() {
-    return document.querySelector( `${ homePageElementTagName } div` );
+    // whenever the page changes, re-check for homepage customization
+    new MutationObserver(setHomePageHtml).observe(document.body, { childList: true, subtree: true });
+    // in case the element is already present
+    setHomePageHtml();
+    console.log( '[DEBUG] Set up customized homepage HTML' );
 }
 
 async function getHomePageHtml() {

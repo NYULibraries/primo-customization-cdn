@@ -1,10 +1,10 @@
 import * as fs from 'node:fs';
 
-import { modifyCSPHeader, setPathAndQueryVid, updateGoldenFiles, } from '../testutils/index.js';
+import { setPathAndQueryVid, updateGoldenFiles, } from '../testutils/index.js';
 
 import { execSync } from 'child_process';
 
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('../fixtures');
 const beautifyHtml = require('js-beautify').html;
 
 const view = process.env.VIEW;
@@ -48,10 +48,7 @@ if (viewsForStaticTest.includes(view)) {
             const finalPath =  setPathAndQueryVid( testCase.pathAndQuery, vid );
 
             test.beforeEach(async ({ page }) => {
-                if ( process.env.CONTAINER_MODE ) {
-                    await modifyCSPHeader(page);
-                }
-                await page.goto( finalPath );
+                await page.goto( finalPath, { waitUntil : 'domcontentloaded' } );
             });
 
             if ( testCase.key === 'search-bar-submenu' ) {
