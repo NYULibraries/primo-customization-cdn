@@ -1,7 +1,9 @@
 #!/bin/sh
 
 # Mandatory environment variables: VIEW
-# Optional environment variables: UPDATE_GOLDEN_FILES
+# Arguments are passed to `playwright test`, e.g. `--update-snapshots=changed`
+# to update golden files and screenshots:
+#   https://playwright.dev/docs/test-cli#all-options
 
 ROOT=$( cd "$(dirname "$0")" || exit 1; cd ..; pwd -P )
 
@@ -29,4 +31,4 @@ rm -rf "${ACTUAL_DIR:?}"/*
 rm -rf "${DIFFS_DIR:?}"/*
 
 # Run tests
-yarn playwright test
+yarn playwright test "$@"
