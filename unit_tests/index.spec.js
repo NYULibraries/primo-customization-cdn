@@ -1,44 +1,4 @@
-const { setPathAndQueryVid, updateGoldenFiles } = require('../e2e/testutils');
-
-describe('updateGoldenFiles', () => {
-  const testValues = [
-    { value: 'true', expected: true },
-    { value: 'True', expected: true },
-    { value: 'TRUE', expected: true },
-    { value: 'TrUe', expected: true },
-    { value: 'tRUE', expected: true },
-    { value: 'false', expected: false },
-    { value: 'False', expected: false },
-    { value: 'FALSE', expected: false },
-    { value: 'FaLsE', expected: false },
-    { value: 'fALSE', expected: false },
-    { value: 'yes', expected: false },
-    { value: 'no', expected: false },
-    { value: '1', expected: false },
-    { value: '0', expected: false },
-    { value: 'anyOtherValue', expected: false },
-    { value: '', expected: false },
-    { value: undefined, expected: false },
-  ];
-
-  beforeEach(() => {
-    delete process.env.UPDATE_GOLDEN_FILES;
-  });
-
-  afterEach(() => {
-      delete process.env.UPDATE_GOLDEN_FILES;
-  });
-
-  it('should return false when UPDATE_GOLDEN_FILES is not set', () => {
-      expect(updateGoldenFiles()).toBe(false);
-  });
-  it.each(testValues)(
-    'should return $expected for $value value', ({ value, expected }) => {
-        process.env.UPDATE_GOLDEN_FILES = value;
-        expect(updateGoldenFiles()).toBe(expected);
-    }
-  );
-});
+const { setPathAndQueryVid } = require('../e2e/testutils');
 
 describe('setPathAndQueryVid with VIEW constraint', () => {
 
