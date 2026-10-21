@@ -201,10 +201,6 @@ async function getHomePageHtml() {
     }
 }
 
-function setHomePageHtml( homePageDivElement, homePageHtml ) {
-    homePageDivElement.innerHTML = homePageHtml;
-}
-
 // ****************************************
 // MAIN
 // ****************************************
