@@ -42,10 +42,6 @@ function setPathAndQueryVid( pathAndQuery, vid ) {
   }
 
 
-function updateGoldenFiles() {
-    return process.env.UPDATE_GOLDEN_FILES?.toLowerCase() === 'true';
-}
-
 function removeSourceMappingUrlComments(html) {
     const regex = new RegExp( '/\\*#\\ssourceMappingURL=\\s*\\S+\\s\\*\\/', 'g' );
 
@@ -54,7 +50,6 @@ function removeSourceMappingUrlComments(html) {
 
 module.exports = {
     removeSourceMappingUrlComments,
-    setPathAndQueryVid,
-    updateGoldenFiles
+    setPathAndQueryVid
 };
 

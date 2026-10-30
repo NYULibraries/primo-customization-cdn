@@ -30,6 +30,12 @@ const config = {
   // these customized settings.
 
   testDir: './tests',
+  /* Golden files: `expect(actual).toMatchSnapshot([view, 'file.ext'])` compares
+     against tests/golden/<view>/file.ext.  The _DEV view dirs are symlinks to
+     the prod view dirs.
+     https://playwright.dev/docs/test-snapshots#non-image-snapshots
+     https://playwright.dev/docs/api/class-testconfig#test-config-snapshot-path-template */
+  snapshotPathTemplate: '{testDir}/golden/{arg}{ext}',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
@@ -38,6 +44,16 @@ const config = {
      * For example in `await expect(locator).toHaveText();`
      */
     timeout: 10000,
+    /* Playwright's default template, so screenshots stay in
+       tests/<spec>-snapshots/<name>-<project>-<platform>.png instead of
+       following snapshotPathTemplate above.  {arg}{ext} is the name passed to
+       toHaveScreenshot() split at its extension, so the project and platform go
+       before it: search-bar-submenu.png -> search-bar-submenu-chromium-linux.png
+       https://playwright.dev/docs/api/class-testconfig#test-config-expect
+       Tokens: https://playwright.dev/docs/api/class-testconfig#test-config-snapshot-path-template */
+    toHaveScreenshot: {
+      pathTemplate: '{snapshotDir}/{testFileDir}/{testFileName}-snapshots/{arg}{-projectName}{-snapshotSuffix}{ext}',
+    },
   },
   /* Run tests serially for stability in the containerized e2e environment. */
   fullyParallel: false,

@@ -2,8 +2,6 @@ import * as fs from 'node:fs';
 
 import { setPathAndQueryVid, } from '../testutils/index.js';
 
-import { execSync } from 'child_process';
-
 const { test, expect } = require('../fixtures');
 const beautifyHtml = require('js-beautify').html;
 
@@ -28,25 +26,12 @@ if (viewsForStaticTest.includes(view)) {
         });
 
         test(`Home page from CDN page HTML matches expected`, async ({ page }) => {
-            // Clean actual/ and diffs/ files
-            // NOTE:
-            // We don't bother with error handling because these files get overwritten
-            // anyway, and if there were no previous files, or if a previous cleaning/reset
-            // script or process already deleted the previous files, we don't want the errors
-            // causing distraction.
-            // If deletion fails on existing files, there's a good chance there will
-            // be errors thrown later, which will then correctly fail the test.
-            const filekey = 'home-page-race-condition';
-            const actualFile = `tests/actual/${view}/${filekey}.html`;
-            try {
-                fs.unlinkSync(actualFile);
-            } catch (error) {
-            }
-            const diffFile = `tests/diffs/${view}/${filekey}.html`;
-            try {
-                fs.unlinkSync(diffFile);
-            } catch (error) {
-            }
+            // NOTE: we're using the same goldenfile as home page test in static.js.spec
+            // this is because they're testing the same content
+            // as such, this test must never write it since static.js.spec takes care of that
+            // https://playwright.dev/docs/api/class-fullconfig#full-config-update-snapshots
+            const updateSnapshots = test.info().config.updateSnapshots;
+            test.skip(updateSnapshots === 'all' || updateSnapshots === 'changed', 'static.spec.js updates home-page.html');
 
             const waitForSelector = 'prm-static md-content.external-homepage';
             await page.locator(waitForSelector).waitFor();
@@ -61,39 +46,13 @@ if (viewsForStaticTest.includes(view)) {
             const elementToTest = 'prm-static md-content';
             actual = beautifyHtml(await page.locator(elementToTest).innerHTML());
 
-            // NOTE: we're using the same goldenfile as home page test in static.js.spec
-            // this is because they're testing the same content
-            // as such, this test also does not support updating goldenfiles since static.js.spec takes care of that
-            const goldenFile = `tests/golden/${view}/home-page.html`;
-            const golden = beautifyHtml(fs.readFileSync(goldenFile, { encoding: 'utf8' }));
+            // Fail rather than let toMatchSnapshot create a missing golden file.
+            // https://playwright.dev/docs/api/class-testinfo#test-info-snapshot-path
+            const goldenName = [view, 'home-page.html'];
+            const goldenFile = test.info().snapshotPath(...goldenName);
+            expect(fs.existsSync(goldenFile), `${goldenFile} is missing; static.spec.js creates it`).toBe(true);
 
-            fs.writeFileSync(actualFile, actual);
-
-            const ok = actual === golden;
-
-            let message = `Actual HTML for home page does not match expected text`;
-            if (!ok) {
-                const command = `diff ${goldenFile} ${actualFile} | tee ${diffFile}`;
-                let diffOutput;
-                try {
-                    diffOutput = new TextDecoder().decode(execSync(command));
-                    message += `
-
-    ======= BEGIN DIFF OUTPUT ========
-    ===== < golden  |  > actual ======
-    ${diffOutput}
-    ======== END DIFF OUTPUT =========
-
-    [Recorded in diff file: ${diffFile}]`;
-                } catch (e) {
-                    // `diff` command failed to create the diff file.
-                    message += `  Diff command \`${command}\` failed:
-
-    ${e.stderr.toString()}`;
-                }
-            }
-
-            expect(ok, message).toBe(true);
+            expect(actual).toMatchSnapshot(goldenName);
         }); // end test
     }) // end test.describe
 } else {
