@@ -100,24 +100,24 @@ function injectStatusEmbed() {
 // custom JS file as pseudo-DRY as possible, allowing us to make changes to one
 // view's JS file and simply copy it as-is into the other views.  Toward this
 // end, we need a full map of vids to Matomo siteIds, even though technically
-// each view only needs to know about its own 2-3 siteIds.
+// each view only needs to know about its own siteId.  Dev views aren't tracked.
 function installMatomo() {
     // Source:
     //     "Matomo JS Tracking Codes for Primo VE NYU Views"
     //     https://docs.google.com/document/d/1Rmmn1q7zNJxm-Ps0uyxbZ1o_GH4YY8hSUFUgQF9AgmU/edit#heading=h.ovisp1bygp5s
     const SITE_ID = {
-        '01NYU_AD:AD'     : '7',
-        '01NYU_AD:AD_DEV' : '10',
-
-        '01NYU_INST:NYU'     : '6',
-        '01NYU_INST:NYU_DEV' : '9',
-
-        '01NYU_US:SH'     : '8',
-        '01NYU_US:SH_DEV' : '11',
+        '01NYU_AD:AD'    : '7',
+        '01NYU_INST:NYU' : '6',
+        '01NYU_US:SH'    : '8',
     }
 
     // if we're on localhost or primo-explore-devenv, don't install
     if ( location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === 'primo-explore-devenv' ) {
+        return;
+    }
+
+    // Dev views aren't tracked.
+    if ( typeof nyu_primo_vid === 'string' && nyu_primo_vid.endsWith( '_DEV' ) ) {
         return;
     }
 
