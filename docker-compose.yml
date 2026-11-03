@@ -109,28 +109,17 @@ services:
     depends_on:
       e2e-tls:
         condition: service_healthy
+    # Rewrites golden files and screenshots that don't match.
+    #   https://playwright.dev/docs/test-cli#all-options
+    command: ["yarn", "test:e2e", "--update-snapshots=changed"]
     environment:
       <<: *x-environment
       PLAYWRIGHT_BASE_URL: https://e2e.nyu.primo.exlibrisgroup.com
-      UPDATE_GOLDEN_FILES: true
     ipc: host
     networks:
       - primo-customization-cdn-net
     # volumes:
     #   - ./e2e/tests/golden:/e2e/tests/golden
-  e2e-update-screenshots:
-    <<: *x-build-e2e
-    depends_on:
-      e2e-tls:
-        condition: service_healthy
-    command: ["yarn", "playwright", "test", "--update-snapshots"]
-    environment:
-      <<: *x-environment
-      PLAYWRIGHT_BASE_URL: https://e2e.nyu.primo.exlibrisgroup.com
-    ipc: host
-    networks:
-      - primo-customization-cdn-net
-    # volumes:
     #   - ./e2e/tests/chat-widget.spec.js-snapshots/:/e2e/tests/chat-widget.spec.js-snapshots/
 
   e2e-tls:

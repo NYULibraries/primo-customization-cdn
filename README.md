@@ -104,21 +104,12 @@ For example:
 VIEW=01NYU_INST-NYU_DEV docker compose up --build e2e
 ```
 
-Update golden files:
+Update golden files and PNG screenshots that no longer match. Golden files are
+Playwright [non-image snapshots](https://playwright.dev/docs/test-snapshots#non-image-snapshots),
+and this service runs with
+[`--update-snapshots=changed`](https://playwright.dev/docs/test-cli#all-options):
 
 ```shell
 # Tests https://e2e.nyu.primo.exlibrisgroup.com/discovery/search?vid=01NYU_INST:NYU_DEV
 VIEW=01NYU_INST-NYU_DEV docker compose up --build e2e-update-golden-files
-```
-
-Update chatwidget PNG files for NYU views:
-
-```shell
-VIEW=[VIEW] docker compose up --build e2e-update-screenshots
-```
-
-For example:
-
-```shell
-VIEW=01NYU_INST-NYU_DEV docker compose up --build e2e-update-screenshots
 ```
